@@ -1,6 +1,7 @@
 import Dashboard from "./page/Dashboard";
 import { Route, Routes, Navigate, Outlet } from "react-router-dom";
 import Login from "./page/LoginPage";
+import type { JSX } from "react";
 
 const App = () => {
   const token = localStorage.getItem("token");

@@ -1,6 +1,6 @@
-export const BASE_URL = "http://localhost:8000/api";
+export const BASE_URL = "/api";
 
-const loginUser = async (username, password) => {
+const loginUser = async (username: string, password: string) => {
   const response = await fetch(`${BASE_URL}/user/login`, {
     method: "POST",
     credentials: "include", // ✅ sends cookies with request
@@ -14,7 +14,7 @@ const loginUser = async (username, password) => {
   return await response.json();
 };
 
-const generateApp = async (job_desc) => {
+const generateApp = async (job_desc: string) => {
   console.log(`${BASE_URL}//apps/resume`);
   const response = await fetch(`${BASE_URL}/apps/resume`, {
     method: "POST",

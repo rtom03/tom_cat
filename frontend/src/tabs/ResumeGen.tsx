@@ -3,13 +3,13 @@ import { generateApp } from "../services/appServices";
 
 export default function ResumeGenerateTab() {
   const [jobDesc, setJobDesc] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJobDesc(e.target.value);
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // ✅ fixed typo
     setLoading(true);
     setError(null);
@@ -17,11 +17,12 @@ export default function ResumeGenerateTab() {
     try {
       const response = await generateApp(jobDesc);
       console.log(response); // handle response e.g. save to state
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      console.log(err);
       console.log(error);
     } finally {
       setLoading(false);
+      console.log(loading);
     }
   };
   return (

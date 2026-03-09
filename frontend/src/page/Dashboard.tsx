@@ -1,20 +1,17 @@
-import { useState } from "react";
-import ApplicationsTab from "../tabs/applicationTab";
-import AnalysisTab from "../tabs/AnalysisTab";
+import { useState, type JSX } from "react";
+// import AnalysisTab from "../tabs/AnalysisTab";
 import ResumeGenerateTab from "../tabs/ResumeGen";
-import BlockedCompaniesTab from "../tabs/BlockedTab";
+// import BlockedCompaniesTab from "../tabs/BlockedTab";
 import { useNavigate } from "react-router-dom";
+import ApplicationsTab from "../tabs/ApplicationTab";
 
-const TABS = [
-  "Applications",
-  "Analysis",
-  "Blocked companies",
-  "Resume generate",
-];
+type TabKey = "Applications" | "Resume generate";
+
+const TABS: TabKey[] = ["Applications", "Resume generate"];
 
 // ── Main Dashboard ──────────────────────────────────────────────────────────
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("Applications");
+  const [activeTab, setActiveTab] = useState<TabKey>("Applications");
   const navigate = useNavigate();
 
   const Logout = () => {
@@ -23,13 +20,16 @@ export default function Dashboard() {
     navigate("/login");
   };
 
-  const tabContent = {
+  // const tabContent = {
+  //   Applications: <ApplicationsTab />,
+  //   // Analysis: <AnalysisTab />,
+  //   // "Blocked companies": <BlockedCompaniesTab />,
+  //   "Resume generate": <ResumeGenerateTab />,
+  // };
+  const tabContent: Record<TabKey, JSX.Element> = {
     Applications: <ApplicationsTab />,
-    Analysis: <AnalysisTab />,
-    "Blocked companies": <BlockedCompaniesTab />,
     "Resume generate": <ResumeGenerateTab />,
   };
-
   return (
     <div
       className="min-h-screen bg-[#1a1a1a] text-gray-200"
@@ -62,21 +62,21 @@ export default function Dashboard() {
         {/* Tabs */}
         <div className="flex items-center border-b border-[#2a2a2a] mt-1">
           {TABS.map((tab) => {
-            const isActive = activeTab === tab;
-            const isAnalysis = tab === "Analysis";
-            const isResume = tab === "Resume generate";
+            // const isActive = activeTab === tab;
+            // const isAnalysis = tab === "Analysis";
+            // const isResume = tab === "Resume generate";
 
             let cls =
               "px-4 py-2.5 text-sm font-medium transition-all whitespace-nowrap border-b-2 -mb-px ";
-            if (isActive && isAnalysis) {
-              cls += "bg-yellow-400 text-black rounded-sm border-transparent";
-            } else if (isActive) {
-              cls += "text-blue-400 border-blue-400";
-            } else if (isResume) {
-              cls += "text-sky-400 hover:text-sky-300 border-transparent";
-            } else {
-              cls += "text-gray-400 hover:text-gray-200 border-transparent";
-            }
+            // if (isActive && isAnalysis) {
+            //   cls += "bg-yellow-400 text-black rounded-sm border-transparent";
+            // } else if (isActive) {
+            //   cls += "text-blue-400 border-blue-400";
+            // } else if (isResume) {
+            //   cls += "text-sky-400 hover:text-sky-300 border-transparent";
+            // } else {
+            //   cls += "text-gray-400 hover:text-gray-200 border-transparent";
+            // }
 
             return (
               <button

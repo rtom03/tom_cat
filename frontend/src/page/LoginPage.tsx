@@ -6,11 +6,11 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -23,7 +23,8 @@ const Login = () => {
 
       // do whatever you want after login e.g. redirect, save user to state
     } catch (err) {
-      setError(err.message);
+      console.log(err);
+      // setError(err);
     } finally {
       setLoading(false);
     }
