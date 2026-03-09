@@ -1,99 +1,5 @@
 import OpenAI from "openai";
 
-const stopwords = [
-  "Is",
-  "Are",
-  "The",
-  "At",
-  "A",
-  "An",
-  "And",
-  "Or",
-  "Of",
-  "For",
-  "On",
-  "In",
-  "We",
-  "Our",
-  "Hiring",
-];
-
-const titleStopwords = [
-  "Is",
-  "Are",
-  "The",
-  "At",
-  "A",
-  "An",
-  "And",
-  "Or",
-  "Of",
-  "For",
-  "On",
-  "In",
-  "We",
-  "Our",
-  "Hiring",
-  "Join",
-  "Position",
-];
-function extractCompany(job_desc) {
-  // 1️⃣ Look for "at <Company>" pattern
-  const atPattern = /\bat\s+([A-Z][a-zA-Z&]+(?:\s[A-Z][a-zA-Z&]+)*)/g;
-  const atMatch = [...job_desc.matchAll(atPattern)];
-  if (atMatch.length > 0) {
-    // Take the last "at <Company>" occurrence
-    return atMatch[atMatch.length - 1][1];
-  }
-
-  // 2️⃣ Frequency analysis: find capitalized words sequences
-  const words = job_desc.match(/\b[A-Z][a-zA-Z&]+\b/g) || [];
-  const freqMap = {};
-  for (let word of words) {
-    if (!stopwords.includes(word)) {
-      freqMap[word] = (freqMap[word] || 0) + 1;
-    }
-  }
-
-  // Take the word with highest frequency
-  const sorted = Object.entries(freqMap).sort((a, b) => b[1] - a[1]);
-  if (sorted.length > 0) return sorted[0][0];
-
-  // 3️⃣ Fallback
-  return "Unknown";
-}
-
-function extractTitle(job_desc) {
-  // 1️⃣ Look for common title patterns
-  const patterns = [
-    /\b(hiring a|looking for a|position as|join us as a)\s+([A-Z][a-zA-Z]*(?:\s[A-Z][a-zA-Z]*){0,2})/gi,
-  ];
-
-  for (let pattern of patterns) {
-    const match = pattern.exec(job_desc);
-    if (match) return match[2].trim();
-  }
-
-  // 2️⃣ Capitalized word sequences
-  const words = job_desc.match(/\b[A-Z][a-zA-Z]+\b/g) || [];
-  const filtered = words.filter((w) => !titleStopwords.includes(w));
-
-  // Try to group two or three capitalized words in a row
-  let candidate = [];
-  for (let i = 0; i < filtered.length; i++) {
-    if (i + 2 < filtered.length) {
-      candidate.push(`${filtered[i]} ${filtered[i + 1]} ${filtered[i + 2]}`);
-    }
-  }
-
-  if (candidate.length > 0) return candidate[0];
-
-  // 3️⃣ Fallback: first capitalized word not in stopwords
-  if (filtered.length > 0) return filtered[0];
-
-  return "Unknown";
-}
-
 // utils/extractJobInfo.js
 
 const openai = new OpenAI({
@@ -105,7 +11,7 @@ const openai = new OpenAI({
  * @param {string} job_desc - The full job description text
  * @returns {Promise<{company: string, title: string}>}
  */
-async function extractJobInfo(job_desc) {
+async function extractJobInfoAi(job_desc) {
   if (!job_desc || typeof job_desc !== "string") {
     return { company: "Unknown", title: "Unknown" };
   }
@@ -145,8 +51,17 @@ ${job_desc}
 
     // Try to parse JSON
     let result = { company: "Unknown", title: "Unknown" };
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
     try {
-      result = JSON.parse(text);
+      if (jsonMatch) {
+        try {
+          result = JSON.parse(jsonMatch[0]);
+        } catch {
+          console.warn("Could not parse JSON after regex");
+        }
+      } else {
+        console.warn("No JSON found in GPT output");
+      }
     } catch (err) {
       console.warn("Could not parse GPT output as JSON, returning fallback");
     }
@@ -157,4 +72,4 @@ ${job_desc}
     return { company: "Unknown", title: "Unknown" };
   }
 }
-export { extractCompany, extractTitle, extractJobInfo };
+export { extractJobInfoAi };

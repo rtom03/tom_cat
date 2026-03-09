@@ -1,5 +1,6 @@
 import { prisma } from "../utils/db.js";
 import { extractJobInfo } from "../utils/extractHelper.js";
+import { extractJobInfoAi } from "../utils/helper.js";
 
 const createJob = async (req, res) => {
   try {
@@ -12,7 +13,7 @@ const createJob = async (req, res) => {
     const remote = /remote/i.test(job_desc);
     // const company = extractCompany(job_desc);
     // let title = extractTitle(job_desc);
-    let job_info = extractJobInfo(job_desc);
+    let job_info = await extractJobInfoAi(job_desc);
 
     // 4️⃣ Create job record
     const job = await prisma.job_Apps.create({

@@ -1,4 +1,4 @@
-export const BASE_URL = "/api";
+export const BASE_URL = "http://localhost:8000/api";
 
 const loginUser = async (username: string, password: string) => {
   const response = await fetch(`${BASE_URL}/user/login`, {
