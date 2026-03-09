@@ -42,8 +42,8 @@ export default function Dashboard() {
             Dashboard
           </h1>
           <div className="text-[13px] text-gray-400 mt-0.5">
-            <span className="font-bold text-white">HIGH1-W-STEVEN</span>{" "}
-            <span className="text-gray-500">(high1-w-steven)</span>
+            <span className="font-bold text-white"></span>{" "}
+            <span className="text-gray-500">(bidder)</span>
           </div>
           <div className="text-[11px] text-gray-500 mt-0.5 uppercase tracking-wide">
             Bidder in 3_HIGH

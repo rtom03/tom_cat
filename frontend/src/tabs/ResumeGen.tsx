@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { generateApp } from "../services/appServices";
+import { Loader } from "lucide-react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function ResumeGenerateTab() {
   const [jobDesc, setJobDesc] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const notify = () => toast("chillax ur CV has been generated😜!");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJobDesc(e.target.value);
@@ -13,9 +16,11 @@ export default function ResumeGenerateTab() {
     e.preventDefault(); // ✅ fixed typo
     setLoading(true);
     setError(null);
-    console.log("KKKKKKKKKKKKKKKKK");
+    // console.log("KKKKKKKKKKKKKKKKK");
     try {
       const response = await generateApp(jobDesc);
+      setJobDesc("");
+      notify();
       console.log(response); // handle response e.g. save to state
     } catch (err) {
       console.log(err);
@@ -27,6 +32,7 @@ export default function ResumeGenerateTab() {
   };
   return (
     <div>
+      <ToastContainer />
       <h2 className="text-xl font-bold text-white mb-4">Resume Generate</h2>
 
       <div className="space-y-3 mb-4">
@@ -46,7 +52,7 @@ export default function ResumeGenerateTab() {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold py-3 rounded transition-colors text-base mb-4 flex items-center justify-center gap-2"
           >
-            Generate
+            {loading ? <Loader /> : "Generate"}
           </button>
         </form>
       </div>
