@@ -58,4 +58,21 @@ const getJobs = async (req, res) => {
   }
 };
 
-export { createJob, getJobs };
+const deleteJob = async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) return res.status(400).json({ error: "Job ID is required" });
+
+  try {
+    const deletedJob = await prisma.job_Apps.delete({
+      where: { id: parseInt(id) },
+    });
+
+    return res.status(200).json({ message: "Job deleted", job: deletedJob });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Failed to delete job" });
+  }
+};
+
+export { createJob, getJobs, deleteJob };

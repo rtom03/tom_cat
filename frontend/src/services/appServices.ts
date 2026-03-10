@@ -37,4 +37,28 @@ const getJobs = async () => {
   return await response.json();
 };
 
-export { loginUser, generateApp, getJobs };
+const deleteJob = async (jobId: number) => {
+  try {
+    const response = await fetch(`${BASE_URL}/apps/jobs/${jobId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        // add auth token if needed
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Delete failed:", data.error);
+      return;
+    }
+
+    console.log("Job deleted:", data.job);
+    // Optionally update your frontend state to remove the job from UI
+  } catch (err) {
+    console.error("Error deleting job:", err);
+  }
+};
+
+export { loginUser, generateApp, getJobs, deleteJob };

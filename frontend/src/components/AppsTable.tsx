@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getJobs } from "../services/appServices";
+import { BASE_URL, getJobs } from "../services/appServices";
 
 interface Job {
   id: number;
@@ -148,6 +148,38 @@ const JobsTable = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const handleCheckboxChange = (jobId: number, checked: boolean) => {
+    if (checked) {
+      setSelectedJobId(jobId);
+      setShowConfirm(true); // show popup
+    } else {
+      setSelectedJobId(null);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!selectedJobId) return;
+
+    try {
+      const res = await fetch(`${BASE_URL}/apps/jobs/${selectedJobId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      window.location.href = "/"; // ✅ forces full reload, app picks up localStorage
+      if (!res.ok) throw new Error("Delete failed");
+
+      // Optionally, remove job from frontend state
+      console.log("Job deleted:", selectedJobId);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setShowConfirm(false);
+      setSelectedJobId(null);
+    }
+  };
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -202,7 +234,12 @@ const JobsTable = () => {
                   className="p-3 border border-[#333]"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    onChange={(e) =>
+                      handleCheckboxChange(job.id, e.target.checked)
+                    }
+                  />
                 </td>
                 <td className="p-3 border border-[#333]">{job.company}</td>
                 <td className="p-3 border border-[#333]">{job.title}</td>
@@ -234,6 +271,27 @@ const JobsTable = () => {
       {/* Modal */}
       {selectedJob && (
         <JobModal job={selectedJob} onClose={() => setSelectedJob(null)} />
+      )}
+      {showConfirm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-[#1a1a2e] p-6 rounded-md text-gray-200 w-80">
+            <p className="mb-4">Are you sure you want to delete this job?</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-600 rounded hover:bg-red-500"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
