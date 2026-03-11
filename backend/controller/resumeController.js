@@ -80,6 +80,7 @@ export const generateInterviewResponse = async (req, res) => {
 };
 
 const getJobs = async (req, res) => {
+  const userId = req.user.userId;
   try {
     const jobs = await prisma.job_Apps.findMany({
       where: {
