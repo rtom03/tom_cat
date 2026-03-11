@@ -1,16 +1,56 @@
 import OpenAI from "openai";
 
-// utils/extractJobInfo.js
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // set your API key in env
 });
 
 /**
- * Extract company name and job title from a job description using GPT
- * @param {string} job_desc - The full job description text
- * @returns {Promise<{company: string, title: string}>}
+ * Generates interview answer aligned with job description
+ * @param {Object} params
+ * @param {String} params.jobDesc
+ * @param {String} params.company
+ * @param {String} params.title
+ * @param {String} params.question
+ * @returns {Promise<String>}
  */
+const generateInterviewAnswer = async ({
+  jobDesc,
+  company,
+  title,
+  question,
+}) => {
+  const prompt = `
+You are an expert interview coach helping a candidate prepare.
+
+Job Description:
+${jobDesc}
+
+Company: ${company}
+Role: ${title}
+
+Interview Question:
+${question}
+
+Instructions:
+- Provide a confident and professional answer.
+- Align response with company needs.
+- Highlight relevant skills implied in the job description.
+- Keep it concise, simple, short, relatable but impactful...always make sure answer is one sentence.
+
+`;
+
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      { role: "system", content: "You are a professional interview coach." },
+      { role: "user", content: prompt },
+    ],
+    temperature: 0.7,
+  });
+
+  return completion.choices[0].message.content;
+};
+
 async function extractJobInfoAi(job_desc) {
   if (!job_desc || typeof job_desc !== "string") {
     return { company: "Unknown", title: "Unknown" };
@@ -72,4 +112,5 @@ ${job_desc}
     return { company: "Unknown", title: "Unknown" };
   }
 }
-export { extractJobInfoAi };
+
+export { extractJobInfoAi, generateInterviewAnswer };

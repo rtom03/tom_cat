@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { BASE_URL, getJobs } from "../services/appServices";
+import { useInterviewAI } from "../hooks/useInterviewAi";
+import { Loader } from "lucide-react";
 
 interface Job {
   id: number;
@@ -15,10 +17,29 @@ interface Job {
 }
 
 // ---------- MODAL ----------
-const JobModal = ({ job, onClose }: { job: Job; onClose: () => void }) => {
+const JobModal = ({
+  job,
+  onClose,
+  jobId,
+}: {
+  job: Job;
+  onClose: () => void;
+  jobId: number;
+}) => {
   const [question, setQuestion] = useState("");
-
   const handleCopy = (text: string) => navigator.clipboard.writeText(text);
+  const { askQuestion, loading, answer } = useInterviewAI();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!question.trim()) return;
+
+    await askQuestion({
+      jobId,
+      question,
+    });
+  };
 
   return (
     <div
@@ -107,14 +128,27 @@ const JobModal = ({ job, onClose }: { job: Job; onClose: () => void }) => {
 
         {/* Question */}
         <div className="mb-4">
-          <label className="text-sm text-gray-400 block mb-2">Question</label>
-          <textarea
-            rows={4}
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Type your question..."
-            className="w-full bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 outline-none focus:border-[#555] resize-none transition-colors"
-          />
+          <form onSubmit={handleSubmit}>
+            <div className="flex justify-between">
+              <label className="text-sm text-gray-400 block mb-2">
+                Question
+              </label>
+              <button
+                className="text-gray-500 hover:text-white transition-colors"
+                type="submit"
+              >
+                {loading ? <Loader className="animate-spin" /> : "➜"}
+              </button>
+            </div>
+
+            <textarea
+              rows={4}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Type your question..."
+              className="w-full bg-[#111] border border-[#333] rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-600 outline-none focus:border-[#555] resize-none transition-colors"
+            />
+          </form>
         </div>
 
         <hr className="border-[#333] mb-4" />
@@ -123,19 +157,28 @@ const JobModal = ({ job, onClose }: { job: Job; onClose: () => void }) => {
         <div>
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-white font-semibold text-sm flex items-center gap-2">
-              📄 Job Description
+              {answer ? "📄 AI Response" : "📄 Job Desc"}
             </h3>
             <button
               className="text-gray-500 hover:text-white transition-colors"
-              onClick={() => handleCopy(job.job_desc)}
-              title="Copy description"
+              onClick={() => handleCopy(answer ? answer : job.job_desc)}
+              title={answer ? "copy answer" : "copy job_desc"}
             >
               📋
             </button>
           </div>
-          <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
-            {job.job_desc}
-          </div>
+
+          {answer ? (
+            <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
+              <p>{answer}</p>
+            </div>
+          ) : (
+            <>
+              <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
+                {job.job_desc}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -270,7 +313,11 @@ const JobsTable = () => {
 
       {/* Modal */}
       {selectedJob && (
-        <JobModal job={selectedJob} onClose={() => setSelectedJob(null)} />
+        <JobModal
+          jobId={selectedJob.id}
+          job={selectedJob}
+          onClose={() => setSelectedJob(null)}
+        />
       )}
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

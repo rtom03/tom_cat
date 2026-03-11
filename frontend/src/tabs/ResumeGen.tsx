@@ -52,7 +52,7 @@ export default function ResumeGenerateTab() {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold py-3 rounded transition-colors text-base mb-4 flex items-center justify-center gap-2"
           >
-            {loading ? <Loader /> : "Generate"}
+            {loading ? <Loader className="animate-spin" /> : "Generate"}
           </button>
         </form>
       </div>

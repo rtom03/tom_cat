@@ -1,5 +1,34 @@
-export const BASE_URL = "http://localhost:8000/api";
+export const BASE_URL = "/api";
+// ("http://localhost:8000/api");
 
+export interface InterviewRequest {
+  jobId: number;
+  question: string;
+}
+
+export interface InterviewResponse {
+  success: boolean;
+  answer: string;
+}
+
+export const generateInterviewAnswer = async (
+  payload: InterviewRequest,
+): Promise<InterviewResponse> => {
+  const response = await fetch(`${BASE_URL}/apps/job-ques`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      credentials: "include",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to generate interview response");
+  }
+
+  return response.json();
+};
 const loginUser = async (username: string, password: string) => {
   const response = await fetch(`${BASE_URL}/user/login`, {
     method: "POST",

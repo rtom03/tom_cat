@@ -1,6 +1,8 @@
+import {
+  extractJobInfoAi,
+  generateInterviewAnswer,
+} from "../service/ai.service.js";
 import { prisma } from "../utils/db.js";
-import { extractJobInfo } from "../utils/extractHelper.js";
-import { extractJobInfoAi } from "../utils/helper.js";
 
 const createJob = async (req, res) => {
   try {
@@ -32,6 +34,48 @@ const createJob = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const generateInterviewResponse = async (req, res) => {
+  try {
+    const { jobId, question } = req.body;
+
+    if (!jobId || !question) {
+      return res.status(400).json({
+        message: "jobId and question are required",
+      });
+    }
+
+    // 1️⃣ Fetch job
+    const job = await prisma.job_Apps.findFirst({
+      where: { id: Number(jobId) },
+    });
+
+    if (!job) {
+      return res.status(404).json({
+        message: "Job not found",
+      });
+    }
+
+    // 2️⃣ Call AI helper
+    const answer = await generateInterviewAnswer({
+      jobDesc: job.job_desc,
+      company: job.company,
+      title: job.title,
+      question,
+    });
+
+    // 3️⃣ Return response
+    return res.status(200).json({
+      success: true,
+      answer,
+    });
+  } catch (error) {
+    console.error("Interview generation error:", error);
+    return res.status(500).json({
+      message: "Server error",
+    });
   }
 };
 
