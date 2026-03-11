@@ -82,6 +82,9 @@ export const generateInterviewResponse = async (req, res) => {
 const getJobs = async (req, res) => {
   try {
     const jobs = await prisma.job_Apps.findMany({
+      where: {
+        createdById: userId, // ✅ filter by logged-in user
+      },
       include: {
         createdBy: {
           select: {
