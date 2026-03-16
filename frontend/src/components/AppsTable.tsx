@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { BASE_URL, getJobs } from "../services/appServices";
+import { useState } from "react";
+import { BASE_URL } from "../services/appServices";
 import { useInterviewAI } from "../hooks/useInterviewAi";
 import { Loader } from "lucide-react";
 
@@ -15,7 +15,6 @@ interface Job {
     name: string;
   };
 }
-
 // ---------- MODAL ----------
 const JobModal = ({
   job,
@@ -186,10 +185,15 @@ const JobModal = ({
 };
 
 // ---------- TABLE ----------
-const JobsTable = () => {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const JobsTable = ({
+  jobs,
+  loading,
+  error,
+}: {
+  jobs: Job[];
+  loading: boolean;
+  error: boolean;
+}) => {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -223,24 +227,6 @@ const JobsTable = () => {
       setSelectedJobId(null);
     }
   };
-
-  const fetchJobs = async () => {
-    setLoading(true);
-    try {
-      const data = await getJobs();
-      setJobs(data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchJobs();
-    const interval = setInterval(fetchJobs, 10000);
-    return () => clearInterval(interval);
-  }, []);
 
   if (loading && jobs.length === 0)
     return <p className="text-gray-400 p-4">Loading...</p>;

@@ -20,12 +20,6 @@ export default function Dashboard() {
     navigate("/login");
   };
 
-  // const tabContent = {
-  //   Applications: <ApplicationsTab />,
-  //   // Analysis: <AnalysisTab />,
-  //   // "Blocked companies": <BlockedCompaniesTab />,
-  //   "Resume generate": <ResumeGenerateTab />,
-  // };
   const tabContent: Record<TabKey, JSX.Element> = {
     Applications: <ApplicationsTab />,
     "Resume generate": <ResumeGenerateTab />,
@@ -62,21 +56,8 @@ export default function Dashboard() {
         {/* Tabs */}
         <div className="flex items-center border-b border-[#2a2a2a] mt-1">
           {TABS.map((tab) => {
-            // const isActive = activeTab === tab;
-            // const isAnalysis = tab === "Analysis";
-            // const isResume = tab === "Resume generate";
-
             let cls =
               "px-4 py-2.5 text-sm font-medium transition-all whitespace-nowrap border-b-2 -mb-px ";
-            // if (isActive && isAnalysis) {
-            //   cls += "bg-yellow-400 text-black rounded-sm border-transparent";
-            // } else if (isActive) {
-            //   cls += "text-blue-400 border-blue-400";
-            // } else if (isResume) {
-            //   cls += "text-sky-400 hover:text-sky-300 border-transparent";
-            // } else {
-            //   cls += "text-gray-400 hover:text-gray-200 border-transparent";
-            // }
 
             return (
               <button

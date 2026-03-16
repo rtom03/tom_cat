@@ -2,11 +2,14 @@ import { useState } from "react";
 import { generateApp } from "../services/appServices";
 import { Loader } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import ResumePDF from "../components/ResumePdf";
 
 export default function ResumeGenerateTab() {
   const [jobDesc, setJobDesc] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [resume, setResume] = useState<any>(null);
   const notify = () => toast("chillax ur CV has been generated😜!");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -19,6 +22,7 @@ export default function ResumeGenerateTab() {
     // console.log("KKKKKKKKKKKKKKKKK");
     try {
       const response = await generateApp(jobDesc);
+      setResume(response.resume); // 👈 store AI resume
       setJobDesc("");
       notify();
       console.log(response); // handle response e.g. save to state
@@ -54,6 +58,17 @@ export default function ResumeGenerateTab() {
           >
             {loading ? <Loader className="animate-spin" /> : "Generate"}
           </button>
+          {resume && (
+            <PDFDownloadLink
+              document={<ResumePDF resume={resume} />}
+              fileName="resume.pdf"
+            >
+              {/* {({ loading }) => */}
+              {/* loading ? "Preparing document..." : " */}
+              Download Resume
+              {/* } */}
+            </PDFDownloadLink>
+          )}
         </form>
       </div>
     </div>

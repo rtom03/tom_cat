@@ -3,12 +3,13 @@ import {
   generateInterviewAnswer,
 } from "../service/ai.service.js";
 import { prisma } from "../utils/db.js";
+import { tailorResume } from "../utils/tailorResumeHelper.js";
 
 const createJob = async (req, res) => {
   try {
     const { job_desc } = req.body;
     const userId = req.user.userId;
-    console.log(userId);
+    // console.log(userId);
     // const userId = req.user.id; // assuming user is authenticated
 
     // 1️⃣ Check for remote
@@ -16,6 +17,7 @@ const createJob = async (req, res) => {
     // const company = extractCompany(job_desc);
     // let title = extractTitle(job_desc);
     let job_info = await extractJobInfoAi(job_desc);
+    const tailoredResume = await tailorResume(userId, job_desc);
 
     // 4️⃣ Create job record
     const job = await prisma.job_Apps.create({
@@ -30,7 +32,7 @@ const createJob = async (req, res) => {
       },
     });
 
-    res.status(201).json(job);
+    res.status(201).json({ job, resume: tailoredResume });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
@@ -123,4 +125,44 @@ const deleteJob = async (req, res) => {
   }
 };
 
-export { createJob, getJobs, deleteJob };
+const createResume = async (req, res) => {
+  try {
+    const userId = req.user.userId; // assuming authMiddleware adds user to req
+    const {
+      title,
+      summary,
+      education,
+      skills,
+      certifications,
+      projects,
+      professionalExperiences,
+    } = req.body;
+
+    const resume = await prisma.resume.create({
+      data: {
+        userId,
+        title,
+        summary,
+        education,
+        skills,
+        certifications,
+        projects,
+        professionalExperiences: {
+          create: professionalExperiences, // array of experiences
+        },
+      },
+      include: {
+        professionalExperiences: true,
+      },
+    });
+
+    return res.status(201).json({
+      success: true,
+      data: resume,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
+export { createJob, getJobs, deleteJob, createResume };

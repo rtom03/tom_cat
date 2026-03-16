@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { loginUser } from "../services/appServices";
+import { Loader } from "lucide-react";
 
 const Login = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -70,7 +71,7 @@ const Login = () => {
             disabled={loading}
             className="w-full py-3 bg-[#0A7C3A] text-white font-semibold rounded-lg hover:bg-[#0F5E2D] transition-colors"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? <Loader className="animate-spin" /> : "Log In"}
           </button>
         </form>
 

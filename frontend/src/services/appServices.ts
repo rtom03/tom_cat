@@ -1,4 +1,7 @@
 export const BASE_URL = "/api";
+// "http://localhost:8000/api";
+
+//  "/api";
 // ("http://localhost:8000/api");
 
 export interface InterviewRequest {

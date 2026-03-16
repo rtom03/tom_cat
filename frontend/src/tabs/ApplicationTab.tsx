@@ -1,7 +1,20 @@
-import { useState } from "react";
-import ApplicationsTable from "../components/AppsTable";
+import { useEffect, useState } from "react";
+import AppsTable from "../components/AppsTable";
+import { getJobs } from "../services/appServices";
 
-// ── Applications Tab ────────────────────────────────────────────────────────
+interface Job {
+  id: number;
+  company: string;
+  title: string;
+  createdAt: string;
+  remote: boolean;
+  job_desc: string;
+  createdBy: {
+    username: string;
+    name: string;
+  };
+}
+
 export default function ApplicationsTab() {
   const [searchCompany, setSearchCompany] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -9,7 +22,82 @@ export default function ApplicationsTab() {
   const [toDate, setToDate] = useState("");
   const [forValue, setForValue] = useState("Steven Zhang (high5-steven)");
   const [byValue, setByValue] = useState("All Bidders");
-  const [remoteValue, setRemoteValue] = useState("All");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [jobs, setJobs] = useState<Job[]>([]);
+
+  const fetchJobs = async () => {
+    setLoading(true);
+    try {
+      const data = await getJobs();
+      setJobs(data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchJobs();
+    const interval = setInterval(fetchJobs, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // ── Search/filter function — always returns an array ──────────────────────
+  // const getFilteredJobs = (): Job[] => {
+  //   return jobs.filter((job) => {
+  //     const matchesCompany = searchCompany
+  //       ? job.company.toLowerCase().includes(searchCompany.toLowerCase())
+  //       : true;
+
+  //     const matchesKeyword = searchKeyword
+  //       ? job.title.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+  //         job.job_desc.toLowerCase().includes(searchKeyword.toLowerCase())
+  //       : true;
+
+  //     const matchesFromDate = fromDate
+  //       ? new Date(job.createdAt) >= new Date(fromDate)
+  //       : true;
+
+  //     const matchesToDate = toDate
+  //       ? new Date(job.createdAt) <= new Date(toDate)
+  //       : true;
+
+  //     return (
+  //       matchesCompany && matchesKeyword && matchesFromDate && matchesToDate
+  //     );
+  //   });
+  // };
+  // ── Search/filter function ────────────────────────────────────────────────
+  const getFilteredJobs = (): Job[] => {
+    return jobs.filter((job) => {
+      const matchesCompany = searchCompany
+        ? job.company.toLowerCase().includes(searchCompany.toLowerCase())
+        : true;
+
+      const matchesKeyword = searchKeyword
+        ? job.title.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+          job.job_desc.toLowerCase().includes(searchKeyword.toLowerCase())
+        : true;
+
+      const jobDate = new Date(job.createdAt);
+
+      const matchesFromDate = fromDate
+        ? jobDate >= new Date(fromDate) // start of day ✅
+        : true;
+
+      const matchesToDate = toDate
+        ? jobDate <= new Date(new Date(toDate).setHours(23, 59, 59, 999)) // end of day ✅
+        : true;
+
+      return (
+        matchesCompany && matchesKeyword && matchesFromDate && matchesToDate
+      );
+    });
+  };
+
+  const filteredJobs = getFilteredJobs(); // ✅ always an array
 
   const inputCls =
     "w-full bg-[#0d0d0d] border border-[#333] rounded px-3 py-2 text-sm text-gray-200 placeholder-gray-500 outline-none focus:border-[#555] transition-colors";
@@ -45,8 +133,39 @@ export default function ApplicationsTab() {
           onChange={(e) => setSearchKeyword(e.target.value)}
         />
       </div>
-
+      {/* Date range row */}
       <div className="flex items-center gap-3 mb-3 flex-wrap">
+        <span className="text-sm text-gray-400 w-10 shrink-0">From</span>
+        <input
+          className="flex-1 min-w-[140px] bg-[#0d0d0d] border border-[#333] rounded px-3 py-2 text-sm text-gray-200 outline-none focus:border-[#555] [color-scheme:dark]"
+          type="date"
+          value={fromDate}
+          onChange={(e) => setFromDate(e.target.value)}
+        />
+        <span className="text-sm text-gray-400 w-5 shrink-0">To</span>
+        <input
+          className="flex-1 min-w-[140px] bg-[#0d0d0d] border border-[#333] rounded px-3 py-2 text-sm text-gray-200 outline-none focus:border-[#555] [color-scheme:dark]"
+          type="date"
+          value={toDate}
+          min={fromDate}
+          onChange={(e) => setToDate(e.target.value)}
+        />
+        {/* Clear button only shown when a date is set */}
+        {(fromDate || toDate) && (
+          <button
+            onClick={() => {
+              setFromDate("");
+              setToDate("");
+            }}
+            className="text-xs text-gray-400 hover:text-red-400 border border-[#333] hover:border-red-400 rounded px-2 py-2 transition-colors shrink-0"
+            title="Clear date filter"
+          >
+            ✕ Clear
+          </button>
+        )}
+      </div>
+
+      {/* <div className="flex items-center gap-3 mb-3 flex-wrap">
         <span className="text-sm text-gray-400 w-10 shrink-0">From</span>
         <input
           className="flex-1 min-w-[140px] bg-[#0d0d0d] border border-[#333] rounded px-3 py-2 text-sm text-gray-200 outline-none focus:border-[#555] [color-scheme:dark]"
@@ -61,7 +180,7 @@ export default function ApplicationsTab() {
           value={toDate}
           onChange={(e) => setToDate(e.target.value)}
         />
-      </div>
+      </div> */}
 
       <div className="flex items-center gap-3 mb-3 flex-wrap">
         <span className="text-sm text-gray-400 w-10 shrink-0">For</span>
@@ -85,24 +204,15 @@ export default function ApplicationsTab() {
         </select>
       </div>
 
-      <div className="flex items-center gap-3 mb-5">
-        <span className="text-sm text-gray-400 w-10 shrink-0">Remote</span>
-        <select
-          className={`${selectCls} w-full`}
-          value={remoteValue}
-          onChange={(e) => setRemoteValue(e.target.value)}
-        >
-          <option>All</option>
-          <option>Remote Only</option>
-          <option>On-site Only</option>
-          <option>Hybrid</option>
-        </select>
-      </div>
-
-      <button className="w-full bg-green-700 hover:bg-green-800 active:bg-green-900 text-white font-semibold py-3 rounded transition-colors text-base tracking-wide">
+      <button
+        onClick={fetchJobs}
+        className="w-full bg-green-700 hover:bg-green-800 active:bg-green-900 text-white font-semibold py-3 rounded transition-colors text-base tracking-wide"
+      >
         Refresh
       </button>
-      <ApplicationsTable />
+
+      {/* ✅ Always receives a Job[] array */}
+      <AppsTable jobs={filteredJobs} loading={loading} error={error} />
     </div>
   );
 }
