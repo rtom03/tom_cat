@@ -174,10 +174,14 @@ const ResumePDF = ({ resume }: any) => (
           {resume.education.map((edu: any, i: number) => (
             <View key={i} style={styles.entryBlock}>
               <View style={styles.entryTopRow}>
-                <Text style={styles.entryTitle}>{edu.degree}</Text>
-                <Text style={styles.entryDate}>{edu.year}</Text>
+                <Text style={styles.entryTitle}>
+                  {edu.degree} {edu.field}
+                </Text>
+                <Text style={styles.entryDate}>
+                  {edu.startYear} {edu.endYear}
+                </Text>
               </View>
-              <Text style={styles.entryMeta}>{edu.institution}</Text>
+              <Text style={styles.entryMeta}>{edu.school}</Text>
               {edu.description && (
                 <Text style={styles.entryDesc}>{edu.description}</Text>
               )}
