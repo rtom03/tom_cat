@@ -5,7 +5,6 @@ import { prisma } from "../utils/db.js";
 
 const protectRoute = asyncHandler(async (req, res, next) => {
   let token = req.cookies?.token;
-  // console.log(token);
   if (!token) {
     return res
       .status(401)

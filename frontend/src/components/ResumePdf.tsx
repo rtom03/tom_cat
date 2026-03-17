@@ -107,6 +107,14 @@ const styles = StyleSheet.create({
     fontSize: 10.5,
     color: "#1a1a1a",
   },
+  bullet: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: "black",
+    marginRight: 8,
+    marginTop: 6,
+  },
 });
 
 // Reusable section heading with extending rule
@@ -123,6 +131,24 @@ const ResumePDF = ({ resume }: any) => (
       {/* ── HEADER ── */}
       <View style={styles.header}>
         <Text style={styles.name}>{resume.name}</Text>
+        {resume.name === "Matthew Delano" ? (
+          <View style={{ display: "flex", gap: "3", alignItems: "center" }}>
+            <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+              <Text>Alvin TX</Text>
+              <Text>||</Text>
+              <Text>matthewdelano0201@gmail.com</Text>
+            </View>
+            <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+              <Text>(512) 360-0907</Text>
+              <Text>||</Text>
+              <Text>
+                https://www.linkedin.com/in/matthew-delano-2850ab292/
+              </Text>{" "}
+            </View>
+          </View>
+        ) : (
+          <></>
+        )}
         {/* Contact line: address | city | phone | email */}
         <Text style={styles.contactLine}>
           {[resume.address, resume.cityState, resume.phone, resume.email]
@@ -155,7 +181,10 @@ const ResumePDF = ({ resume }: any) => (
                 {[exp.companyName, exp.location].filter(Boolean).join("  |  ")}
               </Text>
               {exp.description && (
-                <Text style={styles.entryDesc}>{exp.description}</Text>
+                <View style={{ display: "flex", alignItems: "center" }}>
+                  <View style={styles.bullet} />
+                  <Text style={styles.entryDesc}>{exp.description}</Text>
+                </View>
               )}
               {exp.responsibilities?.map((r: string, j: number) => (
                 <Text key={j} style={styles.entryDesc}>

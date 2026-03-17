@@ -126,6 +126,12 @@ const deleteJob = async (req, res) => {
 };
 
 const createResume = async (req, res) => {
+  const serializeExperience = (exp) => ({
+    ...exp,
+    responsibilities: JSON.stringify(exp.responsibilities || []),
+    technologies: JSON.stringify(exp.technologies || []),
+  });
+
   try {
     const userId = req.user.userId; // assuming authMiddleware adds user to req
     const {
@@ -143,17 +149,15 @@ const createResume = async (req, res) => {
         userId,
         title,
         summary,
-        education,
-        skills,
-        certifications,
-        projects,
+        education: JSON.stringify(education),
+        skills: JSON.stringify(skills),
+        certifications: JSON.stringify(certifications),
+        projects: JSON.stringify(projects),
         professionalExperiences: {
-          create: professionalExperiences, // array of experiences
+          create: professionalExperiences.map(serializeExperience),
         },
       },
-      include: {
-        professionalExperiences: true,
-      },
+      include: { professionalExperiences: true },
     });
 
     return res.status(201).json({

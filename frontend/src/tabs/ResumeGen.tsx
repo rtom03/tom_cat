@@ -10,6 +10,7 @@ export default function ResumeGenerateTab() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [resume, setResume] = useState<any>(null);
+  const [cvName, setCvName] = useState("");
   const notify = () => toast("chillax ur CV has been generated😜!");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -22,10 +23,31 @@ export default function ResumeGenerateTab() {
     // console.log("KKKKKKKKKKKKKKKKK");
     try {
       const response = await generateApp(jobDesc);
-      setResume(response.resume); // 👈 store AI resume
+      // setCvName(response.name);
+      let resume = response.resume;
+      const formattedResume = {
+        ...resume,
+        education: resume.education ? JSON.parse(resume.education) : [],
+        skills: resume.skills ? JSON.parse(resume.skills) : [],
+        certifications: resume.certifications
+          ? JSON.parse(resume.certifications)
+          : [],
+        projects: resume.projects ? JSON.parse(resume.projects) : [],
+
+        professionalExperiences: resume.professionalExperiences.map(
+          (exp: any) => ({
+            ...exp,
+            responsibilities: exp.responsibilities
+              ? JSON.parse(exp.responsibilities)
+              : [],
+          }),
+        ),
+      };
+      setResume(formattedResume); // 👈 store AI resume
       setJobDesc("");
       notify();
-      console.log(response); // handle response e.g. save to state
+      // console.log(formattedResume); // handle response e.g. save to state
+      setCvName(formattedResume.name);
     } catch (err) {
       console.log(err);
       console.log(error);
@@ -60,13 +82,24 @@ export default function ResumeGenerateTab() {
           </button>
           {resume && (
             <PDFDownloadLink
+              key={JSON.stringify(resume)} // forces regeneration
               document={<ResumePDF resume={resume} />}
-              fileName="resume.pdf"
+              fileName={cvName}
+              style={{
+                padding: "10px 18px",
+                backgroundColor: "#2563eb",
+                color: "#ffffff",
+                borderRadius: "6px",
+                textDecoration: "none",
+                fontWeight: 600,
+                fontSize: "14px",
+                display: "inline-block",
+                textAlign: "center",
+
+                width: "100%",
+              }}
             >
-              {/* {({ loading }) => */}
-              {/* loading ? "Preparing document..." : " */}
               Download Resume
-              {/* } */}
             </PDFDownloadLink>
           )}
         </form>

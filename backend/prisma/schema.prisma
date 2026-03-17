@@ -9,12 +9,10 @@ generator client {
   // output   = "../generated/prisma"
 }
 
-// prisma/schema.prisma
+
 datasource db {
-  provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
-  // uncomment next line if you use Prisma <5.10
-  // directUrl = env("DATABASE_URL_UNPOOLED")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model User {
@@ -46,10 +44,10 @@ model Resume {
   user            User     @relation(fields: [userId], references: [id])
   title           String?
   summary         String
-  education       Json?
-  skills          Json?
-  certifications  Json?
-  projects        Json?
+  education       String?
+  skills          String?
+  certifications  String?
+  projects        String?
   professionalExperiences ProfessionalExperience[]
   createdAt       DateTime               @default(now())
   updatedAt       DateTime               @updatedAt
@@ -64,8 +62,8 @@ model ProfessionalExperience {
   startDate        String
   endDate          String?
   location         String
-  responsibilities Json
-  technologies     Json?
+  responsibilities String
+  technologies     String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
