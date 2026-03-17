@@ -45,3 +45,20 @@ app.get("*", (req, res) => {
 app.listen(port, () =>
   console.log(`Server listening on http://localhost:${port}`),
 );
+
+async function main() {
+  // Apply all pending migrations on startup
+  try {
+    console.log("Applying pending Prisma migrations...");
+    await import("@prisma/client/runtime").then(({ migrate }) =>
+      migrate.deploy(),
+    );
+  } catch (err) {
+    console.error("Migration failed:", err);
+  }
+
+  // Your server code here
+  // e.g., app.listen(...)
+}
+
+main();
