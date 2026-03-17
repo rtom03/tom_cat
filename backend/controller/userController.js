@@ -29,11 +29,12 @@ const loginUser = async (req, res) => {
     const user = await prisma.user.findFirst({
       where: { username },
     });
-    const isMatch = await bcrypt.compare(password, user.password);
-    console.log(isMatch);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log(isMatch);
+
     if (!isMatch) {
       return res.status(401).json({ error: "Invalid credentials" });
     }

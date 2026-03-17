@@ -1,6 +1,14 @@
 {
   "title": "Senior Software Engineer Resume",
   "summary": "Senior Software Engineer with over 10 years of experience building scalable web and mobile applications across startup and enterprise environments. Expert in full-stack development using React, TypeScript, Node.js, and Python, with deep experience designing microservices, REST APIs, and cloud-native systems on AWS. Passionate about building performant, user-focused products and mentoring engineering teams while delivering reliable, production-ready software.",
+  "personalDetail": [
+    {
+      "contact": "(512) 360 (0907)",
+      "email": "matthewdelano0201@gmail.com",
+      "address": "1035 Cash Street",
+      "linkedin": "https://www.linkedin.com/in/matthew-delano-2850ab292/"
+    }
+  ],
   "education": [
     {
       "school": "New Jersey Institute of Technology",
@@ -75,8 +83,8 @@
     {
       "companyName": "EPIC",
       "title": "Senior Software Engineer",
-      "startDate": "2023-11-01",
-      "endDate": "2025-10-01",
+      "startDate": "11/2023",
+      "endDate": "10/2025",
       "location": "Remote",
       "responsibilities": [
         "Built and optimized RESTful APIs and microservices using Node.js and NestJS to support financial data integrations and improve system performance.",
@@ -102,8 +110,8 @@
     {
       "companyName": "Paxos",
       "title": "Senior Software Engineer",
-      "startDate": "2020-06-01",
-      "endDate": "2023-10-01",
+      "startDate": "06/2022",
+      "endDate": "10/2023",
       "location": "Remote",
       "responsibilities": [
         "Developed consumer-facing financial web applications using React, TypeScript, Python, and Django.",

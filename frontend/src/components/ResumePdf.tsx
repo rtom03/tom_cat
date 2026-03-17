@@ -94,6 +94,8 @@ const styles = StyleSheet.create({
     fontSize: 10.5,
     color: "#1a1a1a",
     lineHeight: 1.55,
+    flex: 1,
+    marginTop: 3,
   },
 
   // ── REFERENCES ──────────────────────────────────────────
@@ -117,6 +119,13 @@ const styles = StyleSheet.create({
   },
 });
 
+type PersonalDetail = {
+  contact: string;
+  email: string;
+  address: string;
+  linkedin: string;
+};
+
 // Reusable section heading with extending rule
 const SectionHeading = ({ title }: { title: string }) => (
   <View style={styles.sectionHeader}>
@@ -129,26 +138,29 @@ const ResumePDF = ({ resume }: any) => (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* ── HEADER ── */}
+
       <View style={styles.header}>
         <Text style={styles.name}>{resume.name}</Text>
-        {resume.name === "Matthew Delano" ? (
-          <View style={{ display: "flex", gap: "3", alignItems: "center" }}>
-            <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
-              <Text>Alvin TX</Text>
-              <Text>||</Text>
-              <Text>matthewdelano0201@gmail.com</Text>
+        {resume.personalDetail.map((details: PersonalDetail, index: number) => {
+          return (
+            <View
+              style={{ display: "flex", gap: "3", alignItems: "center" }}
+              key={index}
+            >
+              <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+                <Text>{details.address}</Text>
+                <Text>||</Text>
+                <Text>{details.email}</Text>
+              </View>
+              <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+                <Text>{details.contact}</Text>
+                <Text>||</Text>
+                <Text>{details.linkedin}</Text>{" "}
+              </View>
             </View>
-            <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
-              <Text>(512) 360-0907</Text>
-              <Text>||</Text>
-              <Text>
-                https://www.linkedin.com/in/matthew-delano-2850ab292/
-              </Text>{" "}
-            </View>
-          </View>
-        ) : (
-          <></>
-        )}
+          );
+        })}
+
         {/* Contact line: address | city | phone | email */}
         <Text style={styles.contactLine}>
           {[resume.address, resume.cityState, resume.phone, resume.email]
@@ -183,13 +195,23 @@ const ResumePDF = ({ resume }: any) => (
               {exp.description && (
                 <View style={{ display: "flex", alignItems: "center" }}>
                   <View style={styles.bullet} />
-                  <Text style={styles.entryDesc}>{exp.description}</Text>
+                  {/* <Text style={styles.entryDesc}>{exp.description}</Text> */}
                 </View>
               )}
               {exp.responsibilities?.map((r: string, j: number) => (
-                <Text key={j} style={styles.entryDesc}>
-                  {r}
-                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    marginBottom: 4,
+
+                    // alignItems: "flex-start",
+                  }}
+                  key={j}
+                >
+                  <Text style={styles.bullet} />
+                  <Text style={styles.entryDesc}>{r}</Text>
+                </View>
               ))}
             </View>
           ))}
@@ -207,7 +229,7 @@ const ResumePDF = ({ resume }: any) => (
                   {edu.degree} {edu.field}
                 </Text>
                 <Text style={styles.entryDate}>
-                  {edu.startYear} {edu.endYear}
+                  {edu.startYear} - {edu.endYear}
                 </Text>
               </View>
               <Text style={styles.entryMeta}>{edu.school}</Text>

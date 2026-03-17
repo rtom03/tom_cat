@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:8000/api";
+export const BASE_URL = "/api";
 
 // "http://localhost:8000/api";
 
@@ -39,6 +39,24 @@ const loginUser = async (username: string, password: string) => {
     credentials: "include", // ✅ sends cookies with request
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to create note");
+  }
+
+  return await response.json();
+};
+
+const registerUser = async (
+  name: string,
+  username: string,
+  password: string,
+) => {
+  const response = await fetch(`${BASE_URL}/user/create`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, username, password }),
   });
   if (!response.ok) {
     throw new Error("Failed to create note");
@@ -94,4 +112,4 @@ const deleteJob = async (jobId: number) => {
   }
 };
 
-export { loginUser, generateApp, getJobs, deleteJob };
+export { loginUser, generateApp, getJobs, deleteJob, registerUser };

@@ -30,6 +30,7 @@ export const tailorResume = async (userId, jobDesc) => {
     name: resume.user.name,
     title: resume.title,
     summary: resume.summary,
+    personalDetail: resume.personalDetail,
     education: resume.education,
     skills: resume.skills,
     certifications: resume.certifications,

@@ -20,7 +20,7 @@ model User {
   username  String    @unique
   name      String
   password  String
-  resume    String
+  resume    String?
   createdAt DateTime  @default(now())
   resumes   Resume?
   jobs      Job_Apps[]
@@ -44,6 +44,7 @@ model Resume {
   user            User     @relation(fields: [userId], references: [id])
   title           String?
   summary         String
+  personalDetail  String?
   education       String?
   skills          String?
   certifications  String?

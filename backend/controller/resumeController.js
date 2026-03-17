@@ -133,19 +133,35 @@ const createResume = async (req, res) => {
   });
 
   try {
-    const userId = req.user.userId; // assuming authMiddleware adds user to req
+    const userId = req.user.userId;
+    console.log(userId); // assuming authMiddleware adds user to req
     const {
       title,
       summary,
       education,
+      personalDetail,
       skills,
       certifications,
       projects,
       professionalExperiences,
     } = req.body;
 
-    const resume = await prisma.resume.create({
-      data: {
+    const resume = await prisma.resume.upsert({
+      where: { userId },
+      update: {
+        title,
+        summary,
+        education: JSON.stringify(education),
+        personalDetail: JSON.stringify(personalDetail),
+        skills: JSON.stringify(skills),
+        certifications: JSON.stringify(certifications),
+        projects: JSON.stringify(projects),
+        professionalExperiences: {
+          deleteMany: {}, // remove old ones
+          create: professionalExperiences.map(serializeExperience),
+        },
+      },
+      create: {
         userId,
         title,
         summary,

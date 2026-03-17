@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ storage });
 
-isUserRoute.use("/create", upload.single("resume"), createUser);
+isUserRoute.use("/create", createUser);
 isUserRoute.post("/login", loginUser);
 
 export { isUserRoute };

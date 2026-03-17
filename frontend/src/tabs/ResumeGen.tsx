@@ -11,7 +11,7 @@ export default function ResumeGenerateTab() {
   const [loading, setLoading] = useState(false);
   const [resume, setResume] = useState<any>(null);
   const [cvName, setCvName] = useState("");
-  const notify = () => toast("chillax ur CV has been generated😜!");
+  const notify = () => toast("chillax ur CV has been generated 😜!");
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJobDesc(e.target.value);
@@ -23,11 +23,13 @@ export default function ResumeGenerateTab() {
     // console.log("KKKKKKKKKKKKKKKKK");
     try {
       const response = await generateApp(jobDesc);
-      // setCvName(response.name);
       let resume = response.resume;
       const formattedResume = {
         ...resume,
         education: resume.education ? JSON.parse(resume.education) : [],
+        personalDetail: resume.personalDetail
+          ? JSON.parse(resume.personalDetail)
+          : [],
         skills: resume.skills ? JSON.parse(resume.skills) : [],
         certifications: resume.certifications
           ? JSON.parse(resume.certifications)
@@ -46,7 +48,7 @@ export default function ResumeGenerateTab() {
       setResume(formattedResume); // 👈 store AI resume
       setJobDesc("");
       notify();
-      // console.log(formattedResume); // handle response e.g. save to state
+      console.log(formattedResume.personalDetail); // handle response e.g. save to state
       setCvName(formattedResume.name);
     } catch (err) {
       console.log(err);
