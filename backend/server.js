@@ -39,12 +39,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "backend", "dist", "index.html"));
 });
 
-// app.use(routeNotFound);
-// app.use(errorHandler);
-
-app.listen(port, () =>
-  console.log(`Server listening on http://localhost:${port}`),
-);
 async function main() {
   // Apply all pending migrations on startup
   try {
@@ -61,3 +55,10 @@ async function main() {
 }
 
 main();
+
+// app.use(routeNotFound);
+// app.use(errorHandler);
+
+app.listen(port, () =>
+  console.log(`Server listening on http://localhost:${port}`),
+);
