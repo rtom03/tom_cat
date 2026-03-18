@@ -15,6 +15,34 @@ export interface InterviewResponse {
   answer: string;
 }
 
+// types
+interface PersonalDetail {
+  contact: string;
+  email: string;
+  address: string;
+  linkedin: string;
+}
+
+interface ProfessionalExperience {
+  companyName: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  responsibilities: string[];
+  technologies: string[];
+}
+
+interface ResumeJson {
+  title: string;
+  summary: string;
+  personalDetail: PersonalDetail[];
+  education: object[];
+  skills: string[];
+  certifications: object[];
+  projects: object[];
+  professionalExperiences: ProfessionalExperience[];
+}
 export const generateInterviewAnswer = async (
   payload: InterviewRequest,
 ): Promise<InterviewResponse> => {
@@ -112,4 +140,27 @@ const deleteJob = async (jobId: number) => {
   }
 };
 
-export { loginUser, generateApp, getJobs, deleteJob, registerUser };
+const uploadJsonResume = async (json: ResumeJson) => {
+  const response = await fetch(`${BASE_URL}/apps/create-resume`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(json), // ← send fields directly, not wrapped in { file }
+  });
+
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.message || "Failed to upload resume");
+  }
+
+  return await response.json();
+};
+
+export {
+  loginUser,
+  generateApp,
+  getJobs,
+  deleteJob,
+  registerUser,
+  uploadJsonResume,
+};

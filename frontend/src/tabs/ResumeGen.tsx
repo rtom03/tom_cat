@@ -4,6 +4,7 @@ import { Loader } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import ResumePDF from "../components/ResumePdf";
+import ResumeJsonUpload from "../components/ResumeJsonUpload";
 
 export default function ResumeGenerateTab() {
   const [jobDesc, setJobDesc] = useState("");
@@ -106,6 +107,7 @@ export default function ResumeGenerateTab() {
           )}
         </form>
       </div>
+      <ResumeJsonUpload />
     </div>
   );
 }
