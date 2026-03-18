@@ -6,6 +6,7 @@ import morgan from "morgan";
 import { connectDB } from "./utils/db.js";
 import routes from "./routes/index.js";
 import path from "path";
+import { exec } from "child_process";
 
 dotenv.config();
 
@@ -32,6 +33,24 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 app.use("/api", routes);
 
+const execAsync = util.promisify(exec);
+
+async function main() {
+  try {
+    console.log("Applying pending Prisma migrations...");
+
+    // Run Prisma migration command programmatically
+    const { stdout, stderr } = await execAsync("npx prisma migrate deploy");
+    console.log(stdout);
+    if (stderr) console.error(stderr);
+  } catch (err) {
+    console.error("Migration failed:", err);
+  }
+
+  // Start your server after migrations
+  // e.g., app.listen(10000, () => console.log("Server running..."));
+}
+
 // SPA fallback (IMPORTANT)
 app.use(express.static(path.join(__dirname, "backend", "dist")));
 
@@ -39,25 +58,10 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "backend", "dist", "index.html"));
 });
 
-async function main() {
-  // Apply all pending migrations on startup
-  try {
-    console.log("Applying pending Prisma migrations...");
-    await import("@prisma/client/runtime").then(({ migrate }) =>
-      migrate.deploy(),
-    );
-  } catch (err) {
-    console.error("Migration failed:", err);
-  }
-
-  // Your server code here
-  // e.g., app.listen(...)
-}
-
-main();
-
 // app.use(routeNotFound);
 // app.use(errorHandler);
+
+main();
 
 app.listen(port, () =>
   console.log(`Server listening on http://localhost:${port}`),
