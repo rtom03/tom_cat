@@ -7,6 +7,7 @@ import { connectDB } from "./utils/db.js";
 import routes from "./routes/index.js";
 import path from "path";
 import { exec } from "child_process";
+import util from "util";
 
 dotenv.config();
 
