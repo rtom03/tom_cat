@@ -1,70 +1,113 @@
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Font,
+} from "@react-pdf/renderer";
 
-const GREEN = "#526b3c"; // olive green matching the docx
+Font.register({
+  family: "Outfit",
+  fonts: [
+    { src: "/fonts/Outfit-Regular.ttf", fontWeight: 400 },
+    { src: "/fonts/Outfit-SemiBold.ttf", fontWeight: 600 },
+    { src: "/fonts/Outfit-Bold.ttf", fontWeight: 700 },
+  ],
+});
 
+// ── THEME ────────────────────────────────────────────────────────────────────
+const GREEN = "#526b3c";
+
+// ── STYLES ───────────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 48,
-    paddingBottom: 48,
+    paddingTop: 44,
+    paddingBottom: 44,
     paddingHorizontal: 52,
     fontSize: 10.5,
-    fontFamily: "Helvetica",
+    fontFamily: "Outfit", // ← body default
     backgroundColor: "#ffffff",
     color: "#1a1a1a",
   },
 
-  // ── HEADER ──────────────────────────────────────────────
+  // ── HEADER ─────────────────────────────────────────────────────────────────
   header: {
     alignItems: "center",
-    marginBottom: 18,
+    marginBottom: 4,
   },
   name: {
-    fontSize: 28,
-    fontFamily: "Helvetica-Bold",
+    fontSize: 26,
+    fontFamily: "Outfit", // ← bold headers
+    fontWeight: 700,
     color: GREEN,
-    letterSpacing: 5,
-    textTransform: "uppercase",
-    marginBottom: 6,
+    letterSpacing: 3,
+    marginBottom: 4,
+  },
+  title: {
+    fontSize: 11,
+    color: "#444444",
+    letterSpacing: 0.5,
+    marginBottom: 5,
   },
   contactLine: {
     fontSize: 9.5,
     color: "#333333",
-    letterSpacing: 0.3,
+    letterSpacing: 0.2,
   },
 
-  // ── SECTION HEADER (label + extending rule) ────────────
+  // ── SECTION HEADER ─────────────────────────────────────────────────────────
   sectionHeader: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 8,
-    marginTop: 14,
+    marginBottom: 7,
+    marginTop: 13,
   },
   sectionTitle: {
     fontSize: 9,
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "Outfit", // ← bold headers
     color: GREEN,
-    letterSpacing: 3,
-    textTransform: "uppercase",
+    letterSpacing: 2.5,
     marginRight: 8,
     flexShrink: 0,
+    fontWeight: 600,
   },
   sectionRule: {
     flex: 1,
-    height: 1,
-    backgroundColor: "#888888",
+    height: 0.75,
+    backgroundColor: "#aaaaaa",
   },
 
-  // ── OBJECTIVE / GENERIC TEXT ────────────────────────────
+  // ── BODY TEXT ──────────────────────────────────────────────────────────────
   bodyText: {
     fontSize: 10.5,
     color: "#1a1a1a",
     lineHeight: 1.55,
-    marginBottom: 4,
   },
 
-  // ── EXPERIENCE / EDUCATION ITEMS ────────────────────────
+  // ── SKILLS ─────────────────────────────────────────────────────────────────
+  skillRow: {
+    flexDirection: "row",
+    marginBottom: 3,
+  },
+  skillLabel: {
+    fontSize: 10.5,
+    fontFamily: "Outfit", // ← bold headers
+    color: "#1a1a1a",
+    width: 190,
+    flexShrink: 0,
+    fontWeight: 600,
+  },
+  skillValue: {
+    fontSize: 10.5,
+    color: "#1a1a1a",
+    flex: 1,
+    lineHeight: 1.4,
+  },
+
+  // ── EXPERIENCE / EDUCATION ────────────────────────────────────────────────
   entryBlock: {
-    marginBottom: 12,
+    marginBottom: 11,
   },
   entryTopRow: {
     flexDirection: "row",
@@ -73,7 +116,8 @@ const styles = StyleSheet.create({
   },
   entryTitle: {
     fontSize: 10.5,
-    fontFamily: "Helvetica-Bold",
+    fontFamily: "Outfit", // ← bold headers
+    fontWeight: 600,
     color: "#1a1a1a",
     flexShrink: 1,
     paddingRight: 8,
@@ -87,37 +131,74 @@ const styles = StyleSheet.create({
   entryMeta: {
     fontSize: 10.5,
     color: "#1a1a1a",
-    marginTop: 1,
-    marginBottom: 4,
-  },
-  entryDesc: {
-    fontSize: 10.5,
-    color: "#1a1a1a",
-    lineHeight: 1.55,
-    flex: 1,
-    marginTop: 3,
+    marginTop: 2,
+    marginBottom: 5,
   },
 
-  // ── REFERENCES ──────────────────────────────────────────
-  refName: {
-    fontSize: 10.5,
-    fontFamily: "Helvetica-Bold",
-    color: "#1a1a1a",
-    marginBottom: 2,
+  // ── BULLET LIST ────────────────────────────────────────────────────────────
+  bulletRow: {
+    flexDirection: "row",
+    marginBottom: 3,
+    paddingRight: 4,
   },
-  refMeta: {
+  bulletChar: {
     fontSize: 10.5,
     color: "#1a1a1a",
+    width: 14,
+    flexShrink: 0,
+    marginTop: 0,
   },
-  bullet: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: "black",
-    marginRight: 8,
-    marginTop: 6,
+  bulletText: {
+    fontSize: 10.5,
+    color: "#1a1a1a",
+    lineHeight: 1.5,
+    flex: 1,
   },
 });
+
+// ── SUB-COMPONENTS ────────────────────────────────────────────────────────────
+
+const SectionHeading = ({ title }: { title: string }) => (
+  <View style={styles.sectionHeader}>
+    <Text style={styles.sectionTitle}>{title}</Text>
+    <View style={styles.sectionRule} />
+  </View>
+);
+
+/** Renders a single bullet point line */
+const BulletItem = ({ text }: { text: string }) => (
+  <View style={styles.bulletRow}>
+    <Text style={styles.bulletChar}>{"•"}</Text>
+    <Text style={styles.bulletText}>{text}</Text>
+  </View>
+);
+
+/**
+ * Renders a categorised skill row, e.g.
+ *   "Programming Languages:   C#, JavaScript, HTML, CSS, SQL"
+ */
+const SkillRow = ({ label, value }: { label: string; value: string }) => (
+  <View style={styles.skillRow}>
+    <Text style={styles.skillLabel}>{label}</Text>
+    <Text style={styles.skillValue}>{value}</Text>
+  </View>
+);
+
+// ── TYPES ─────────────────────────────────────────────────────────────────────
+
+type SkillCategory = {
+  label: string; // e.g. "Programming Languages:"
+  value: string; // e.g. "C#, JavaScript, HTML, CSS, SQL"
+};
+
+type Experience = {
+  title: string;
+  companyName: string;
+  location?: string;
+  startDate: string;
+  endDate?: string;
+  responsibilities?: string[];
+};
 
 type PersonalDetail = {
   contact: string;
@@ -126,161 +207,144 @@ type PersonalDetail = {
   linkedin: string;
 };
 
-// Reusable section heading with extending rule
-const SectionHeading = ({ title }: { title: string }) => (
-  <View style={styles.sectionHeader}>
-    <Text style={styles.sectionTitle}>{title}</Text>
-    <View style={styles.sectionRule} />
-  </View>
-);
+type Education = {
+  degree: string;
+  field?: string;
+  school: string;
+  startYear?: string | number;
+  endYear?: string | number;
+  description?: string;
+};
 
-const ResumePDF = ({ resume }: any) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      {/* ── HEADER ── */}
+type Resume = {
+  name: string;
+  title?: string; // e.g. "Senior SharePoint-Power Apps Developer"
+  phone?: string;
+  email?: string;
+  cityState?: string;
+  summary?: string;
+  skillCategories?: SkillCategory[]; // categorised skills (preferred)
+  skills?: string[]; // flat list fallback
+  professionalExperiences?: Experience[];
+  education?: Education[];
+  personalDetail: PersonalDetail[];
+};
 
-      <View style={styles.header}>
-        <Text style={styles.name}>{resume.name}</Text>
-        {resume.personalDetail.map((details: PersonalDetail, index: number) => {
-          return (
-            <View
-              style={{ display: "flex", gap: "3", alignItems: "center" }}
-              key={index}
-            >
-              <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
-                <Text>{details.address}</Text>
-                <Text>||</Text>
-                <Text>{details.email}</Text>
-              </View>
-              <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
-                <Text>{details.contact}</Text>
-                <Text>||</Text>
-                <Text>{details.linkedin}</Text>{" "}
-              </View>
-            </View>
-          );
-        })}
+// ── MAIN COMPONENT ────────────────────────────────────────────────────────────
 
-        {/* Contact line: address | city | phone | email */}
-        <Text style={styles.contactLine}>
-          {[resume.address, resume.cityState, resume.phone, resume.email]
-            .filter(Boolean)
-            .join("  |  ")}
-        </Text>
-      </View>
+const ResumePDF = ({ resume }: { resume: Resume }) => {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* ── HEADER ── */}
+        <View style={styles.header}>
+          <Text style={styles.name}>{resume.name}</Text>
+          {resume.title && <Text style={styles.title}>{resume.title}</Text>}
+          {resume.personalDetail.map((detail, index) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 3,
+                  alignItems: "center",
+                }}
+              >
+                <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+                  {detail.address.length && (
+                    <Text>Address: {detail.address} ||</Text>
+                  )}
 
-      {/* ── OBJECTIVE ── */}
-      {resume.summary && (
-        <View>
-          <SectionHeading title="Objective" />
-          <Text style={styles.bodyText}>{resume.summary}</Text>
-        </View>
-      )}
-
-      {/* ── EXPERIENCE ── */}
-      {resume.professionalExperiences?.length > 0 && (
-        <View>
-          <SectionHeading title="Experience" />
-          {resume.professionalExperiences.map((exp: any, i: number) => (
-            <View key={i} style={styles.entryBlock}>
-              <View style={styles.entryTopRow}>
-                <Text style={styles.entryTitle}>{exp.title}</Text>
-                <Text style={styles.entryDate}>
-                  {exp.startDate} – {exp.endDate || "Present"}
-                </Text>
-              </View>
-              <Text style={styles.entryMeta}>
-                {[exp.companyName, exp.location].filter(Boolean).join("  |  ")}
-              </Text>
-              {exp.description && (
-                <View style={{ display: "flex", alignItems: "center" }}>
-                  <View style={styles.bullet} />
-                  {/* <Text style={styles.entryDesc}>{exp.description}</Text> */}
+                  <Text>Email: {detail.email}</Text>
                 </View>
-              )}
-              {exp.responsibilities?.map((r: string, j: number) => (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginBottom: 4,
-
-                    // alignItems: "flex-start",
-                  }}
-                  key={j}
-                >
-                  <Text style={styles.bullet} />
-                  <Text style={styles.entryDesc}>{r}</Text>
+                <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
+                  <Text>Phone: {detail.contact}</Text>
+                  <Text>||</Text>
+                  <Text>Linkedin: {detail.linkedin}</Text>
                 </View>
-              ))}
-            </View>
-          ))}
-        </View>
-      )}
-
-      {/* ── EDUCATION ── */}
-      {resume.education?.length > 0 && (
-        <View>
-          <SectionHeading title="Education" />
-          {resume.education.map((edu: any, i: number) => (
-            <View key={i} style={styles.entryBlock}>
-              <View style={styles.entryTopRow}>
-                <Text style={styles.entryTitle}>
-                  {edu.degree} {edu.field}
-                </Text>
-                <Text style={styles.entryDate}>
-                  {edu.startYear} - {edu.endYear}
-                </Text>
               </View>
-              <Text style={styles.entryMeta}>{edu.school}</Text>
-              {edu.description && (
-                <Text style={styles.entryDesc}>{edu.description}</Text>
-              )}
-            </View>
-          ))}
+            );
+          })}
         </View>
-      )}
 
-      {/* ── SKILLS / EXTRA SECTIONS ── */}
-      {resume.skills?.length > 0 && (
-        <View>
-          <SectionHeading title="Skills" />
-          <Text style={styles.bodyText}>{resume.skills.join("  ·  ")}</Text>
-        </View>
-      )}
+        {/* ── PROFESSIONAL SUMMARY ── */}
+        {resume.summary && (
+          <View>
+            <SectionHeading title="Professional Summary" />
+            <Text style={styles.bodyText}>{resume.summary}</Text>
+          </View>
+        )}
 
-      {/* ── COMMUNICATION ── */}
-      {resume.communication && (
-        <View>
-          <SectionHeading title="Communication" />
-          <Text style={styles.bodyText}>{resume.communication}</Text>
-        </View>
-      )}
-
-      {/* ── LEADERSHIP ── */}
-      {resume.leadership && (
-        <View>
-          <SectionHeading title="Leadership" />
-          <Text style={styles.bodyText}>{resume.leadership}</Text>
-        </View>
-      )}
-
-      {/* ── REFERENCES ── */}
-      {resume.references?.length > 0 && (
-        <View>
-          <SectionHeading title="References" />
-          {resume.references.map((ref: any, i: number) => (
-            <View key={i} style={styles.entryBlock}>
-              <Text style={styles.refName}>{ref.name}</Text>
-              <Text style={styles.refMeta}>
-                {[ref.company, ref.contact].filter(Boolean).join("  |  ")}
+        {/* ── TECHNICAL SKILLS ── */}
+        {resume.skillCategories?.length || resume.skills?.length ? (
+          <View>
+            <SectionHeading title="Technical Skills" />
+            {resume.skillCategories?.length ? (
+              resume.skillCategories.map((cat, i) => (
+                <SkillRow key={i} label={cat.label} value={cat.value} />
+              ))
+            ) : (
+              /* flat fallback */
+              <Text style={styles.bodyText}>
+                {resume.skills!.join("  ·  ")}
               </Text>
-            </View>
-          ))}
-        </View>
-      )}
-    </Page>
-  </Document>
-);
+            )}
+          </View>
+        ) : null}
+
+        {/* ── WORK EXPERIENCE ── */}
+        {resume.professionalExperiences?.length ? (
+          <View>
+            <SectionHeading title="Work Experience" />
+            {resume.professionalExperiences.map((exp, i) => (
+              <View key={i} style={styles.entryBlock}>
+                {/* Title + Date on same row */}
+                <View style={styles.entryTopRow}>
+                  <Text style={styles.entryTitle}>
+                    {exp.title}
+                    {exp.companyName ? `  |  ${exp.companyName}` : ""}
+                    {exp.location ? `  |  ${exp.location}` : ""}
+                  </Text>
+                  <Text style={styles.entryDate}>
+                    {exp.startDate} – {exp.endDate ?? "Present"}
+                  </Text>
+                </View>
+
+                {/* Bullet responsibilities */}
+                {exp.responsibilities?.map((r, j) => (
+                  <BulletItem key={j} text={r} />
+                ))}
+              </View>
+            ))}
+          </View>
+        ) : null}
+
+        {/* ── EDUCATION & CERTIFICATIONS ── */}
+        {resume.education?.length ? (
+          <View>
+            <SectionHeading title="Education & Certifications" />
+            {resume.education.map((edu, i) => (
+              <View key={i} style={styles.entryBlock}>
+                <View style={styles.entryTopRow}>
+                  <Text style={styles.entryTitle}>
+                    {[edu.degree, edu.field].filter(Boolean).join(" ")}
+                  </Text>
+                  <Text style={styles.entryDate}>
+                    {edu.startYear} – {edu.endYear}
+                  </Text>
+                </View>
+                <Text style={styles.entryMeta}>{edu.school}</Text>
+                {edu.description && (
+                  <Text style={styles.bodyText}>{edu.description}</Text>
+                )}
+              </View>
+            ))}
+          </View>
+        ) : null}
+      </Page>
+    </Document>
+  );
+};
 
 export default ResumePDF;

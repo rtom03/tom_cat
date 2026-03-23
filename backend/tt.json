@@ -1,0 +1,149 @@
+{
+  "title": "Software Engineer",
+  "summary": "Detail-oriented Software Engineer with 5 years of experience developing and maintaining web applications, APIs, and cloud-hosted systems. Skilled in JavaScript, React, Node.js, and Python, with hands-on experience in AWS, CI/CD automation, and Terraform infrastructure management. Passionate about clean code, performance optimization, and delivering user-friendly, scalable solutions. Demonstrated ability to work cross-functionally and thrive in agile, fast-paced environments.",
+  "personalDetail": [
+    {
+      "contact": "+1 (979) 421-6724",
+      "email": "thomas.t.98@outlook.com",
+      "address": "1234 2nd St, Clute, TX 77531",
+      "linkedin": "https://www.linkedin.com/in/thomas-t-2546633a9/"
+    }
+  ],
+  "education": [
+    {
+      "school": "University of Houston",
+      "degree": "Bachelor of Science",
+      "field": "Computer Science",
+      "startYear": 2016,
+      "endYear": 2020,
+      "location": "Houston, TX"
+    }
+  ],
+  "skills": [
+    "JavaScript",
+    "TypeScript",
+    "Python",
+    "Java",
+    "SQL",
+    "HTML5",
+    "CSS3",
+    "React",
+    "Next.js",
+    "Angular",
+    "TailwindCSS",
+    "Bootstrap",
+    "Redux",
+    "Material UI",
+    "Node.js",
+    "Express.js",
+    "Django",
+    "REST APIs",
+    "GraphQL",
+    "AWS",
+    "Docker",
+    "Terraform",
+    "Jenkins",
+    "GitHub Actions",
+    "CI/CD",
+    "PostgreSQL",
+    "MySQL",
+    "MongoDB",
+    "Jest",
+    "Mocha",
+    "Cypress",
+    "PyTest",
+    "Git",
+    "GitHub",
+    "GitLab",
+    "Agile",
+    "Test-Driven Development (TDD)"
+  ],
+  "certifications": [
+    "AWS Certified Developer – Associate: 2024",
+    "Terraform Certified Associate: 2023"
+  ],
+  "projects": [
+    {
+      "name": "Cloud Resume Builder",
+      "description": "Developed a resume automation tool using React, AWS Lambda, and DynamoDB to dynamically render and store user data."
+    },
+    {
+      "name": "Weather Insight App",
+      "description": "Built a responsive weather forecasting app with React and OpenWeather API, featuring geolocation-based search and data caching."
+    }
+  ],
+  "professionalExperiences": [
+    {
+      "companyName": "Rackspace Technology",
+      "title": "Software Engineer",
+      "startDate": "04/2022",
+      "endDate": "Present",
+      "location": "Austin, TX",
+      "responsibilities": [
+        "Developed and optimized React and Node.js applications with Material UI, CSS3, and SQL for cloud-monitoring and cost-optimization dashboards.",
+        "Implemented REST and GraphQL APIs for data aggregation and analytics, improving API response performance by 30%.",
+        "Automated infrastructure provisioning and configuration with Terraform and AWS CloudFormation.",
+        "Built CI/CD pipelines using GitHub Actions and Docker, reducing deployment time by 50%.",
+        "Collaborated with DevOps and product teams to implement logging, alerting, and monitoring using CloudWatch and Prometheus.",
+        "Conducted code reviews, mentored interns, and enforced coding standards with ESLint."
+      ],
+      "technologies": [
+        "React",
+        "Node.js",
+        "Material UI",
+        "SQL",
+        "REST",
+        "GraphQL",
+        "Terraform",
+        "AWS",
+        "Docker",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "companyName": "HomeAway (Vrbo / Expedia Group)",
+      "title": "Web Developer",
+      "startDate": "02/2020",
+      "endDate": "03/2022",
+      "location": "Austin, TX",
+      "responsibilities": [
+        "Built and maintained user-facing web interfaces using React, Redux, and TypeScript.",
+        "Collaborated with backend engineers to design RESTful APIs and integrated booking, payment, and listing services.",
+        "Implemented responsive UI components with Material UI adhering to WCAG accessibility standards.",
+        "Migrated legacy AngularJS modules to React Hooks and Context API.",
+        "Participated in CI/CD pipeline setup using Jenkins and Terraform.",
+        "Implemented automated end-to-end testing in Cypress."
+      ],
+      "technologies": [
+        "React",
+        "Redux",
+        "TypeScript",
+        "Material UI",
+        "Jenkins",
+        "Terraform",
+        "Cypress"
+      ]
+    },
+    {
+      "companyName": "Code Authority",
+      "title": "Junior Software Developer",
+      "startDate": "08/2020",
+      "endDate": "01/2021",
+      "location": "Plano, TX",
+      "responsibilities": [
+        "Developed full-stack web applications using Django, React, and JavaScript.",
+        "Designed relational database schemas and built CRUD APIs with Python and PostgreSQL using SQLAlchemy.",
+        "Deployed containerized applications using Docker and authored Bash automation scripts.",
+        "Supported development of internal tools to automate QA workflows and improve build reliability."
+      ],
+      "technologies": [
+        "Django",
+        "React",
+        "JavaScript",
+        "PostgreSQL",
+        "Docker",
+        "Python"
+      ]
+    }
+  ]
+}

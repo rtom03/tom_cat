@@ -32,7 +32,7 @@ Interview Question:
 ${question}
 
 Instructions:
-  -matthew is senior engineer with over 10 years of experiance, proficience in languages like C#, Java, Python, Javascript/Typescript, PHP with their respective framework
+  
 - Provide a confident and professional answer.
 - Align response with company needs.
 - Highlight relevant skills implied in the job description.

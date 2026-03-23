@@ -1,0 +1,157 @@
+{
+  "title": "Senior Software Engineer",
+  "summary": "Senior Software Engineer with over 10 years of experience building scalable web and mobile applications across startup and enterprise environments. Expert in full-stack development using React, TypeScript, Node.js, and Python, with deep experience designing microservices, REST APIs, and cloud-native systems on AWS. Passionate about building performant, user-focused products and mentoring engineering teams while delivering reliable, production-ready software.",
+  "experience": "6 years",
+  "personalDetail": [
+    {
+      "contact": "(979) 421-6724",
+      "email": "thomas.t.98@outlook.com",
+      "address": "1234 2nd St, Clute",
+      "linkedin": "https://www.linkedin.com/in/thomas-t-2546633a9/"
+    }
+  ],
+  "education": [
+    {
+      "school": "University of Houston",
+      "degree": "Bachelor of Science",
+      "field": "Computer Science",
+      "startYear": 2016,
+      "endYear": 2020,
+      "location": "Houston, TX"
+    }
+  ],
+  "skills": [
+    "JavaScript",
+    "TypeScript",
+    "Python",
+    "Java",
+    "SQL",
+    "HTML5",
+    "CSS3",
+    "React",
+    "Next.js",
+    "Angular",
+    "Vue",
+    "Nuxt.js",
+    "Svelte",
+    "TailwindCSS",
+    "Bootstrap",
+    "Material UI",
+    "Redux",
+    "Node.js",
+    "Express.js",
+    "NestJS",
+    "Django",
+    "Flask",
+    "FastAPI",
+    "Spring Boot",
+    "Laravel",
+    "REST APIs",
+    "GraphQL",
+    "WebSockets",
+    "AWS",
+    "Azure",
+    "Google Cloud",
+    "Docker",
+    "Kubernetes",
+    "Terraform",
+    "AWS CloudFormation",
+    "Jenkins",
+    "GitHub Actions",
+    "GitLab CI/CD",
+    "CI/CD",
+    "PostgreSQL",
+    "MySQL",
+    "MongoDB",
+    "Redis",
+    "DynamoDB",
+    "Firebase",
+    "Jest",
+    "Mocha",
+    "Chai",
+    "Cypress",
+    "Selenium",
+    "Git",
+    "GitHub",
+    "GitLab",
+    "Agile",
+    "Microservices Architecture",
+    "Serverless Architecture"
+  ],
+  "certifications": [],
+  "projects": [],
+  "professionalExperiences": [
+    {
+      "companyName": "Rackspace Technology",
+      "title": "Software Engineer",
+      "startDate": "04/2022",
+      "endDate": "Present",
+      "location": "Austin, TX",
+      "responsibilities": [
+        "Developed and optimized React and Node.js applications with Material UI, CSS3, and SQL for cloud-monitoring and cost-optimization dashboards.",
+        "Implemented REST and GraphQL APIs for data aggregation and analytics, improving API response performance by 30%.",
+        "Automated infrastructure provisioning and configuration with Terraform and AWS CloudFormation.",
+        "Built CI/CD pipelines using GitHub Actions and Docker, reducing deployment time by 50%.",
+        "Collaborated with DevOps and product teams to implement logging, alerting, and monitoring using CloudWatch and Prometheus.",
+        "Conducted code reviews, mentored interns, and enforced coding standards with ESLint."
+      ],
+      "technologies": [
+        "React",
+        "Node.js",
+        "Material UI",
+        "SQL",
+        "REST",
+        "GraphQL",
+        "Terraform",
+        "AWS",
+        "Docker",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "companyName": "HomeAway (Vrbo / Expedia Group)",
+      "title": "Web Developer",
+      "startDate": "02/2020",
+      "endDate": "03/2022",
+      "location": "Austin, TX",
+      "responsibilities": [
+        "Built and maintained user-facing web interfaces using React, Redux, and TypeScript.",
+        "Collaborated with backend engineers to design RESTful APIs and integrated booking, payment, and listing services.",
+        "Implemented responsive UI components with Material UI adhering to WCAG accessibility standards.",
+        "Migrated legacy AngularJS modules to React Hooks and Context API.",
+        "Participated in CI/CD pipeline setup using Jenkins and Terraform.",
+        "Implemented automated end-to-end testing in Cypress."
+      ],
+      "technologies": [
+        "React",
+        "Redux",
+        "TypeScript",
+        "Material UI",
+        "Jenkins",
+        "Terraform",
+        "Cypress"
+      ]
+    },
+    {
+      "companyName": "Code Authority",
+      "title": "Junior Software Developer",
+      "startDate": "08/2020",
+      "endDate": "01/2021",
+      "location": "Plano, TX",
+      "responsibilities": [
+        "Developed full-stack web applications using Django, React, and JavaScript.",
+        "Designed relational database schemas and built CRUD APIs with Python and PostgreSQL using SQLAlchemy.",
+        "Deployed containerized applications using Docker and authored Bash automation scripts.",
+        "Supported development of internal tools to automate QA workflows and improve build reliability."
+      ],
+      "technologies": [
+        "Django",
+        "React",
+        "JavaScript",
+        "PostgreSQL",
+        "Docker",
+        "Python"
+      ]
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import ResumePDF from "../components/ResumePdf";
 import ResumeJsonUpload from "../components/ResumeJsonUpload";
+import { formatCVFileName } from "../utils";
 
 export default function ResumeGenerateTab() {
   const [jobDesc, setJobDesc] = useState("");
@@ -17,6 +18,19 @@ export default function ResumeGenerateTab() {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJobDesc(e.target.value);
   };
+
+  const safeParse = (data: any) => {
+    if (!data) return [];
+    if (typeof data === "string") {
+      try {
+        return JSON.parse(data);
+      } catch (e) {
+        console.error("Parse error:", data);
+        return [];
+      }
+    }
+    return data; // already object/array
+  };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // ✅ fixed typo
     setLoading(true);
@@ -24,25 +38,20 @@ export default function ResumeGenerateTab() {
     // console.log("KKKKKKKKKKKKKKKKK");
     try {
       const response = await generateApp(jobDesc);
+      console.log(response);
       let resume = response.resume;
       const formattedResume = {
         ...resume,
-        education: resume.education ? JSON.parse(resume.education) : [],
-        personalDetail: resume.personalDetail
-          ? JSON.parse(resume.personalDetail)
-          : [],
-        skills: resume.skills ? JSON.parse(resume.skills) : [],
-        certifications: resume.certifications
-          ? JSON.parse(resume.certifications)
-          : [],
-        projects: resume.projects ? JSON.parse(resume.projects) : [],
+        education: safeParse(resume.education),
+        personalDetail: safeParse(resume.personalDetail),
+        skills: safeParse(resume.skills),
+        certifications: safeParse(resume.certifications),
+        projects: safeParse(resume.projects),
 
         professionalExperiences: resume.professionalExperiences.map(
           (exp: any) => ({
             ...exp,
-            responsibilities: exp.responsibilities
-              ? JSON.parse(exp.responsibilities)
-              : [],
+            responsibilities: safeParse(exp.responsibilities),
           }),
         ),
       };
@@ -56,7 +65,7 @@ export default function ResumeGenerateTab() {
       console.log(error);
     } finally {
       setLoading(false);
-      console.log(loading);
+      // console.log(loading);
     }
   };
   return (
@@ -87,7 +96,7 @@ export default function ResumeGenerateTab() {
             <PDFDownloadLink
               key={JSON.stringify(resume)} // forces regeneration
               document={<ResumePDF resume={resume} />}
-              fileName={cvName}
+              fileName={formatCVFileName(cvName)}
               style={{
                 padding: "10px 18px",
                 backgroundColor: "#2563eb",

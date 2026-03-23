@@ -30,6 +30,7 @@ export const tailorResume = async (userId, jobDesc) => {
     name: resume.user.name,
     title: resume.title,
     summary: resume.summary,
+    experience: resume.experience,
     personalDetail: resume.personalDetail,
     education: resume.education,
     skills: resume.skills,
@@ -52,10 +53,14 @@ Your task:
 - Keep all information truthful but optimize it for the job
 
 Guidelines:
+
 - Rewrite the summary to match the job
 - Highlight the most relevant skills
-- Adjust past responsibilities to resemble the job requirements
+- Adjust skills to match all the prefered programming language mention in the job desc
+- Adjust past responsibilities to resemble the job with references to the prefered programming languages
 - Maintain the same JSON structure
+- the user has ${resumeData.experience}
+- Do not make any changes to changes to this ----> ${resume.title} leave it as it is
 
 Return ONLY valid JSON.
 

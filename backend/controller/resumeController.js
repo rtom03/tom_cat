@@ -138,6 +138,7 @@ const createResume = async (req, res) => {
     const {
       title,
       summary,
+      experience,
       education,
       personalDetail,
       skills,
@@ -151,6 +152,7 @@ const createResume = async (req, res) => {
       update: {
         title,
         summary,
+        experience,
         education: JSON.stringify(education),
         personalDetail: JSON.stringify(personalDetail),
         skills: JSON.stringify(skills),
@@ -165,6 +167,7 @@ const createResume = async (req, res) => {
         userId,
         title,
         summary,
+        experience,
         education: JSON.stringify(education),
         skills: JSON.stringify(skills),
         certifications: JSON.stringify(certifications),

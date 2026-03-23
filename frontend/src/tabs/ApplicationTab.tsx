@@ -45,30 +45,7 @@ export default function ApplicationsTab() {
   }, []);
 
   // ── Search/filter function — always returns an array ──────────────────────
-  // const getFilteredJobs = (): Job[] => {
-  //   return jobs.filter((job) => {
-  //     const matchesCompany = searchCompany
-  //       ? job.company.toLowerCase().includes(searchCompany.toLowerCase())
-  //       : true;
 
-  //     const matchesKeyword = searchKeyword
-  //       ? job.title.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-  //         job.job_desc.toLowerCase().includes(searchKeyword.toLowerCase())
-  //       : true;
-
-  //     const matchesFromDate = fromDate
-  //       ? new Date(job.createdAt) >= new Date(fromDate)
-  //       : true;
-
-  //     const matchesToDate = toDate
-  //       ? new Date(job.createdAt) <= new Date(toDate)
-  //       : true;
-
-  //     return (
-  //       matchesCompany && matchesKeyword && matchesFromDate && matchesToDate
-  //     );
-  //   });
-  // };
   // ── Search/filter function ────────────────────────────────────────────────
   const getFilteredJobs = (): Job[] => {
     return jobs.filter((job) => {

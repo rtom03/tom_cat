@@ -1,0 +1,174 @@
+{
+  "title": "IT SPECIALIST",
+  "summary": "Results-driven IT Specialist and Software Developer with over 6 years of experience delivering reliable technology solutions in healthcare, FMCG, and education. Proven ability to manage complex network infrastructure, enterprise software platforms, and end-user support within high-demand environments. Skilled at aligning IT operations with business objectives while maintaining system uptime, data integrity, and service excellence.",
+  "experience": "5 years ++",
+  "personalDetail": [
+    {
+      "contact": "09016672162",
+      "email": "03rtom@gmail.com",
+      "address": "Lagos Island",
+      "linkedin": "https://www.linkedin.com/in/tomiwa-raheem-98b19a398/"
+    }
+  ],
+  "education": [
+    {
+      "school": "University Of Lagos",
+      "degree": "Bachelor of Science",
+      "field": "Computer Science",
+      "startYear": 2019,
+      "endYear": 2024,
+      "location": "Mainland Akoka, Yaba, Lagos"
+    }
+  ],
+  "skills": [
+    "JavaScript",
+    "TypeScript",
+    "Python",
+    "Java",
+    "SQL",
+    "HTML5",
+    "CSS3",
+    "React",
+    "Next.js",
+    "Angular",
+    "Vue",
+    "Nuxt.js",
+    "Svelte",
+    "TailwindCSS",
+    "Bootstrap",
+    "Material UI",
+    "Redux",
+    "Node.js",
+    "Express.js",
+    "NestJS",
+    "Django",
+    "Flask",
+    "FastAPI",
+    "Spring Boot",
+    "Laravel",
+    "REST APIs",
+    "GraphQL",
+    "WebSockets",
+    "AWS",
+    "Azure",
+    "Google Cloud",
+    "Docker",
+    "Kubernetes",
+    "Terraform",
+    "AWS CloudFormation",
+    "Jenkins",
+    "GitHub Actions",
+    "GitLab CI/CD",
+    "CI/CD",
+    "PostgreSQL",
+    "MySQL",
+    "MongoDB",
+    "Redis",
+    "DynamoDB",
+    "Firebase",
+    "Jest",
+    "Mocha",
+    "Chai",
+    "Cypress",
+    "Selenium",
+    "Git",
+    "GitHub",
+    "GitLab",
+    "Agile",
+    "Microservices Architecture",
+    "Serverless Architecture"
+  ],
+  "certifications": [],
+  "projects": [],
+  "professionalExperiences": [
+    {
+      "companyName": "Quality Foods Africa (QFA) Group",
+      "title": "Software Engineer",
+      "startDate": "10/2024",
+      "location": "Lagos Island, VI",
+      "responsibilities": [
+        "Coordinate multi-brand onboarding by integrating menus, pricing, and branding requirements into the mobile delivery platform.",
+
+        "Monitor daily app operations, ensuring seamless order processing, dispatch, and delivery performance across all partnered brands.",
+
+        "Collaborate with cross-functional teams (engineering, design, and marketing) to implement feature updates that support multiple brand experiences within the app.",
+
+        "Analyze user behavior and order data to optimize app performance, improve customer satisfaction, and increase conversion rates for each brand.",
+
+        "Manage relationships with brand partners, addressing operational issues, maintaining service standards, and ensuring compliance with platform guidelines.",
+
+        "Oversee quality assurance by testing new features, identifying bugs, and ensuring consistent functionality across different brand interfaces within the app."
+      ],
+      "technologies": [
+        "React",
+        "Node.js",
+        "NestJS",
+        "Python",
+        "TailwindCSS",
+        "Docker",
+        "AWS",
+        "CI/CD"
+      ]
+    },
+    {
+      "companyName": "HCI Healthcare",
+      "title": "Software Developer",
+      "startDate": "06/2022",
+      "endDate": "10/2023",
+      "location": "296 Herbert Macaulay, Yaba, Lagos",
+      "responsibilities": [
+        "Assist in the development and implementation of ERP systems to streamline healthcare operations, including patient records, billing, and inventory management.",
+
+        "Collaborate with clinical, administrative, and IT teams to gather requirements and ensure the ERP system aligns with healthcare workflows and regulatory standards.",
+
+        "Support system testing, debugging, and deployment to ensure the ERP platform functions accurately and efficiently across departments.",
+
+        "Analyze operational data within the ERP system to improve decision-making, resource allocation, and overall service delivery.",
+
+        "Provide user training and technical support to healthcare staff to ensure effective adoption and utilization of the ERP system.",
+
+        "Maintain system documentation and ensure compliance with healthcare regulations, data privacy standards, and security protocols."
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "Python",
+        "Django",
+        "PostgreSQL",
+        "Jest",
+        "Cypress"
+      ]
+    },
+    {
+      "companyName": "Fibertrain",
+      "title": "Programming Instructor",
+      "startDate": "07/2018",
+      "endDate": "04/2019",
+      "location": "Ikeja, Lagos",
+      "responsibilities": [
+        "Taught programming concepts using technologies such as React, Python, and AWS, guiding students in building responsive real-world applications.",
+
+        "Designed and delivered engaging lessons on front-end development with Angular and React, helping students create intuitive and user-friendly interfaces.",
+
+        "Mentored and supported students through code reviews, architecture discussions, and hands-on projects, fostering problem-solving skills and best coding practices.",
+
+        "Instructed students on backend development using Django and GraphQL, emphasizing efficient data handling and API integration techniques.",
+
+        "Collaborated with academic teams to improve curriculum structure, incorporating practical projects and workflows that reflect real industry scenarios.",
+
+        "Guided students in integrating external services using REST APIs and message queues, enhancing their understanding of scalable system design.",
+
+        "Assisted students in debugging and troubleshooting applications across frontend and backend layers, strengthening their ability to resolve real-world software issues."
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "Python",
+        "Django",
+        "PostgreSQL",
+        "Jest",
+        "Cypress"
+      ]
+    }
+  ]
+}
