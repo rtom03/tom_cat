@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { BASE_URL } from "../services/appServices";
-import { useInterviewAI } from "../hooks/useInterviewAi";
-import { Loader } from "lucide-react";
 
 interface Job {
   id: number;
@@ -27,7 +25,6 @@ const JobsTable = ({
   loading: boolean;
   error: boolean;
 }) => {
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
 
   const handleCheckboxChange = (jobId: number, checked: boolean) => {
@@ -100,7 +97,7 @@ const JobsTable = ({
               <tr
                 key={job.id}
                 className="border-b border-[#333] hover:bg-[#1a1a1a] transition-colors cursor-pointer"
-                onClick={() => setSelectedJob(job)} // ✅ open modal on row click
+                // onClick={() => setSelectedJob(job)} // ✅ open modal on row click
               >
                 <td
                   className="p-3 border border-[#333]"
