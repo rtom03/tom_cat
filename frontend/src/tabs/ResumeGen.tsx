@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { generateApp } from "../services/appServices";
 import { Loader } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import ResumePDF from "../components/ResumePdf";
 import ResumeJsonUpload from "../components/ResumeJsonUpload";
 import { formatCVFileName } from "../utils";
@@ -68,6 +68,29 @@ export default function ResumeGenerateTab() {
       // console.log(loading);
     }
   };
+
+  const handleAutoDownload = async () => {
+    const blob = await pdf(<ResumePDF resume={resume} />).toBlob();
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = formatCVFileName(cvName);
+    a.click();
+
+    URL.revokeObjectURL(url); // cleanup
+  };
+
+  useEffect(() => {
+    if (resume) handleAutoDownload();
+    console.log(resume);
+  }, [resume]);
+
+  // Or after some action
+  // const handleSaveAndDownload = async () => {
+  //   await saveResume();
+  //   await handleAutoDownload();
+  // };
   return (
     <div>
       <ToastContainer />
@@ -92,7 +115,7 @@ export default function ResumeGenerateTab() {
           >
             {loading ? <Loader className="animate-spin" /> : "Generate"}
           </button>
-          {resume && (
+          {/* {resume && (
             <PDFDownloadLink
               key={JSON.stringify(resume)} // forces regeneration
               document={<ResumePDF resume={resume} />}
@@ -113,7 +136,7 @@ export default function ResumeGenerateTab() {
             >
               Download Resume
             </PDFDownloadLink>
-          )}
+          )} */}
         </form>
       </div>
       <ResumeJsonUpload />
