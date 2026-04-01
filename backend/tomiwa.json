@@ -1,6 +1,6 @@
 {
   "title": "IT SPECIALIST",
-  "summary": "Results-driven IT Specialist and Software Developer with over 6 years of experience delivering reliable technology solutions in healthcare, FMCG, and education. Proven ability to manage complex network infrastructure, enterprise software platforms, and end-user support within high-demand environments. Skilled at aligning IT operations with business objectives while maintaining system uptime, data integrity, and service excellence.",
+  "summary": "Results-driven Software Engineer with over 5 years of experience delivering reliable technology solutions in healthcare, FMCG, and education. Proven ability to manage complex network infrastructure, enterprise software platforms, and end-user support within high-demand environments. Skilled at aligning IT operations with business objectives while maintaining system uptime, data integrity, and service excellence.",
   "experience": "5 years ++",
   "personalDetail": [
     {
@@ -146,19 +146,12 @@
       "endDate": "04/2019",
       "location": "Ikeja, Lagos",
       "responsibilities": [
-        "Taught programming concepts using technologies such as React, Python, and AWS, guiding students in building responsive real-world applications.",
-
-        "Designed and delivered engaging lessons on front-end development with Angular and React, helping students create intuitive and user-friendly interfaces.",
-
-        "Mentored and supported students through code reviews, architecture discussions, and hands-on projects, fostering problem-solving skills and best coding practices.",
-
-        "Instructed students on backend development using Django and GraphQL, emphasizing efficient data handling and API integration techniques.",
-
-        "Collaborated with academic teams to improve curriculum structure, incorporating practical projects and workflows that reflect real industry scenarios.",
-
-        "Guided students in integrating external services using REST APIs and message queues, enhancing their understanding of scalable system design.",
-
-        "Assisted students in debugging and troubleshooting applications across frontend and backend layers, strengthening their ability to resolve real-world software issues."
+        "Instructed students on core IT networking concepts, covering network topologies, protocols, and infrastructure design to build a strong foundational understanding of enterprise environments.",
+        "Guided students through the configuration of complex network systems, including NAT (Network Address Translation) and OSPF routing protocols, with hands-on lab exercises that simulate real-world scenarios.",
+        "Delivered practical lessons on server administration, teaching students how to deploy, configure, and maintain servers across Windows and Linux environments.",
+        "Mentored students through network troubleshooting and diagnostics, strengthening their ability to identify and resolve connectivity issues, misconfigurations, and performance bottlenecks.",
+        "Collaborated with academic teams to design curriculum that reflects current industry standards, incorporating live network simulations and practical projects to enhance student readiness for professional roles.",
+        "Supported students in understanding scalable and secure network design principles, including firewall configuration, access control, and the integration of network services across distributed systems."
       ],
       "technologies": [
         "React",
