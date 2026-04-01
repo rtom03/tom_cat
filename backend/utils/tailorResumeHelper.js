@@ -61,7 +61,7 @@ Guidelines:
 - Maintain the same JSON structure
 - the user has ${resumeData.experience}
 - Do not make any changes to changes to this ----> ${resume.title} leave it as it is
-- each past job responsibilities bullet point must 6 minimum 
+- each past job responsibilities bullet point must be 8 as minimum and can be more than 8 with more words(recommended) 
 
 Return ONLY valid JSON.
 
