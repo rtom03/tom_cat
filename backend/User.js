@@ -1,0 +1,34 @@
+export const User = [
+  {
+    id: "1",
+    username: "tyner",
+    name: "Thomas Tyner",
+    password: "$2a$10$BZMuig6jhUFwmFhyvIi2r.XZcIZAzvx6Nn/zN9Ylsyq04xmMaWB2q",
+    resume: "",
+    createdAt: "2026-03-23 16:21:39.789",
+  },
+  {
+    id: "2",
+    username: "rtom",
+    name: "Tomiwa Raheem",
+    password: "$2a$10$K2jPENBLRePuKD8B2Jzm0u21wcRQq8xZjbKD/QuQzmEYoa32xMPQ.",
+    resume: "",
+    createdAt: "2026-03-26 06:34:14.196",
+  },
+  {
+    id: "4",
+    username: "marcos",
+    name: "Marcos Gomez",
+    password: "$2a$10$1VZlExPMbZZ01Uvi3WS3oOPXVHnTu8sElvHnCsT5cVURzRR5k/GCu",
+    resume: "",
+    createdAt: "2026-03-27 16:10:14.933",
+  },
+  {
+    id: "5",
+    username: "mattdell",
+    name: "Matthew Delano",
+    password: "$2a$10$M5AehZSPpaeWAyMQWTCgT.ejJaYrH2uDGuJ7/.qzmO7LRwL0OsNK.",
+    resume: "",
+    createdAt: "2026-03-27 16:15:56.629",
+  },
+];

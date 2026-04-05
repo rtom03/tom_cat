@@ -9,7 +9,7 @@ import path from "path";
 
 dotenv.config();
 
-connectDB();
+// connectDB();
 
 const port = process.env.PORT || 5000;
 

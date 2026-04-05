@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-pdf/renderer": "^4.3.2",
     "@tailwindcss/vite": "^4.2.1",
+    "convert-csv-to-json": "^4.31.0",
     "html2pdf.js": "^0.14.0",
     "lucide-react": "^0.577.0",
     "react": "^19.2.0",
