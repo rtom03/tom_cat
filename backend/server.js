@@ -9,7 +9,7 @@ import path from "path";
 
 dotenv.config();
 
-// connectDB();
+connectDB();
 
 const port = process.env.PORT || 5000;
 
@@ -18,7 +18,10 @@ const __dirname = path.resolve();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:3001"],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:3001, https://tom-cat.onrender.com/",
+    ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   }),

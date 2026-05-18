@@ -16,5 +16,5 @@ export const formatCVFileName = (fullName?: string): string => {
     .trim()
     .replace(/[^a-z\s-]/g, "") // strip non-alpha
     .replace(/\s+/g, "-"); // spaces → hyphens
-  return `${slug}-cv-${generateCVToken()}.pdf`;
+  return `${slug}.pdf`;
 };

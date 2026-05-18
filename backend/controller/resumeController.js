@@ -6,7 +6,7 @@ import {
 import { prisma } from "../utils/db.js";
 import { tailorResume } from "../utils/tailorResumeHelper.js";
 
-const createJob = async (req, res) => {
+const createApp = async (req, res) => {
   try {
     const { job_desc } = req.body;
     const userId = req.user.userId;
@@ -135,6 +135,7 @@ const createResume = async (req, res) => {
 
   try {
     const userId = req.user.userId;
+    console.log(userId);
     console.log(userId); // assuming authMiddleware adds user to req
     const {
       title,
@@ -190,22 +191,5 @@ const createResume = async (req, res) => {
   }
 };
 
-const seedToDB = async (req, res) => {
-  try {
-    const created = await prisma.job_Apps.createMany({
-      data: cleaned_job_apps,
-      skipDuplicates: true,
-    });
-
-    return res.status(200).json({
-      message: "Jobs seeded successfully",
-      count: created.count,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Seeding failed",
-      details: error,
-    });
-  }
-};
-export { createJob, getJobs, deleteJob, createResume, seedToDB };
+//
+export { createApp, getJobs, deleteJob, createResume };

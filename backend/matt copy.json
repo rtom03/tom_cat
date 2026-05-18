@@ -1,23 +1,23 @@
 {
-  "title": "Senior Software Engineer",
-  "summary": "Senior Software Engineer with over 10 years of experience building scalable web and mobile applications across startup and enterprise environments. Expert in full-stack development using React, TypeScript, Node.js, and Python, with deep experience designing microservices, REST APIs, and cloud-native systems on AWS. Passionate about building performant, user-focused products and mentoring engineering teams while delivering reliable, production-ready software.",
-  "experience": "10+ years",
+  "title": "Senior Software Developer",
+  "summary": "Software Developer with 6+ years of experience building production SaaS applications, backend services, data pipelines, and cloud-based platforms. Strong background in TypeScript, Node.js, Python, React, PostgreSQL, MongoDB, AWS, CI/CD, API design, and system reliability. Recent work includes AI-assisted analytics, automated insight generation, scoring workflows, observability improvements, and cross-functional delivery with product and data teams.",
+  "experience": "6+ years",
   "personalDetail": [
     {
-      "contact": "(512) 360 (0907)",
-      "email": "matthewdelano0201@gmail.com",
-      "address": "",
-      "linkedin": "https://www.linkedin.com/in/matthew-delano-2850ab292/"
+      "contact": "(512) 360-0907",
+      "email": "austin.vincent06@outlook.com",
+      "address": "Austin, Texas",
+      "linkedin": "https://www.linkedin.com/in/austin-vincent/"
     }
   ],
   "education": [
     {
-      "school": "New Jersey Institute of Technology",
+      "school": "University of Texas",
       "degree": "Bachelor of Science",
       "field": "Computer Science",
-      "startYear": 2009,
-      "endYear": 2014,
-      "location": "Newark, NJ"
+      "startYear": 2015,
+      "endYear": 2019,
+      "location": "Austin, Texas"
     }
   ],
   "skills": [
@@ -34,7 +34,7 @@
     "Vue",
     "Nuxt.js",
     "Svelte",
-    "TailwindCSS",
+    "Tailwind CSS",
     "Bootstrap",
     "Material UI",
     "Redux",
@@ -82,47 +82,42 @@
   "projects": [],
   "professionalExperiences": [
     {
-      "companyName": "EPIC",
-      "title": "Senior Software Engineer",
-      "startDate": "11/2023",
-      "endDate": "10/2025",
-      "location": "Remote",
+      "companyName": "ActivTrak | AI & Analytics Platform",
+      "title": "Backend Engineer",
+      "startDate": "08/2023",
+      "location": "Austin, TX | Remote",
       "responsibilities": [
-        "Built and optimized RESTful APIs and microservices using Node.js and NestJS to support financial data integrations and improve system performance.",
-        "Architected scalable backend services supporting financial web and mobile applications using Node.js.",
-        "Developed reusable UI components with React and TailwindCSS to maintain a consistent design system across financial products.",
-        "Implemented Python-based data processing services to automate analytics and reporting workflows.",
-        "Collaborated with designers, product managers, and mobile engineers to deliver new features and improve product functionality.",
-        "Containerized services with Docker and deployed applications within AWS infrastructure.",
-        "Implemented CI/CD pipelines and automated testing to improve deployment reliability and release speed.",
-        "Mentored engineers and led engineering discussions on architecture and product improvements."
+        "Coordinated multi-brand onboarding by integrating menus, pricing, and branding requirements into the mobile delivery platform.",
+        "Monitored daily app operations, ensuring seamless order processing, dispatch, and delivery performance across all partnered brands.",
+        "Collaborated with cross-functional teams (engineering, design, and marketing) to implement feature updates that supported multiple brand experiences within the app.",
+        "Analyzed user behavior and order data to optimize app performance, improve customer satisfaction, and increase conversion rates for each brand.",
+        "Managed relationships with brand partners, addressing operational issues, maintaining service standards, and ensuring compliance with platform guidelines.",
+        "Oversaw quality assurance by testing new features, identifying bugs, and ensuring consistent functionality across different brand interfaces within the app."
       ],
       "technologies": [
         "React",
         "Node.js",
         "NestJS",
         "Python",
-        "TailwindCSS",
+        "Tailwind CSS",
         "Docker",
         "AWS",
         "CI/CD"
       ]
     },
     {
-      "companyName": "Paxos",
-      "title": "Senior Software Engineer",
-      "startDate": "06/2022",
-      "endDate": "10/2023",
-      "location": "Remote",
+      "companyName": "Everlywell | Healthcare Data Platform",
+      "title": "Full Stack Developer",
+      "startDate": "05/2021",
+      "endDate": "07/2023",
+      "location": "Austin, TX | Remote",
       "responsibilities": [
-        "Developed consumer-facing financial web applications using React, TypeScript, Python, and Django.",
-        "Maintained frontend architecture and established code quality standards across the engineering team.",
-        "Diagnosed and resolved operational issues to ensure reliability of mission-critical financial systems.",
-        "Collaborated with business stakeholders to translate financial and regulatory requirements into technical solutions.",
-        "Managed millions of financial transaction records using PostgreSQL while ensuring data integrity and compliance.",
-        "Improved infrastructure performance and deployment pipelines to increase engineering delivery velocity.",
-        "Built automated testing suites using Jest and Cypress to improve software quality.",
-        "Mentored junior engineers and conducted code reviews to maintain engineering standards."
+        "Assisted in the development and implementation of ERP systems to streamline healthcare operations, including patient records, billing, and inventory management.",
+        "Collaborated with clinical, administrative, and IT teams to gather requirements and ensure the ERP system aligned with healthcare workflows and regulatory standards.",
+        "Supported system testing, debugging, and deployment to ensure the ERP platform functioned accurately and efficiently across departments.",
+        "Analyzed operational data within the ERP system to improve decision-making, resource allocation, and overall service delivery.",
+        "Provided user training and technical support to healthcare staff to ensure effective adoption and utilization of the ERP system.",
+        "Maintained system documentation and ensured compliance with healthcare regulations, data privacy standards, and security protocols."
       ],
       "technologies": [
         "React",
@@ -135,44 +130,17 @@
       ]
     },
     {
-      "companyName": "Opendoor",
-      "title": "Full-stack Developer",
-      "startDate": "11/2017",
-      "endDate": "04/2020",
-      "location": "Remote",
+      "companyName": "Bloomfire | SaaS Search & Knowledge Platform",
+      "title": "Software Developer",
+      "startDate": "06/2019",
+      "endDate": "04/2021",
+      "location": "Texas",
       "responsibilities": [
-        "Built and maintained responsive real estate web applications using React, Python, and AWS components, enhancing the efficiency of digital home transactions.",
-        "Designed and developed user-friendly web interfaces with Angular and React, improving the homebuying and selling experience for customers.",
-        "Mentored and guided junior software engineers, fostering a culture of collaboration and continuous improvement through architecture discussions, design reviews, and code evaluations.",
-        "Developed and optimized backend services with Django and GraphQL, improving data processing and integration with third-party real estate and financial APIs.",
-        "Collaborated closely with product, operations, and data teams to identify opportunities for process improvement, streamlining workflows and enhancing automation in real estate transactions.",
-        "Evaluated, integrated, and extended commercial products using REST web services and message queues, contributing to the scalability and efficiency of digital property valuation and transaction systems.",
-        "Troubleshot and resolved software issues across multiple layers, including deployment, configuration, and both server-side and client-side challenges."
-      ],
-      "technologies": [
-        "React",
-        "TypeScript",
-        "Python",
-        "Django",
-        "PostgreSQL",
-        "Jest",
-        "Cypress"
-      ]
-    },
-    {
-      "companyName": "Sideshow ",
-      "title": "Full-stack Developer",
-      "startDate": "04/2017",
-      "endDate": "10/2020",
-      "location": "Remote",
-      "responsibilities": [
-        "Worked mostly on the recommendation pipeline, the team’s key product, which significantly improved the company’s revenue from ads. Added new recommendation types, migrated to a new way of estimating revenue uplifts, simplified and optimized parts of it.",
-        "Deployed and scaled applications on AWS, leveraging services like EC2, RDS, and Lambda to create a robust, secure, and scalable infrastructure.",
-        "Spearheaded the development of an internal management system, enhancing operational efficiency and streamlining workflows across departments.",
-        "Utilized React for building dynamic user interfaces, ensuring responsive and user-friendly web applications.",
-        "Developed backend functionalities using Python and Django, enabling robust data processing and business logic implementation.",
-        "Employed GitHub for version control and collaboration, enhancing code quality through effective team workflows.",
-        "Designed and maintained responsive web layouts using HTML, CSS, and Material UI, ensuring a consistent look and feel across all platforms."
+        "Collaborated with clinical, administrative, and IT teams to gather requirements and ensure the ERP system aligned with healthcare workflows and regulatory standards.",
+        "Supported system testing, debugging, and deployment to ensure the ERP platform functioned accurately and efficiently across departments.",
+        "Analyzed operational data within the ERP system to improve decision-making, resource allocation, and overall service delivery.",
+        "Provided user training and technical support to healthcare staff to ensure effective adoption and utilization of the ERP system.",
+        "Maintained system documentation and ensured compliance with healthcare regulations, data privacy standards, and security protocols."
       ],
       "technologies": [
         "React",

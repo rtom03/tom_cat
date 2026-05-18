@@ -76,7 +76,7 @@ const Login = () => {
         </form>
 
         <p className="mt-6 text-center text-gray-400 text-sm">
-          © {new Date().getFullYear()} tom_cat
+          © {new Date().getFullYear()} byte
         </p>
       </div>
     </div>

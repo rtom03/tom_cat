@@ -4,6 +4,8 @@ import createJWT from "../utils/index.js";
 const createUser = async (req, res) => {
   try {
     const { username, name, password } = req.body;
+    console.log(req.body);
+    console.log(req.file);
 
     const resumePath = req.file ? req.file.path : null;
     const hashed = await bcrypt.hash(password, 10);
@@ -13,7 +15,6 @@ const createUser = async (req, res) => {
         username,
         name,
         password: hashed,
-        resume: resumePath,
       },
     });
 

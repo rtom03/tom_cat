@@ -13,8 +13,23 @@ export default function ResumeGenerateTab() {
   const [loading, setLoading] = useState(false);
   const [resume, setResume] = useState<any>(null);
   const [cvName, setCvName] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const notify = () => toast("chillax ur CV has been generated 😜!");
 
+  const handleAutoDownload = async () => {
+    const blob = await pdf(<ResumePDF resume={resume} />).toBlob();
+    const fileName = formatCVFileName(cvName);
+    const buffer = await blob.arrayBuffer();
+
+    const api = window as unknown as {
+      electronAPI: {
+        saveFile: (b: ArrayBuffer, c: string, f: string) => Promise<void>;
+      };
+    };
+
+    await api.electronAPI.saveFile(buffer, companyName, fileName);
+    console.log(`Saved → Downloads/${companyName}/${fileName}`);
+  };
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJobDesc(e.target.value);
   };
@@ -39,6 +54,7 @@ export default function ResumeGenerateTab() {
     try {
       const response = await generateApp(jobDesc);
       console.log(response);
+      let company = response.job.company;
       let resume = response.resume;
       const formattedResume = {
         ...resume,
@@ -56,9 +72,10 @@ export default function ResumeGenerateTab() {
         ),
       };
       setResume(formattedResume); // 👈 store AI resume
+      setCompanyName(company);
       setJobDesc("");
       notify();
-      console.log(formattedResume.personalDetail); // handle response e.g. save to state
+      console.log(company); // handle response e.g. save to state
       setCvName(formattedResume.name);
     } catch (err) {
       console.log(err);
@@ -69,28 +86,11 @@ export default function ResumeGenerateTab() {
     }
   };
 
-  const handleAutoDownload = async () => {
-    const blob = await pdf(<ResumePDF resume={resume} />).toBlob();
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = formatCVFileName(cvName);
-    a.click();
-
-    URL.revokeObjectURL(url); // cleanup
-  };
-
   useEffect(() => {
     if (resume) handleAutoDownload();
     console.log(resume);
   }, [resume]);
 
-  // Or after some action
-  // const handleSaveAndDownload = async () => {
-  //   await saveResume();
-  //   await handleAutoDownload();
-  // };
   return (
     <div>
       <ToastContainer />
@@ -115,28 +115,6 @@ export default function ResumeGenerateTab() {
           >
             {loading ? <Loader className="animate-spin" /> : "Generate"}
           </button>
-          {/* {resume && (
-            <PDFDownloadLink
-              key={JSON.stringify(resume)} // forces regeneration
-              document={<ResumePDF resume={resume} />}
-              fileName={formatCVFileName(cvName)}
-              style={{
-                padding: "10px 18px",
-                backgroundColor: "#2563eb",
-                color: "#ffffff",
-                borderRadius: "6px",
-                textDecoration: "none",
-                fontWeight: 600,
-                fontSize: "14px",
-                display: "inline-block",
-                textAlign: "center",
-
-                width: "100%",
-              }}
-            >
-              Download Resume
-            </PDFDownloadLink>
-          )} */}
         </form>
       </div>
       <ResumeJsonUpload />
