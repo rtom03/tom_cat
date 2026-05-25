@@ -95,7 +95,7 @@ const registerUser = async (
 };
 
 const generateApp = async (job_desc: string) => {
-  console.log(`${BASE_URL}/apps/create-app`);
+  // console.log(`${BASE_URL}/apps/create-app`);
   const response = await fetch(`${BASE_URL}/apps/create-app`, {
     method: "POST",
     credentials: "include", // ✅ sends cookies with request
