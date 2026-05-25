@@ -4,6 +4,7 @@ import {
   generateInterviewAnswer,
 } from "../service/ai.service.js";
 import { prisma } from "../utils/db.js";
+import { extractJobInfo } from "../utils/extractHelper.js";
 import { tailorResume } from "../utils/tailorResumeHelper.js";
 
 const createApp = async (req, res) => {
@@ -17,8 +18,8 @@ const createApp = async (req, res) => {
     const remote = /remote/i.test(job_desc);
     // const company = extractCompany(job_desc);
     // let title = extractTitle(job_desc);
-    let job_info = await extractJobInfoAi(job_desc);
-    const tailoredResume = await tailorResume(userId, job_desc);
+    let job_info = await extractJobInfo(job_desc);
+    // const tailoredResume = await tailorResume(userId, job_desc);
 
     // 4️⃣ Create job record
     const job = await prisma.job_Apps.create({
@@ -33,7 +34,10 @@ const createApp = async (req, res) => {
       },
     });
 
-    res.status(201).json({ job, resume: tailoredResume });
+    res.status(201).json({
+      job,
+      // resume: tailoredResume
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });

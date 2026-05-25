@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AppsTable from "../components/AppsTable";
-import { getJobs } from "../services/appServices";
+import { useGetJobs } from "../api/queryApps";
 
-interface Job {
+export interface Job {
   id: number;
   company: string;
   title: string;
@@ -22,27 +22,10 @@ export default function ApplicationsTab() {
   const [toDate, setToDate] = useState("");
   const [forValue, setForValue] = useState("Steven Zhang (high5-steven)");
   const [byValue, setByValue] = useState("All Bidders");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [jobs, setJobs] = useState<Job[]>([]);
 
-  const fetchJobs = async () => {
-    setLoading(true);
-    try {
-      const data = await getJobs();
-      setJobs(data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchJobs();
-    const interval = setInterval(fetchJobs, 10000);
-    return () => clearInterval(interval);
-  }, []);
+  const { data, isLoading, isError, isRefetching, refetch } = useGetJobs();
+  // console.log(data);
+  const jobs = data ?? [];
 
   // ── Search/filter function — always returns an array ──────────────────────
 
@@ -141,24 +124,6 @@ export default function ApplicationsTab() {
           </button>
         )}
       </div>
-
-      {/* <div className="flex items-center gap-3 mb-3 flex-wrap">
-        <span className="text-sm text-gray-400 w-10 shrink-0">From</span>
-        <input
-          className="flex-1 min-w-[140px] bg-[#0d0d0d] border border-[#333] rounded px-3 py-2 text-sm text-gray-200 outline-none focus:border-[#555] [color-scheme:dark]"
-          type="date"
-          value={fromDate}
-          onChange={(e) => setFromDate(e.target.value)}
-        />
-        <span className="text-sm text-gray-400 w-5 shrink-0">To</span>
-        <input
-          className="flex-1 min-w-[140px] bg-[#0d0d0d] border border-[#333] rounded px-3 py-2 text-sm text-gray-200 outline-none focus:border-[#555] [color-scheme:dark]"
-          type="date"
-          value={toDate}
-          onChange={(e) => setToDate(e.target.value)}
-        />
-      </div> */}
-
       <div className="flex items-center gap-3 mb-3 flex-wrap">
         <span className="text-sm text-gray-400 w-10 shrink-0">For</span>
         <select
@@ -180,16 +145,16 @@ export default function ApplicationsTab() {
           <option>Specific Bidder</option>
         </select>
       </div>
-
       <button
-        onClick={fetchJobs}
         className="w-full bg-green-700 hover:bg-green-800 active:bg-green-900 text-white font-semibold py-3 rounded transition-colors text-base tracking-wide"
+        onClick={() => refetch()}
+        disabled={isRefetching}
       >
-        Refresh
+        {isRefetching ? "Refreshing..." : "Refresh"}
       </button>
 
       {/* ✅ Always receives a Job[] array */}
-      <AppsTable jobs={filteredJobs} loading={loading} error={error} />
+      <AppsTable jobs={filteredJobs} loading={isLoading} error={isError} />
     </div>
   );
 }

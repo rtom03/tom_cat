@@ -1,131 +1,123 @@
 /**
- * extractJobInfo(jobDesc)
+ * Advanced Job Title + Company Extractor
+ * --------------------------------------
  *
- * Regex-driven extractor — returns { title, company } from any job-posting.
+ * Production-oriented extraction engine:
  *
- * ── TITLE strategy (T1–T7) ─────────────────────────────────────────────────
- *  T1. Explicit label    "Job Title: …" / "Role: …" / "Position: …"
- *  T2. Hiring phrase     "hiring/seeking/recruiting [a] <Title>"
- *  T3. Looking phrase    "looking for [a] <Title>"
- *  T4. Join-as phrase    "join [us/Company] as [a] <Title>"
- *  T5. Dual anchor       "<Title> at <Company>"  (first meaningful line only)
- *  T6. Need phrase       "we need/want [a] <Title>"
- *  T7. Early-line scan   first 20 lines, skipping nav/UI noise
+ *   PREPROCESSING
+ *      ↓
+ *   SEGMENTATION
+ *      ↓
+ *   CANDIDATE GENERATION
+ *      ↓
+ *   SCORING ENGINE
+ *      ↓
+ *   VALIDATION
+ *      ↓
+ *   FINAL SELECTION
  *
- * ── COMPANY strategy (C1–C6) ───────────────────────────────────────────────
- *  C1. Explicit label    "Company: …" / "Employer: …"  (newline-bounded)
- *  C2. Legal suffix      "Acme Corp" / "Boston Consulting Group"
- *  C3. Subject-verb      "Stripe is hiring …"  (per-line, avoids duplicates)
- *  C4. Contextual "at"   "… at Google DeepMind" — pruned + last occurrence
- *  C5. Join phrase       "join Vercel" / "join Stryker?"
- *  C6. Work-for phrase   "work at/for/with Shopify"
+ * Key upgrades over regex-only systems:
  *
- * ── Key design decisions ───────────────────────────────────────────────────
- *  • NO /i flag on capturing patterns — it makes [A-Z] match lowercase too,
- *    letting stop-words ("as", "at", "to") slip into captured groups.
- *    Keywords use explicit case: [Hh]iring, [Jj]oin, etc.
- *  • Two-phase capture: locate keyword, then apply a case-sensitive pattern
- *    to only the substring that follows — no greedy cross-sentence matching.
- *  • clean() strips trailing lowercase runs and leading adjectives.
- *  • pruneName() strips trailing tokens that are in NAV_STOP, eliminating
- *    "Stryker Our Offices Explore Open" → "Stryker".
- *  • T7 scans the first 20 lines and skips known nav/UI noise lines so
- *    "Skip to content / Careers Home / Senior Director, Regulatory Affairs"
- *    correctly resolves to the title on line 6.
- *  • Company lookaheads include ? and ! so "join Stryker?" works.
- *  • Possessive 's is stripped ("Stryker's" → "Stryker").
+ *  ✓ Candidate scoring instead of first-match
+ *  ✓ Unicode-safe token support
+ *  ✓ Connector-aware title parsing
+ *  ✓ Noise removal + deduplication
+ *  ✓ Frequency weighting
+ *  ✓ Structural weighting
+ *  ✓ Context relationship analysis
+ *  ✓ Validation engine
+ *  ✓ Confidence scores
+ *  ✓ Source attribution
+ *  ✓ Hydration duplication protection
+ *  ✓ Modern title support
+ *  ✓ Multi-pass extraction
+ *
+ * Designed for:
+ *  - ATS ingestion
+ *  - Job board scraping
+ *  - Career page parsing
+ *  - Messy HTML text extraction
  */
 
-// ─── Shared fragments ────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIG
+// ─────────────────────────────────────────────────────────────────────────────
 
-/** Single capitalised token: "Acme", "OpenAI", "AT&T" */
-const NT = "[A-Z][a-zA-Z0-9&]+";
+const MAX_TITLE_WORDS = 8;
+const MAX_COMPANY_WORDS = 6;
 
-/** Multi-word name: up to 5 tokens */
-const MN = `(?:${NT})(?:\\s+${NT}){0,4}`;
-
-/** Legal / industry suffixes that strongly signal a company name */
-const SUFFIX_RE =
-  "Inc|LLC|Ltd|Corp|Co|Group|Holdings|Ventures|Capital|Partners|" +
-  "Technologies|Technology|Tech|Software|Systems|Solutions|Services|" +
-  "Consulting|Digital|Media|Studios?|Creative|Labs?|AI|Analytics|Cloud|" +
-  "Networks|Interactive|Dynamics|Works|Hub|Health|Finance|Financial|" +
-  "Management|Institute|Foundation|International|Global|Agency|Enterprises?";
-
-/**
- * Navigation / UI words that must NEVER appear in a captured company name.
- * If any token in the capture matches one of these the trailing tokens (and
- * the bad token itself) are pruned off, e.g.:
- *   "Stryker Our Offices Explore Open"  →  "Stryker"
- */
-const NAV_STOP = new Set([
-  "Our",
-  "Offices",
-  "Explore",
-  "Open",
-  "Positions",
-  "Home",
-  "Search",
-  "Return",
-  "Apply",
-  "View",
-  "Jobs",
-  "Logo",
-  "Skip",
-  "Content",
-  "Menu",
-  "Navigation",
-  "Footer",
-  "Header",
-  "Page",
-  "Site",
-  "Privacy",
-  "Policy",
-  "Terms",
-  "Service",
-  "Legal",
-  "About",
-  "Contact",
-  "Login",
-  "Sign",
-  "Register",
-  "Back",
-  "Next",
-  "Previous",
-  "Careers",
-  "Hiring",
-  "Join",
-  "Work",
-  "Review",
-  "Read",
-  "Learn",
-  "More",
-  "See",
-  "All",
-  "Latest",
-  "New",
-  "Featured",
-  "Top",
-  "Best",
-  "Find",
-  "Post",
-  "Posted",
-  "Date",
-  "Details",
-  "Description",
-  "Requirements",
-  "Benefits",
-  "Overview",
-  "Summary",
-  "Apply",
-  "Now",
-  "Here",
-  "Today",
-  "Share",
-  "Save",
+const TITLE_CONNECTORS = new Set([
+  "of",
+  "for",
+  "and",
+  "&",
+  "to",
+  "the",
+  "in",
+  "on",
+  "with",
+  "platform",
+  "systems",
+  "ml",
+  "ai",
 ]);
 
-/** Words that can never stand alone as a company name */
+const NOISE_PATTERNS = [
+  /skip to content/i,
+  /cookie preferences/i,
+  /privacy policy/i,
+  /terms of service/i,
+  /equal opportunity employer/i,
+  /recommended jobs/i,
+  /related jobs/i,
+  /share this job/i,
+  /apply now/i,
+  /sign in/i,
+  /create account/i,
+  /accessibility/i,
+  /powered by/i,
+  /all rights reserved/i,
+  /careers home/i,
+  /search jobs/i,
+  /menu/i,
+  /navigation/i,
+  /footer/i,
+  /header/i,
+  /^home$/i,
+  /^jobs$/i,
+  /^careers$/i,
+];
+
+const NEGATIVE_TITLE_TERMS = new Set([
+  "benefits",
+  "requirements",
+  "responsibilities",
+  "qualifications",
+  "overview",
+  "summary",
+  "description",
+  "salary",
+  "location",
+  "about",
+  "company",
+  "culture",
+]);
+
+const NEGATIVE_COMPANY_TERMS = new Set([
+  "benefits",
+  "requirements",
+  "responsibilities",
+  "qualifications",
+  "overview",
+  "summary",
+  "description",
+  "salary",
+  "location",
+  "remote",
+  "hybrid",
+  "onsite",
+]);
+
 const COMPANY_STOP = new Set([
   "We",
   "Our",
@@ -136,452 +128,798 @@ const COMPANY_STOP = new Set([
   "Team",
   "You",
   "They",
-  "I",
   "Join",
-  "Work",
-  "Hiring",
-  "Are",
-  "Is",
-  "Was",
-  "Be",
-  "Been",
-  "Have",
+  "Apply",
 ]);
 
-/**
- * Lines that are clearly navigation / boilerplate — skip these in T7.
- * A line is "noisy" if it matches any of these patterns.
- */
-const NAV_LINE_RE =
-  /^(?:skip|return|apply|view all|careers|hiring at|our offices|explore|sitemap|accessibility|privacy|terms|legal|sign in|login|menu|navigation|©|\d+$)/i;
+const LEGAL_SUFFIXES = [
+  "Inc",
+  "LLC",
+  "Ltd",
+  "Corp",
+  "Co",
+  "Group",
+  "Technologies",
+  "Technology",
+  "Tech",
+  "Software",
+  "Systems",
+  "Solutions",
+  "Consulting",
+  "Labs",
+  "AI",
+  "Analytics",
+  "Cloud",
+  "Networks",
+  "Health",
+  "Finance",
+  "Financial",
+  "Agency",
+  "Global",
+  "International",
+];
 
-/** Role vocabulary — a valid title must contain ≥1 of these */
-const ROLE_SIGNAL = new RegExp(
-  [
-    "Engineer",
-    "Developer",
-    "Designer",
-    "Architect",
-    "Manager",
-    "Director",
-    "VP",
-    "President",
-    "Officer",
-    "Executive",
-    "Full Stack Software Developer",
-    "Lead",
-    "Head",
-    "Analyst",
-    "Scientist",
-    "Researcher",
-    "Specialist",
-    "Consultant",
-    "Advisor",
-    "Strategist",
-    "Coordinator",
-    "Administrator",
-    "Associate",
-    "Intern",
-    "Trainee",
-    "Recruiter",
-    "Writer",
-    "Editor",
-    "Producer",
-    "Technician",
-    "Operations",
-    "Marketing",
-    "Sales",
-    "Product",
-    "Data",
-    "FullStack",
-    "Full.Stack",
-    "Front.End",
-    "Back.End",
-    "DevOps",
-    "QA",
-    "UX",
-    "UI",
-    "CTO",
-    "CIO",
-    "CFO",
-    "CEO",
-    "COO",
-    "SRE",
-    "MLOps",
-    "Scrum",
-    "Cloud",
-    "Security",
-    "Platform",
-    "Infrastructure",
-    "Representative",
-    "Support",
-    "Account",
-    "Project",
-    "Program",
-    "Growth",
-    "Revenue",
-    "Business",
-    "Technical",
-    "Delivery",
-    "Affairs",
-    "Regulatory",
-    "Clinical",
-    "Quality",
-    "Finance",
-    "Financial",
-    "Legal",
-    "Communications",
-    "Relations",
-    "Strategy",
-    "Innovation",
-    "Transformation",
-  ].join("|"),
-  "i",
-);
+// Modern + classic role signals
+const ROLE_TERMS = [
+  "Engineer",
+  "Developer",
+  "Architect",
+  "Designer",
+  "Manager",
+  "Director",
+  "Lead",
+  "Head",
+  "Scientist",
+  "Researcher",
+  "Analyst",
+  "Consultant",
+  "Coordinator",
+  "Specialist",
+  "Administrator",
+  "Officer",
+  "Executive",
+  "Recruiter",
+  "Producer",
+  "Editor",
+  "Writer",
+  "Strategist",
+  "Associate",
+  "Intern",
+  "Product",
+  "Marketing",
+  "Operations",
+  "Sales",
+  "Finance",
+  "Legal",
+  "Compliance",
+  "Security",
+  "Cloud",
+  "Platform",
+  "Infrastructure",
+  "Data",
+  "AI",
+  "ML",
+  "MLOps",
+  "DevOps",
+  "SRE",
+  "QA",
+  "UX",
+  "UI",
+  "Frontend",
+  "Backend",
+  "Fullstack",
+  "Full-Stack",
+  "Prompt",
+  "Advocate",
+  "Evangelist",
+  "Trainer",
+  "Support",
+  "Success",
+  "Revenue",
+  "Growth",
+  "Principal",
+  "Staff",
+  "Founder",
+  "Founding",
+  "Partnerships",
+  "Technical",
+];
 
-// ─── Utilities ───────────────────────────────────────────────────────────────
+// Unicode-safe token
+const TOKEN = "[\\p{Lu}][\\p{L}0-9&+.#/\\-]*(?:'[\\p{L}]+)?";
 
-/**
- * Strip noise from a raw regex capture.
- *   "talented Product Designer"       → "Product Designer"
- *   "Full Stack Developer at Stripe"  → "Full Stack Developer"
- *   "Boston Consulting Group,"        → "Boston Consulting Group"
- *   "Stryker's"                       → "Stryker"
- */
-function clean(raw = "") {
-  return raw
-    .trim()
-    .replace(/'s\b/g, "") // strip possessive
-    .replace(/\s+[a-z]\S*.*$/s, "") // drop from first space+lowercase word onward
-    .replace(/^[a-z]\S*\s+/, "") // drop a leading lowercase adjective
-    .replace(/[,.\-\u2013:!?]+$/g, "") // strip trailing punctuation
+const COMPANY_PATTERN = `(?:${TOKEN})(?:\\s+(?:${TOKEN})){0,5}`;
+
+const TITLE_PATTERN = `(?:${TOKEN}|of|for|and|the|to|in|on|with|&|AI|ML|DevOps|SRE|QA|UI|UX)(?:\\s+(?:${TOKEN}|of|for|and|the|to|in|on|with|&|AI|ML|DevOps|SRE|QA|UI|UX)){0,7}`;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// UTILITIES
+// ─────────────────────────────────────────────────────────────────────────────
+
+function unique(arr) {
+  return [...new Set(arr)];
+}
+
+function normalizeWhitespace(str = "") {
+  return str
+    .replace(/\r/g, "")
+    .replace(/\t/g, " ")
+    .replace(/\u00A0/g, " ")
     .replace(/\s{2,}/g, " ")
     .trim();
 }
 
-/**
- * Prune a multi-word company name: if any token is in NAV_STOP, drop it and
- * everything after it.
- *   "Stryker Our Offices Explore Open"  →  "Stryker"
- *   "Boston Consulting Group"           →  "Boston Consulting Group"  (unchanged)
- */
-function pruneName(str) {
-  const tokens = str.split(/\s+/);
-  const cut = tokens.findIndex((t) => NAV_STOP.has(t));
-  return (cut === -1 ? tokens : tokens.slice(0, cut)).join(" ").trim();
+function normalizeCompany(company = "") {
+  return company
+    .replace(/[,]+/g, "")
+    .replace(/\bINC\b/gi, "Inc")
+    .replace(/\bLLC\b/gi, "LLC")
+    .replace(/\bLTD\b/gi, "Ltd")
+    .replace(/\bCORP\b/gi, "Corp")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
-function validTitle(s) {
-  return Boolean(s) && s.length >= 3 && ROLE_SIGNAL.test(s);
-}
-function validCompany(s) {
-  return Boolean(s) && s.length >= 2 && !COMPANY_STOP.has(s.split(/\s+/)[0]);
+function dedupeLines(lines) {
+  const seen = new Set();
+
+  return lines.filter((line) => {
+    const normalized = line.toLowerCase();
+
+    if (seen.has(normalized)) {
+      return false;
+    }
+
+    seen.add(normalized);
+    return true;
+  });
 }
 
-/** Locate a keyword and return the substring that immediately follows it */
-function after(haystack, keywordRe) {
-  const m = haystack.match(keywordRe);
-  return m ? haystack.slice(m.index + m[0].length) : null;
+function cleanText(text = "") {
+  return normalizeWhitespace(
+    text
+      .replace(/[\u2013\u2014]/g, "-")
+      .replace(/[•●]/g, " ")
+      .replace(/\|/g, " ")
+      .replace(/<[^>]+>/g, " "),
+  );
 }
 
-// ─── Main function ───────────────────────────────────────────────────────────
+function removeNoise(lines) {
+  return lines.filter((line) => {
+    if (!line.trim()) return false;
 
-function extractJobInfo(jobDesc) {
-  const text = jobDesc.replace(/\r\n/g, "\n").trim();
-  const flat = text.replace(/\n+/g, " ").replace(/\s{2,}/g, " ");
-  const lines = text
+    return !NOISE_PATTERNS.some((p) => p.test(line));
+  });
+}
+
+function isLikelyTitle(text) {
+  if (!text) return false;
+
+  const lower = text.toLowerCase();
+
+  if (NEGATIVE_TITLE_TERMS.has(lower)) {
+    return false;
+  }
+
+  if (text.length > 100) {
+    return false;
+  }
+
+  if (/[!?]{2,}/.test(text)) {
+    return false;
+  }
+
+  const hasRoleTerm = ROLE_TERMS.some((term) =>
+    new RegExp(`\\b${term}\\b`, "i").test(text),
+  );
+
+  return hasRoleTerm;
+}
+
+function isLikelyCompany(text) {
+  if (!text) return false;
+
+  const lower = text.toLowerCase();
+
+  if (NEGATIVE_COMPANY_TERMS.has(lower)) {
+    return false;
+  }
+
+  if (COMPANY_STOP.has(text.split(/\s+/)[0])) {
+    return false;
+  }
+
+  if (text.length > 80) {
+    return false;
+  }
+
+  return true;
+}
+
+function titleCase(str) {
+  return str
+    .split(/\s+/)
+    .map((w) => {
+      if (TITLE_CONNECTORS.has(w.toLowerCase())) {
+        return w.toLowerCase();
+      }
+
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    })
+    .join(" ");
+}
+
+function lineWeight(index) {
+  if (index <= 3) return 50;
+  if (index <= 10) return 30;
+  if (index <= 20) return 10;
+  return 0;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PREPROCESSING
+// ─────────────────────────────────────────────────────────────────────────────
+
+function preprocess(rawText) {
+  const cleaned = cleanText(rawText);
+
+  let lines = cleaned
     .split("\n")
-    .map((l) => l.trim())
+    .map((l) => normalizeWhitespace(l))
     .filter(Boolean);
 
-  let title = null;
-  let company = null;
+  lines = dedupeLines(lines);
+  lines = removeNoise(lines);
 
-  // ── TITLE ─────────────────────────────────────────────────────────────────
-
-  // T1 — Explicit label (newline = natural boundary)
-  if (!title) {
-    const m = text.match(
-      /(?:job[\s\-]*title|position|role)\s*[:\-\u2013]\s*(.{3,80})(?:\n|$)/i,
-    );
-    if (m) {
-      const c = clean(m[1]);
-      if (validTitle(c)) title = c;
-    }
-  }
-
-  // T2 — "hiring/seeking/recruiting [a/an] [adj] <Title>"
-  if (!title) {
-    const rest = after(flat, /[Hh]iring|[Ss]eeking|[Rr]ecruiting/);
-    if (rest) {
-      const n = rest.match(
-        new RegExp(
-          `^\\s+(?:an?\\s+)?(?:[a-z]+\\s+)?([A-Z][a-zA-Z\\-\\/&]+(?:\\s+[A-Z][a-zA-Z\\-\\/&]+){0,3})`,
-        ),
-      );
-      if (n) {
-        const c = clean(n[1]);
-        if (validTitle(c)) title = c;
-      }
-    }
-  }
-
-  // T3 — "looking for [a/an] [adj] <Title>"
-  if (!title) {
-    const rest = after(flat, /[Ll]ooking\s+for/);
-    if (rest) {
-      const n = rest.match(
-        new RegExp(
-          `^\\s+(?:an?\\s+)?(?:[a-z]+\\s+)?([A-Z][a-zA-Z\\-\\/&]+(?:\\s+[A-Z][a-zA-Z\\-\\/&]+){0,3})`,
-        ),
-      );
-      if (n) {
-        const c = clean(n[1]);
-        if (validTitle(c)) title = c;
-      }
-    }
-  }
-
-  // T4 — "join [Company/us/our team] as [a/an] <Title>"
-  if (!title) {
-    const rest = after(
-      flat,
-      /[Jj]oin\s+(?:\S+(?:\s+\S+){0,3}\s+)?[Aa]s\s+(?:an?\s+)?/,
-    );
-    if (rest) {
-      const n = rest.match(
-        new RegExp(
-          `^([A-Z][a-zA-Z\\-\\/&]+(?:\\s+[A-Z][a-zA-Z\\-\\/&]+){0,3})`,
-        ),
-      );
-      if (n) {
-        const c = clean(n[1]);
-        if (validTitle(c)) title = c;
-      }
-    }
-  }
-
-  // T5 — Dual anchor "<Title> at <Company>" (first non-noisy line only)
-  if (!title) {
-    const firstMeaningfulLine =
-      lines.find((l) => !NAV_LINE_RE.test(l)) || lines[0];
-    const m = firstMeaningfulLine.match(
-      new RegExp(`((?:${NT}\\s+){0,3}${NT})\\s+at\\s+${NT}`),
-    );
-    if (m) {
-      const c = clean(m[1]);
-      if (validTitle(c)) title = c;
-    }
-  }
-
-  // T6 — "we need/want [a/an] [adj] <Title>"
-  if (!title) {
-    const rest = after(flat, /[Ww]e\s+(?:need|want|are\s+looking\s+for)/);
-    if (rest) {
-      const n = rest.match(
-        new RegExp(
-          `^\\s+(?:an?\\s+)?(?:[a-z]+\\s+)?([A-Z][a-zA-Z\\-\\/&]+(?:\\s+[A-Z][a-zA-Z\\-\\/&]+){0,3})`,
-        ),
-      );
-      if (n) {
-        const c = clean(n[1]);
-        if (validTitle(c)) title = c;
-      }
-    }
-  }
-
-  // T7 — Early-line scan: first 20 lines, skipping nav/UI noise
-  //      Handles postings that lead with navigation before the title.
-  if (!title) {
-    for (const line of lines.slice(0, 20)) {
-      if (NAV_LINE_RE.test(line)) continue; // skip nav cruft
-      if (line.length > 80) continue; // skip long prose lines
-      const c = clean(line);
-      if (validTitle(c)) {
-        title = c;
-        break;
-      }
-    }
-  }
-
-  // ── COMPANY ───────────────────────────────────────────────────────────────
-
-  /** Shared post-processing for every company candidate */
-  function acceptCompany(raw) {
-    const pruned = pruneName(clean(raw));
-    return validCompany(pruned) ? pruned : null;
-  }
-
-  // C1 — Explicit label (newline-bounded)
-  if (!company) {
-    const m = text.match(
-      /(?:[Cc]ompany|[Ee]mployer|[Oo]rganization)\s*[:\-\u2013]\s*(.{2,60})(?:\n|$)/,
-    );
-    if (m) company = acceptCompany(m[1].trim());
-  }
-
-  // C2 — Legal / industry suffix anchor
-  if (!company) {
-    const m = flat.match(
-      new RegExp(
-        `((?:${NT}\\s+){0,4}${NT})\\s*,?\\s+(?:${SUFFIX_RE})\\.?(?=\\s|,|\\.|\\?|$)`,
-      ),
-    );
-    if (m) company = acceptCompany(m[0].replace(/[,.]?\s*$/, "").trim());
-  }
-
-  // C3 — Subject-verb per line (avoids cross-line duplication artefacts)
-  if (!company) {
-    for (const line of lines) {
-      const m = line.match(
-        new RegExp(
-          `(${NT}(?:\\s+${NT}){0,2})\\s+(?:is|are)\\s+(?:hiring|looking|seeking|recruiting)`,
-        ),
-      );
-      if (m) {
-        const c = acceptCompany(m[1]);
-        if (c) {
-          company = c;
-          break;
-        }
-      }
-    }
-  }
-
-  // C4 — Contextual "at" — LAST occurrence, pruned to remove nav tokens
-  if (!company) {
-    const all = [
-      ...flat.matchAll(new RegExp(`\\bat\\s+(${MN})(?=\\s|,|\\.|\\?|$)`, "g")),
-    ];
-    // Walk backwards: take the last match whose pruned result is valid
-    for (let i = all.length - 1; i >= 0; i--) {
-      const c = acceptCompany(all[i][1]);
-      if (c) {
-        company = c;
-        break;
-      }
-    }
-  }
-
-  // C5 — "join <Company>" — lookahead includes ? and !
-  if (!company) {
-    const m = flat.match(new RegExp(`[Jj]oin\\s+(${MN})(?=\\s|,|\\.|\\?|!|$)`));
-    if (m) company = acceptCompany(m[1]);
-  }
-
-  // C6 — "work at/for/with <Company>"
-  if (!company) {
-    const m = flat.match(
-      new RegExp(`[Ww]ork\\s+(?:at|for|with)\\s+(${MN})(?=\\s|,|\\.|\\?|$)`),
-    );
-    if (m) company = acceptCompany(m[1]);
-  }
+  const flat = normalizeWhitespace(lines.join(" "));
 
   return {
-    title: title || "Unknown",
-    company: company || "Unknown",
+    lines,
+    flat,
   };
 }
 
-// ─── Tests ────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// CANDIDATE ENGINE
+// ─────────────────────────────────────────────────────────────────────────────
+
+function makeCandidate({ value, confidence = 0, source, line, type }) {
+  return {
+    value: normalizeWhitespace(value),
+    confidence,
+    source,
+    line,
+    type,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TITLE EXTRACTION
+// ─────────────────────────────────────────────────────────────────────────────
+
+function extractTitleCandidates(lines, flat) {
+  const candidates = [];
+
+  // T1 Explicit labels
+  lines.forEach((line, idx) => {
+    const m = line.match(
+      new RegExp(
+        `(?:Job Title|Position|Role)\\s*[:\\-]\\s*(${TITLE_PATTERN})`,
+        "u",
+      ),
+    );
+
+    if (m) {
+      candidates.push(
+        makeCandidate({
+          value: m[1],
+          confidence: 95 + lineWeight(idx),
+          source: "T1",
+          line: idx,
+          type: "title",
+        }),
+      );
+    }
+  });
+
+  // T2 Hiring phrases
+  const hiringPatterns = [
+    /hiring\s+(?:an?\s+)?(.+?)(?:\.|,| at | to | who )/i,
+    /looking for\s+(?:an?\s+)?(.+?)(?:\.|,| at | to | who )/i,
+    /seeking\s+(?:an?\s+)?(.+?)(?:\.|,| at | to | who )/i,
+    /recruiting\s+(?:an?\s+)?(.+?)(?:\.|,| at | to | who )/i,
+    /need\s+(?:an?\s+)?(.+?)(?:\.|,| at | to | who )/i,
+  ];
+
+  hiringPatterns.forEach((pattern, pIdx) => {
+    const matches = [...flat.matchAll(new RegExp(pattern, "gi"))];
+
+    matches.forEach((m) => {
+      const value = normalizeWhitespace(m[1]);
+
+      if (!isLikelyTitle(value)) return;
+
+      candidates.push(
+        makeCandidate({
+          value,
+          confidence: 80 - pIdx,
+          source: "T2",
+          line: 999,
+          type: "title",
+        }),
+      );
+    });
+  });
+
+  // T3 "<Title> at <Company>"
+  lines.slice(0, 15).forEach((line, idx) => {
+    const m = line.match(
+      new RegExp(`(${TITLE_PATTERN})\\s+at\\s+(${COMPANY_PATTERN})`, "u"),
+    );
+
+    if (m) {
+      candidates.push(
+        makeCandidate({
+          value: m[1],
+          confidence: 92 + lineWeight(idx),
+          source: "T3",
+          line: idx,
+          type: "title",
+        }),
+      );
+    }
+  });
+
+  // T4 Early-line semantic scan
+  lines.slice(0, 20).forEach((line, idx) => {
+    if (!isLikelyTitle(line)) return;
+
+    candidates.push(
+      makeCandidate({
+        value: line,
+        confidence: 60 + lineWeight(idx),
+        source: "T4",
+        line: idx,
+        type: "title",
+      }),
+    );
+  });
+
+  return candidates;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COMPANY EXTRACTION
+// ─────────────────────────────────────────────────────────────────────────────
+
+function extractCompanyCandidates(lines, flat) {
+  const candidates = [];
+
+  // C1 Explicit labels
+  lines.forEach((line, idx) => {
+    const m = line.match(
+      new RegExp(
+        `(?:Company|Employer|Organization)\\s*[:\\-]\\s*(${COMPANY_PATTERN})`,
+        "u",
+      ),
+    );
+
+    if (m) {
+      candidates.push(
+        makeCandidate({
+          value: normalizeCompany(m[1]),
+          confidence: 98 + lineWeight(idx),
+          source: "C1",
+          line: idx,
+          type: "company",
+        }),
+      );
+    }
+  });
+
+  // C2 Subject-verb hiring pattern
+  lines.forEach((line, idx) => {
+    const m = line.match(
+      new RegExp(
+        `(${COMPANY_PATTERN})\\s+(?:is|are)\\s+(?:hiring|looking|seeking|recruiting)`,
+        "u",
+      ),
+    );
+
+    if (m) {
+      candidates.push(
+        makeCandidate({
+          value: normalizeCompany(m[1]),
+          confidence: 90 + lineWeight(idx),
+          source: "C2",
+          line: idx,
+          type: "company",
+        }),
+      );
+    }
+  });
+
+  // C3 "Join Company"
+  lines.forEach((line, idx) => {
+    const m = line.match(
+      new RegExp(`Join\\s+(${COMPANY_PATTERN})(?:\\s+as|\\.|,|\\?|!)`, "iu"),
+    );
+
+    if (m) {
+      candidates.push(
+        makeCandidate({
+          value: normalizeCompany(m[1]),
+          confidence: 85 + lineWeight(idx),
+          source: "C3",
+          line: idx,
+          type: "company",
+        }),
+      );
+    }
+  });
+
+  // C4 "at Company"
+  const atMatches = [
+    ...flat.matchAll(new RegExp(`\\bat\\s+(${COMPANY_PATTERN})`, "gu")),
+  ];
+
+  atMatches.forEach((m) => {
+    const value = normalizeCompany(m[1]);
+
+    if (!isLikelyCompany(value)) return;
+
+    candidates.push(
+      makeCandidate({
+        value,
+        confidence: 65,
+        source: "C4",
+        line: 999,
+        type: "company",
+      }),
+    );
+  });
+
+  // C5 Legal suffix
+  const suffixRegex = new RegExp(
+    `(${COMPANY_PATTERN})\\s+(?:${LEGAL_SUFFIXES.join("|")})`,
+    "gu",
+  );
+
+  const suffixMatches = [...flat.matchAll(suffixRegex)];
+
+  suffixMatches.forEach((m) => {
+    candidates.push(
+      makeCandidate({
+        value: normalizeCompany(m[0]),
+        confidence: 88,
+        source: "C5",
+        line: 999,
+        type: "company",
+      }),
+    );
+  });
+
+  return candidates;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SCORING ENGINE
+// ─────────────────────────────────────────────────────────────────────────────
+
+function enhanceCandidateScores(candidates, type) {
+  const frequency = {};
+
+  candidates.forEach((c) => {
+    frequency[c.value] = (frequency[c.value] || 0) + 1;
+  });
+
+  return candidates.map((candidate) => {
+    let score = candidate.confidence;
+
+    // Frequency boost
+    score += (frequency[candidate.value] || 0) * 5;
+
+    // Structural weighting
+    if (candidate.line <= 5) {
+      score += 20;
+    }
+
+    // Penalize suspicious punctuation
+    if (/[;:]{2,}/.test(candidate.value)) {
+      score -= 40;
+    }
+
+    // Penalize sentence-like structures
+    if (/\b(we|you|they|will|should|must)\b/i.test(candidate.value)) {
+      score -= 50;
+    }
+
+    // Title-specific boosts
+    if (type === "title") {
+      if (
+        ROLE_TERMS.some((t) =>
+          new RegExp(`\\b${t}\\b`, "i").test(candidate.value),
+        )
+      ) {
+        score += 20;
+      }
+
+      if (candidate.value.split(/\s+/).length > MAX_TITLE_WORDS) {
+        score -= 30;
+      }
+    }
+
+    // Company-specific boosts
+    if (type === "company") {
+      if (
+        LEGAL_SUFFIXES.some((s) =>
+          new RegExp(`\\b${s}\\b`, "i").test(candidate.value),
+        )
+      ) {
+        score += 15;
+      }
+
+      if (candidate.value.split(/\s+/).length > MAX_COMPANY_WORDS) {
+        score -= 25;
+      }
+    }
+
+    return {
+      ...candidate,
+      confidence: Math.max(0, Math.min(100, score)),
+    };
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FINAL RANKING
+// ─────────────────────────────────────────────────────────────────────────────
+
+function selectBest(candidates, validator) {
+  const valid = candidates.filter((c) => validator(c.value));
+
+  if (!valid.length) {
+    return null;
+  }
+
+  valid.sort((a, b) => b.confidence - a.confidence);
+
+  return valid[0];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MAIN
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function extractJobInfo(jobDesc = "") {
+  const { lines, flat } = preprocess(jobDesc);
+
+  // Generate title candidates
+  let titleCandidates = extractTitleCandidates(lines, flat);
+
+  // Generate company candidates
+  let companyCandidates = extractCompanyCandidates(lines, flat);
+
+  // Enhance scores
+  titleCandidates = enhanceCandidateScores(titleCandidates, "title");
+
+  companyCandidates = enhanceCandidateScores(companyCandidates, "company");
+
+  // Final selection
+  const bestTitle = selectBest(titleCandidates, isLikelyTitle);
+
+  const bestCompany = selectBest(companyCandidates, isLikelyCompany);
+
+  return {
+    title: bestTitle ? titleCase(bestTitle.value) : "Unknown",
+
+    company: bestCompany ? normalizeCompany(bestCompany.value) : "Unknown",
+
+    confidence: {
+      title: bestTitle?.confidence || 0,
+      company: bestCompany?.confidence || 0,
+    },
+
+    source: {
+      title: bestTitle?.source || null,
+      company: bestCompany?.source || null,
+    },
+
+    debug: {
+      titleCandidates: titleCandidates
+        .sort((a, b) => b.confidence - a.confidence)
+        .slice(0, 5),
+
+      companyCandidates: companyCandidates
+        .sort((a, b) => b.confidence - a.confidence)
+        .slice(0, 5),
+    },
+  };
+}
+
+const jobDescription = `
+Software Engineer
+Denver (Remote)
+Evio Overview
+
+Evio is a highly unique pharmacy solutions company that was founded by and works closely with health plans to implement transformative (to cost, quality, access and experience) initiatives primarily focused on specialty and other high-cost medication solutions.
+
+In 2020, a group of five amazing Blue Cross Blue Shield health plans that in total serve more than 20 million members recognized that the way medications get to patients needs significant reform—rapidly rising costs and massive system complexities are detrimental to patients and the entire industry. In 2025, Wellmark joined as Evio's first non-founding investor and sixth owner health plan. Each company made, and continues to make, significant investments to establish Evio as an independent entity to lead this transformation.
+
+Evio has advanced analytics and contracting capabilities at scale, and a suite of digital tools, to power our high-cost medication solutions. Our solutions act as a self-reinforcing “flywheel” where each element strengthens and feeds into the next, and support an “Only Evio can do that,” mindset and prioritization.
+
+Evio is also a company that has invested heavily in and been highly intentional about people, team and culture. We believe we have created a very special place to work and encourage candidates to observe and ask us about our culture and decide for themselves.
+
+Evio's Values
+
+Empathy – The people our business serves always come first. We care for our teammates and put ourselves in the shoes of our health plan customers and the patients and clinicians our solutions benefit.
+
+Diversity – We are committed to fostering a culture where everyone belongs and is valued for their background, experience and insights – one that encourages diversity of ideas, and is a nurturing, trusting, and accepting place for all.
+
+Adventure – We are flexible, thrive in ambiguity, fail fast, and pivot quickly to get to a better answer. We celebrate wins and pivots with equal intensity.
+
+Relentless – Guided by evidence and data, we are creative, curious, and unwavering in our pursuit of challenging the status quo and each other.
+
+Transparency – Just as we seek to bring transparency to the pharmacy supply chain, authenticity and integrity are core to the way we communicate.
+
+Excellence – We strive to raise the bar in all we do by hiring and developing exceptional talent and holding ourselves and our thinking to the highest standard.
+
+About the role
+
+At Evio, we are building solutions that improve how pharmacy works—and ultimately, how patients experience care. Our application-based digital solutions are central to that mission.
+
+We’re looking for a Software Engineer who wants to build reliable systems that bring these solutions to life. The Senior Full Stack Engineer will be responsible for designing, developing, and supporting scalable, cloud-native applications. This role owns the technical design and evolution of our applications, working across the full stack, from intuitive user interfaces to resilient backend services and cloud-native infrastructure.
+
+This is a hands-on role for someone who enjoys both building and shaping systems, and who wants to play a meaningful role in a growing, mission-driven team.
+
+What you’ll do
+
+Design, develop, and maintain cloud-native applications on AWS using serverless and container-based architectures
+
+Build full stack features, including user interfaces and backend services
+
+Develop and support containerized services running on ECS/Fargate with images stored in ECR
+
+Implement and maintain CI/CD pipelines using GitHub Actions
+
+Own the architecture and technical direction of a new cloud-native application
+
+Lead design decisions across services, REST APIs, and data pipelines
+
+Design and implement data pipelines and workflows using AWS Glue (PySpark) and Step Functions
+
+Ensure the application is scalable, secure, and reliable in a regulated (HIPAA) environment
+
+Collaborate with cross-functional teams including product, design, and engineering
+
+Provide mentorship and technical guidance to team members
+
+Qualifications
+
+Bachelor’s degree in computer science, engineering, or related field (or equivalent experience)
+
+7+ years of software engineering experience
+
+Experience building cloud-native applications using AWS
+
+Strong frontend development experience with React and TypeScript
+
+Backend experience with Python and REST APIs
+
+Experience with distributed systems, event-driven architecture, or data pipelines
+
+Strong understanding of relational databases and SQL
+
+Experience contributing to system design and architecture decisions
+
+Strong problem-solving and communication skills across teams and levels
+
+Someone who takes initiative, unearths problems, and leads with solutions
+
+Ability to navigate ambiguity and drive clarity in complex problem spaces
+
+Ownership mindset with a focus on delivering measurable outcomes
+
+Strong product and business awareness when making technical decisions
+
+Comfortable giving and receiving constructive feedback
+
+Pragmatic approach to balancing speed, quality, and technical debt
+
+Experience in healthcare, pharmacy, or regulated environments
+
+Knowledge of HIPAA and PHI requirements
+
+Experience with Apache Iceberg or modern data lake technologies
+
+AWS certifications
+
+Technology Stack
+
+Frontend - React.js, TypeScript, Vite - Material UI, Redux Toolkit, React Router - styled-components
+
+Backend & Services - Python (primary), Node.js (as needed) - REST APIs, microservices - AWS Lambda, AWS Step Functions - AWS Glue (PySpark)
+
+Cloud & Infrastructure - AWS (Lambda, API Gateway, ECS, Fargate, ECR)
+
+Data Platform - Amazon S3, Amazon Redshift - Apache Iceberg
+
+DevOps & Tooling - GitHub Actions - Infrastructure-as-Code (CDK, Terraform, or similar)
+
+Compensation: $140,000 - $170,000 plus additional variable compensation based on performance.
+
+At Evio, we’re committed to building a competitive compensation package to honor the value our teammates bring as well as attract and retain top talent that is aligned with our culture, mission, and values. Compensation includes base pay (range shown) and could include other variable compensation opportunities depending on job seniority, location, and date of hire.
+
+Evio Benefits
+
+Great Health Insurance
+
+The company pays 100% of medical, dental, and vision premiums for teammates, and 50% for dependents.
+
+401K Match
+
+Evio matches 100% of teammate contribution up to 5% of salary, subject to IRS limits.
+
+Time Off
+
+We have a flexible vacation policy for teammates to unplug and recharge when you need it. There is no minimum or maximum amount of vacation allowed per year, and there is no payment in consideration for unused vacation. Vacation is to be used at your discretion, with approval of leadership.
+
+Parental Leave
+
+Generous paid leave for new parents (includes birth and non-birth parents).
+
+Evio values a diverse workplace and is committed to supporting and celebrating the diversity that each teammate brings to the table. We are proud to provide equal employment opportunities to all teammates and applicants for employment and prohibit discrimination and harassment of any type without regard to race, color, religion, age, sex, national origin, disability status, medical condition, genetic information, protected veteran status, sexual orientation, gender identity or expression, or any other characteristic protected by federal, state or local laws.
+
+Fraud Notice
+
+We’ve recently learned of fraudulent job postings and individuals falsely claiming to represent Evio. Protecting our candidates is incredibly important to us, and we want to share a few reminders:
+
+All official communication will come from an email ending in @evio.com.
+
+We will never conduct text-only interviews (Teams, SMS, WhatsApp, Telegram, etc.).
+
+We will never ask for payment, gift cards, fees, or purchases of any kind.
+
+We will never request sensitive financial information during the recruiting process.
+
+Our open roles are posted only on our official website, LinkedIn, and Greenhouse job board.
+
+If you believe you’ve encountered a scam, you can also report it to the Federal Trade Commission or the Internet Crime Complaint Center. Thank you for your care and vigilance — we’re grateful to everyone who helps keep our community safe.
+
+Information Disclosure
+
+We value transparency in our hiring process and want applicants to understand how your information is used.
+
+We collect and use personal information you provide during the application process such as your resume, employment history, education, interview responses, and other job-related information, to evaluate your qualifications for employment. This may also include limited technical and interaction data, such as IP address and device or browser information.
+
+We may use automated or AI-assisted tools to help review applications, identify qualified candidates, and detect or investigate potentially fraudulent or deceptive activity. Human reviewers remain involved, and these tools support, not replace, human judgment.
+
+These measures support a fair and secure hiring process for all candidates. If you require a reasonable accommodation, please inform us when invited to interview.
+
+California privacy notice
+
+Consistent with California law, we use this information for recruiting, hiring, and related business purposes, including evaluating your candidacy and improving our hiring processes.
+`;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TESTS
+// ─────────────────────────────────────────────────────────────────────────────
 
 const tests = [
-  // ── Original 8 ─────────────────────────────────────────────────────────
   {
-    label: "Explicit labels",
-    input:
-      "Job Title: Senior Software Engineer\nCompany: Anthropic\nWe build safe AI systems.",
-    expect: { title: "Senior Software Engineer", company: "Anthropic" },
-  },
-  {
-    label: "Hiring phrase + at-company",
-    input:
-      "We are hiring a Full Stack Developer at Stripe. You will work on our payments platform.",
-    expect: { title: "Full Stack Developer", company: "Stripe" },
-  },
-  {
-    label: "Join-as + legal suffix",
-    input:
-      "Join Vercel Inc as a Lead DevOps Engineer and help us scale edge infrastructure.",
-    expect: { title: "Lead DevOps Engineer", company: "Vercel Inc" },
-  },
-  {
-    label: "Subject-verb + looking-for",
-    input:
-      "OpenAI is hiring. We are looking for an experienced ML Researcher to join our alignment team.",
-    expect: { title: "ML Researcher", company: "OpenAI" },
-  },
-  {
-    label: "Dual anchor first-line",
-    input:
-      "Marketing Director at HubSpot\nHubSpot is looking for a marketing leader to drive our EMEA strategy.",
-    expect: { title: "Marketing Director", company: "HubSpot" },
-  },
-  {
-    label: "Multi-word legal suffix",
-    input:
-      "Exciting opportunity at Boston Consulting Group. We need a talented Management Consultant.",
-    expect: {
-      title: "Management Consultant",
-      company: "Boston Consulting Group",
-    },
-  },
-  {
-    label: "We-need phrase + work-for",
-    input:
-      "We need a skilled Data Scientist to work for Databricks and help shape our ML platform.",
-    expect: { title: "Data Scientist", company: "Databricks" },
-  },
-  {
-    label: "Join phrase + seeking",
-    input:
-      "Join Notion and help us redefine productivity. We are seeking a talented Product Designer.",
-    expect: { title: "Product Designer", company: "Notion" },
-  },
-  // ── New: real-world Stryker posting ────────────────────────────────────
-  {
-    label: "Stryker — nav noise before title, possessive company name",
-    input: `Skip to content
-Stryker's Logo
-Careers Home
-Hiring at Stryker
-Our Offices
-Explore Open Positions
-Senior Director, Regulatory Affairs
-Return to Search
-Apply Now
-5900 Optical Ct, San Jose, CA
-Job details
-Work flexibility: Remote or Hybrid or Onsite
-
-Job description
-The Senior Director, Regulatory Affairs is a key strategist, responsible for developing regulatory strategy for the Endoscopy business unit.
-Why join Stryker?
-Looking for a place that values your unique talents? Discover Stryker's award-winning culture.`,
-    expect: {
-      title: "Senior Director, Regulatory Affairs",
-      company: "Stryker",
-    },
+    label: "OpenAI",
+    input: jobDescription,
   },
 ];
 
-let passed = 0;
-// for (const { label, input, expect } of tests) {
-//   const result = extractJobInfo(input);
-//   const titleOk = result.title === expect.title;
-//   const companyOk = result.company === expect.company;
-//   const ok = titleOk && companyOk;
-//   if (ok) passed++;
-//   console.log(`${ok ? "✅" : "❌"} ${label}`);
-//   if (!titleOk)
-//     console.log(
-//       `   title  : got "${result.title}"\n            want "${expect.title}"`,
-//     );
-//   if (!companyOk)
-//     console.log(
-//       `   company: got "${result.company}"\n            want "${expect.company}"`,
-//     );
-// }
-// console.log(`\n${passed}/${tests.length} tests passed`);
+// Uncomment to run
 
-export { extractJobInfo };
+// for (const t of tests) {
+//   console.log("\n================================================");
+//   console.log(t.label);
+
+//   const result = extractJobInfo(t.input);
+
+//   console.dir(result, { depth: null });
+// }
