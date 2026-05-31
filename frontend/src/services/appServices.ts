@@ -44,6 +44,47 @@ interface ResumeJson {
   projects: object[];
   professionalExperiences: ProfessionalExperience[];
 }
+
+// services/job.service.ts
+
+type UpdateJobAppPayload = {
+  id: number;
+  company: string;
+};
+
+export const updateJobApp = async ({ id, company }: UpdateJobAppPayload) => {
+  const response = await fetch(`${BASE_URL}/apps/update-jobs/${id}`, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: JSON.stringify({
+      company,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to update job application");
+  }
+
+  return data;
+};
+
+export const deleteJobs = async (id: number) => {
+  const response = await fetch(`${BASE_URL}/apps/jobs/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to create note");
+  }
+
+  return await response.json();
+};
 export const generateInterviewAnswer = async (
   payload: InterviewRequest,
 ): Promise<InterviewResponse> => {
@@ -121,6 +162,7 @@ const deleteJob = async (jobId: number) => {
   try {
     const response = await fetch(`${BASE_URL}/apps/jobs/${jobId}`, {
       method: "DELETE",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         // add auth token if needed

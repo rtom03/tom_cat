@@ -5,6 +5,7 @@ import {
   deleteJob,
   generateInterviewResponse,
   getJobs,
+  updateJobApp,
 } from "../controller/resumeController.js";
 import { protectRoute } from "../middleware/authMiddleware.js";
 
@@ -14,6 +15,7 @@ isResumeRoute.post("/create-app", protectRoute, createApp);
 isResumeRoute.get("/get-apps", protectRoute, getJobs);
 isResumeRoute.post("/job-ques", generateInterviewResponse);
 isResumeRoute.post("/create-resume", protectRoute, createResume);
+isResumeRoute.put("/update-jobs/:id", protectRoute, updateJobApp);
 
 isResumeRoute.delete("/jobs/:id", protectRoute, deleteJob);
 export { isResumeRoute };

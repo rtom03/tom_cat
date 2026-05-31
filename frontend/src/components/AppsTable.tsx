@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { BASE_URL } from "../services/appServices";
-import { Loader } from "lucide-react";
 import { useInterviewAI } from "../hooks/useInterviewAi";
+import { useDeleteJob, useUpdateJobApp } from "../api/appMutation";
+import { toast } from "react-toastify";
+import Loader from "./Loader";
 
 interface Job {
   id: number;
@@ -136,7 +137,7 @@ const JobModal = ({
                 className="text-gray-500 hover:text-white transition-colors"
                 type="submit"
               >
-                {loading ? <Loader className="animate-spin" /> : "➜"}
+                {loading ? <Loader /> : "➜"}
               </button>
             </div>
 
@@ -194,8 +195,12 @@ const JobsTable = ({
   loading: boolean;
   error: boolean;
 }) => {
+  const { mutate: updateJobApp } = useUpdateJobApp();
+
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
+  const { mutate, isPending } = useDeleteJob();
+  const notify = (text: string) => toast(text);
 
   const handleCheckboxChange = (jobId: number, checked: boolean) => {
     if (checked) {
@@ -205,30 +210,30 @@ const JobsTable = ({
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!selectedJobId) return;
 
     const confirmed = window.confirm(
       "Are you sure you want to delete this item?",
     );
+
     if (!confirmed) return;
-    console.log(selectedJob);
 
-    try {
-      const res = await fetch(`${BASE_URL}/apps/jobs/${selectedJobId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+    mutate(selectedJobId, {
+      onSuccess: () => {
+        notify("Apps deleted successfully");
+        console.log("Job deleted:", selectedJobId);
 
-      if (!res.ok) throw new Error("Delete failed");
+        setSelectedJobId(null);
+      },
 
-      console.log("Job deleted:", selectedJobId);
-      window.location.href = "/";
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSelectedJobId(null);
-    }
+      onError: (error: Error) => {
+        notify(`App deleting failed: ${error.message}`);
+        console.error(error);
+
+        setSelectedJobId(null);
+      },
+    });
   };
 
   if (loading && jobs.length === 0)
@@ -243,7 +248,7 @@ const JobsTable = ({
             className="w-full bg-red-600 hover:bg-red-700 active:bg-red-800 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold py-3 rounded transition-colors text-base mb-4 flex items-center justify-center gap-2 mt-5"
             onClick={handleDelete}
           >
-            Delete
+            {isPending ? <Loader /> : "Delete"}
           </button>
         )}
         <p className="text-sm text-gray-400 mb-2">Total: {jobs.length}</p>
@@ -268,7 +273,6 @@ const JobsTable = ({
               <tr
                 key={job.id}
                 className="border-b border-[#333] hover:bg-[#1a1a1a] transition-colors cursor-pointer"
-                onClick={() => setSelectedJob(job)} // ✅ open modal on row click
               >
                 <td
                   className="p-3 border border-[#333]"
@@ -281,8 +285,34 @@ const JobsTable = ({
                     }
                   />
                 </td>
-                <td className="p-3 border border-[#333]">{job.company}</td>
-                <td className="p-3 border border-[#333]">{job.title}</td>
+                <td
+                  className="p-3 border border-[#333]"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault(); // stops newline being inserted
+                      const newValue = e.currentTarget.textContent ?? "";
+                      if (newValue !== job.company) {
+                        updateJobApp({ id: job.id, company: newValue });
+                      }
+                      e.currentTarget.blur(); // remove focus after save
+                    }
+                    if (e.key === "Escape") {
+                      e.currentTarget.textContent = job.company; // revert
+                      e.currentTarget.blur();
+                    }
+                  }}
+                >
+                  {job.company}
+                </td>
+                <td
+                  className="p-3 border border-[#333]"
+                  onClick={() => setSelectedJob(job)}
+                >
+                  {" "}
+                  {job.title}
+                </td>
                 <td className="p-3 border border-[#333] text-gray-400 text-xs">
                   {new Date(job.createdAt).toLocaleString()}
                 </td>
@@ -315,8 +345,6 @@ const JobsTable = ({
           onClose={() => setSelectedJob(null)}
         />
       )}
-
-      {/* Modal */}
     </>
   );
 };

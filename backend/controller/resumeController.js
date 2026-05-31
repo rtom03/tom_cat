@@ -44,6 +44,54 @@ const createApp = async (req, res) => {
   }
 };
 
+// PUT /jobs/:id
+
+export const updateJobApp = async (req, res) => {
+  try {
+    // const { id } = req.params;
+    const id = parseInt(req.params.id); // was just req.params.id (a string)
+
+    const { company } = req.body;
+    const userId = req.user.id; // assuming auth middleware adds user
+
+    // make sure the job belongs to the logged-in user
+    const existingJob = await prisma.job_Apps.findFirst({
+      where: {
+        id,
+        createdById: userId,
+      },
+    });
+
+    if (!existingJob) {
+      return res.status(404).json({
+        success: false,
+        message: "Job application not found",
+      });
+    }
+
+    const updatedJob = await prisma.job_Apps.update({
+      where: {
+        id,
+      },
+      data: {
+        ...(company && { company }),
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: updatedJob,
+    });
+  } catch (error) {
+    console.error("Update job app error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 export const generateInterviewResponse = async (req, res) => {
   try {
     const { jobId, question } = req.body;
