@@ -13,7 +13,7 @@ const isResumeRoute = express.Router();
 
 isResumeRoute.post("/create-app", protectRoute, createApp);
 isResumeRoute.get("/get-apps", protectRoute, getJobs);
-isResumeRoute.post("/job-ques", generateInterviewResponse);
+isResumeRoute.post("/job-ques", protectRoute, generateInterviewResponse);
 isResumeRoute.post("/create-resume", protectRoute, createResume);
 isResumeRoute.put("/update-jobs/:id", protectRoute, updateJobApp);
 

@@ -96,6 +96,10 @@ export const generateInterviewResponse = async (req, res) => {
   try {
     const { jobId, question } = req.body;
 
+    const userId = req.user.userId;
+
+    console.log(userId);
+
     if (!jobId || !question) {
       return res.status(400).json({
         message: "jobId and question are required",
@@ -107,6 +111,14 @@ export const generateInterviewResponse = async (req, res) => {
       where: { id: Number(jobId) },
     });
 
+    const user = await prisma.user.findFirst({
+      where: {
+        id: Number(userId),
+      },
+      include: {
+        resumes: true,
+      },
+    });
     if (!job) {
       return res.status(404).json({
         message: "Job not found",
@@ -118,6 +130,7 @@ export const generateInterviewResponse = async (req, res) => {
       jobDesc: job.job_desc,
       company: job.company,
       title: job.title,
+      userResume: user.resumes,
       question,
     });
 

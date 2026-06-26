@@ -9,6 +9,7 @@ export const BASE_URL = "/api";
 export interface InterviewRequest {
   jobId: number;
   question: string;
+  // userId: string;
 }
 
 export interface InterviewResponse {
@@ -90,9 +91,9 @@ export const generateInterviewAnswer = async (
 ): Promise<InterviewResponse> => {
   const response = await fetch(`${BASE_URL}/apps/job-ques`, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      credentials: "include",
     },
     body: JSON.stringify(payload),
   });

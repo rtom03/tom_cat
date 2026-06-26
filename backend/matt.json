@@ -1,23 +1,23 @@
 {
-  "title": "Senior Software Engineer",
-  "summary": "Senior Software Engineer with over 10 years of experience building scalable web and mobile applications across startup and enterprise environments. Expert in full-stack development using React, TypeScript, Node.js, and Python, with deep experience designing microservices, REST APIs, and cloud-native systems on AWS. Passionate about building performant, user-focused products and mentoring engineering teams while delivering reliable, production-ready software.",
-  "experience": "6 years",
+  "title": "Senior Software Developer | AI Agents, Full-Stack Systems & Cloud Engineering",
+  "summary": "Senior Software Developer with 12 years of experience delivering AI-enabled applications, cloud-native services, secure enterprise integrations, and responsive web platforms. Strong hands-on background in Python, Node.js, Java, React, and Angular, with recent focus on LLM agents, MCP servers, RAG, tool calling, human-in-the-loop approvals, OAuth 2.0 integrations, auditability, and self-hosted deployments. Experienced in solution design, client discovery, CI/CD ownership, production support, technical mentoring, and translating complex business requirements into reliable software.",
+  "experience": "12 years",
   "personalDetail": [
     {
       "contact": "(512) 360 (0907)",
-      "email": "matthewdelano0201@gmail.com",
-      "address": "1035 Cash Street",
-      "linkedin": "https://www.linkedin.com/in/matthew-delano-2850ab292/"
+      "email": "Preston.lam91@outlook.com",
+      "address": "40971 GAUCHO WAY",
+      "linkedin": "https://www.linkedin.com/in/preston-lam-software-engineer/"
     }
   ],
   "education": [
     {
-      "school": "New Jersey Institute of Technology",
+      "school": "University Of Houston",
       "degree": "Bachelor of Science",
       "field": "Computer Science",
-      "startYear": 2009,
+      "startYear": 2010,
       "endYear": 2014,
-      "location": "Newark, NJ"
+      "location": "Calhoun Road, Houston, TX"
     }
   ],
   "skills": [
@@ -76,94 +76,110 @@
     "GitLab",
     "Agile",
     "Microservices Architecture",
-    "Serverless Architecture"
+    "Serverless Architecture",
+    "LLM Agents",
+    "Claude Agent SDK",
+    "OpenClaw",
+    "Model Context Protocol (MCP)",
+    "Agentic Workflows",
+    "RAG, Tool Calling",
+    "Prompt Engineering"
   ],
   "certifications": [],
   "projects": [],
   "professionalExperiences": [
     {
-      "companyName": "EPIC",
-      "title": "Senior Software Engineer",
-      "startDate": "11/2023",
-      "endDate": "10/2025",
+      "companyName": "Auctane",
+      "title": "Senior Software Engineer - AI Platform",
+      "startDate": "01/2023",
+      "endDate": "Present",
       "location": "Remote",
       "responsibilities": [
-        "Built and optimized RESTful APIs and microservices using Node.js and NestJS to support financial data integrations and improve system performance.",
-        "Architected scalable backend services supporting financial web and mobile applications using Node.js.",
-        "Developed reusable UI components with React and TailwindCSS to maintain a consistent design system across financial products.",
-        "Implemented Python-based data processing services to automate analytics and reporting workflows.",
-        "Collaborated with designers, product managers, and mobile engineers to deliver new features and improve product functionality.",
-        "Containerized services with Docker and deployed applications within AWS infrastructure.",
-        "Implemented CI/CD pipelines and automated testing to improve deployment reliability and release speed.",
-        "Mentored engineers and led engineering discussions on architecture and product improvements."
+        "Technology:Python, FastAPI, React, TypeScript, PostgreSQL, AWS, Azure, Docker, Kubernetes, Terraform, MCP, LLM APIs",
+        "Designed and delivered enterprise AI-agent workspaces that combined Python orchestration services, React administration tools, MCP-based skills, and self-hosted deployment options for security-conscious customers.",
+        "Built a policy-enforcement hook layer with strict tool scopes, identity-aware authorization, human approval gates, secrets isolation, and tamper-evident audit events before agents could execute sensitive actions.",
+        "Implemented secure REST and OAuth 2.0 integrations for Microsoft Graph, HubSpot, ticketing platforms, and internal APIs, including token rotation, rate-limit handling, retry controls, and connector health monitoring.",
+        "Owned containerized delivery into AWS and Azure environments using Terraform, Kubernetes, and GitHub Actions, reducing environment setup time and standardizing promotion, rollback, and observability practices.",
+        "Led client discovery, architecture workshops, onboarding, training, and post-launch support while translating operational needs into scoped agent skills, acceptance criteria, and phased delivery plans.",
+        "Used Cursor, Claude Code, and automated test generation to accelerate prototyping, documentation, refactoring, and code review while preserving human validation and production engineering standards."
       ],
       "technologies": [
-        "React",
-        "Node.js",
-        "NestJS",
         "Python",
-        "TailwindCSS",
+        "FastAPI",
+        "React",
+        "Typescript",
+        "PostgreSQL",
         "Docker",
         "AWS",
-        "CI/CD"
+        "CI/CD",
+        "Azure",
+        "Kubernetes",
+        "Terraform",
+        "LLM APIS"
       ]
     },
     {
-      "companyName": "Paxos",
+      "companyName": "Q2 Holdings | Austin, TX",
       "title": "Senior Software Engineer",
-      "startDate": "06/2022",
-      "endDate": "10/2023",
+      "startDate": "03/2020",
+      "endDate": "12/2022",
       "location": "Remote",
       "responsibilities": [
-        "Developed consumer-facing financial web applications using React, TypeScript, Python, and Django.",
-        "Maintained frontend architecture and established code quality standards across the engineering team.",
-        "Diagnosed and resolved operational issues to ensure reliability of mission-critical financial systems.",
-        "Collaborated with business stakeholders to translate financial and regulatory requirements into technical solutions.",
-        "Managed millions of financial transaction records using PostgreSQL while ensuring data integrity and compliance.",
-        "Improved infrastructure performance and deployment pipelines to increase engineering delivery velocity.",
-        "Built automated testing suites using Jest and Cypress to improve software quality.",
-        "Mentored junior engineers and conducted code reviews to maintain engineering standards."
+        "Developed high-volume digital banking services with Node.js, NestJS, React, PostgreSQL, and event-driven messaging, supporting secure customer and operations workflows across multiple financial institutions.",
+        "Created AI-assisted service and knowledge workflows using retrieval-augmented generation, structured tool calling, vector search, and grounded responses over approved product, policy, and support content.",
+        "Designed API integrations and webhook pipelines with idempotency, encryption, OAuth 2.0, circuit breakers, retries, and end-to-end audit trails for regulated financial data exchanges.",
+        "Established prompt, tool, latency, token, and response-quality telemetry; introduced offline evaluations and failure reviews that improved the reliability of early AI-enabled features.",
+        "Automated build, test, security-scan, and deployment pipelines for Docker and Kubernetes workloads on AWS, improving release frequency while maintaining change-control and rollback requirements.",
+        "Partnered with product, security, implementation, and customer-support teams to prioritize releases, resolve incidents, and mentor engineers through architecture and code reviews."
       ],
       "technologies": [
+        "Node.js",
+        "NestJS",
         "React",
         "TypeScript",
-        "Python",
-        "Django",
         "PostgreSQL",
-        "Jest",
-        "Cypress"
+        "Redis",
+        "Kafka",
+        "AWS",
+        "Docker",
+        "Kubernetes",
+        "RAG",
+        "LLM Agents"
       ]
     },
     {
-      "companyName": "Opendoor",
-      "title": "Full-stack Developer",
-      "startDate": "11/2017",
-      "endDate": "04/2020",
+      "companyName": "PROS | Houston, TX",
+      "title": "Software Engineer III - Pricing Intelligence",
+      "startDate": "06/2017",
+      "endDate": "02/2020",
       "location": "Remote",
       "responsibilities": [
-        "Built and maintained responsive real estate web applications using React, Python, and AWS components, enhancing the efficiency of digital home transactions.",
-        "Designed and developed user-friendly web interfaces with Angular and React, improving the homebuying and selling experience for customers.",
-        "Mentored and guided junior software engineers, fostering a culture of collaboration and continuous improvement through architecture discussions, design reviews, and code evaluations.",
-        "Developed and optimized backend services with Django and GraphQL, improving data processing and integration with third-party real estate and financial APIs.",
-        "Collaborated closely with product, operations, and data teams to identify opportunities for process improvement, streamlining workflows and enhancing automation in real estate transactions.",
-        "Evaluated, integrated, and extended commercial products using REST web services and message queues, contributing to the scalability and efficiency of digital property valuation and transaction systems.",
-        "Troubleshot and resolved software issues across multiple layers, including deployment, configuration, and both server-side and client-side challenges."
+        "Built Python services and Angular applications for pricing optimization, forecasting, workflow configuration, and analyst review across data-intensive B2B commerce use cases.",
+        "Integrated machine-learning inference and recommendation outputs into production workflows with confidence thresholds, explanation data, exception queues, and human review for high-impact decisions.",
+        "Developed reusable data-ingestion and transformation pipelines for customer transactions, product catalogs, market signals, and model features, improving validation and traceability across large datasets.",
+        "Created secure REST APIs and integration adapters for CRM, ERP, and commerce platforms, with role-based access, OAuth authentication, scheduled synchronization, and resilient error recovery.",
+        "Implemented monitoring for data quality, model-serving latency, drift indicators, application errors, and batch failures, enabling faster troubleshooting and more predictable customer deployments.",
+        "Supported solution consultants and enterprise customers during discovery, configuration, user acceptance testing, release planning, and post-production issue resolution."
       ],
       "technologies": [
-        "React",
-        "TypeScript",
         "Python",
         "Django",
+        "FastAPI",
+        "Angular",
+        "RxJS",
         "PostgreSQL",
-        "Jest",
-        "Cypress"
+        "Redis",
+        "Azure",
+        "GCP",
+        "Machine Learning",
+        "REST APIs"
       ]
     },
     {
-      "companyName": "Sideshow ",
-      "title": "Full-stack Developer",
-      "startDate": "04/2017",
-      "endDate": "10/2020",
+      "companyName": "Alkami Technology | Plano, TX",
+      "title": "Full-Stack Software Engineer",
+      "startDate": "08/2015",
+      "endDate": "05/2017",
       "location": "Remote",
       "responsibilities": [
         "Worked mostly on the recommendation pipeline, the team’s key product, which significantly improved the company’s revenue from ads. Added new recommendation types, migrated to a new way of estimating revenue uplifts, simplified and optimized parts of it.",
@@ -175,13 +191,16 @@
         "Designed and maintained responsive web layouts using HTML, CSS, and Material UI, ensuring a consistent look and feel across all platforms."
       ],
       "technologies": [
-        "React",
+        "Node.js",
+        "Express.js",
+        "Angular",
+        "JavaScript",
         "TypeScript",
-        "Python",
-        "Django",
         "PostgreSQL",
-        "Jest",
-        "Cypress"
+        "MongoDB",
+        "Redis",
+        "REST APIs",
+        "AWS"
       ]
     }
   ]

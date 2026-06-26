@@ -1,4 +1,7 @@
 import OpenAI from "openai";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // set your API key in env
@@ -18,38 +21,74 @@ const generateInterviewAnswer = async ({
   company,
   title,
   question,
+  userResume,
 }) => {
-  const prompt = `
-You are an expert interview coach helping a candidate prepare.
+  const candidateProfile = `
+Title:
+${userResume?.title || ""}
 
-Job Description:
-${jobDesc}
+Professional Summary:
+${userResume?.summary || ""}
 
-Company: ${company}
-Role: ${title}
+Skills:
+${userResume?.skills || ""}
 
-Interview Question:
-${question}
+Experience:
+${userResume?.experience || ""}
 
-Instructions:
-  
-- Provide a confident and professional answer.
-- Align response with company needs.
-- Highlight relevant skills implied in the job description.
-- Keep it concise, simple, short, relatable but impactful...always make sure answer is one sentence.
+Projects:
+${userResume?.projects || ""}
 
+Certifications:
+${userResume?.certifications || ""}
 `;
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
-    messages: [
-      { role: "system", content: "You are a professional interview coach." },
-      { role: "user", content: prompt },
-    ],
     temperature: 0.7,
+    messages: [
+      {
+        role: "system",
+        content: `
+You are an expert interview coach.
+
+Your task is to answer interview questions as if you are the candidate.
+
+Rules:
+- Use the candidate's resume as the primary source of truth.
+- Reference the candidate's actual experience, skills, projects, certifications, and achievements whenever relevant.
+- Align the answer with the job description and company needs.
+- Never invent experience, technologies, companies, or accomplishments that do not exist in the resume.
+- If the resume lacks relevant information, use transferable skills and professional reasoning.
+- Keep the answer concise, natural, confident, and impactful.
+- Return ONLY the answer.
+- The answer must be exactly one sentence.
+        `,
+      },
+      {
+        role: "system",
+        content: `Candidate Resume:\n${candidateProfile}`,
+      },
+      {
+        role: "user",
+        content: `
+Job Description:
+${jobDesc}
+
+Company:
+${company}
+
+Role:
+${title}
+
+Interview Question:
+${question}
+        `,
+      },
+    ],
   });
 
-  return completion.choices[0].message.content;
+  return completion.choices[0].message.content.trim();
 };
 
 async function extractJobInfoAi(job_desc) {
