@@ -44,6 +44,60 @@ const createApp = async (req, res) => {
   }
 };
 
+const generateCv = async (req, res) => {
+  const totalStart = Date.now();
+
+  try {
+    const { job_desc } = req.body;
+
+    console.time("1. Fetch user");
+    const userId = req.user.userId;
+    console.timeEnd("1. Fetch user");
+
+    // console.log(userId);
+    // const userId = req.user.id; // assuming user is authenticated
+
+    // 1️⃣ Check for remote
+    console.time("2. Determine remote");
+    const remote = /remote/i.test(job_desc);
+    console.timeEnd("2. Determine remote");
+
+    // const company = extractCompany(job_desc);
+    // let title = extractTitle(job_desc);
+    console.time("3. Extract Job Info");
+    let job_info = await extractJobInfo(job_desc);
+    console.timeEnd("3. Extract Job Info");
+
+    console.time("4. GPT tailoring");
+    const tailoredResume = await tailorResume(userId, job_desc);
+    console.timeEnd("4. GPT tailoring");
+
+    // console.log(tailoredResume);
+    // 4️⃣ Create job record
+    console.time("5. Create App Data tailoring");
+    const job = await prisma.job_Apps.create({
+      data: {
+        job_desc,
+        company: job_info.company,
+        title: job_info.title,
+        remote,
+        createdBy: {
+          connect: { id: userId }, // ✅ correct way to link a relation
+        },
+      },
+    });
+    console.timeEnd("5. Create App Data tailoring");
+    res.status(201).json({
+      job,
+      resume: tailoredResume,
+    });
+    console.log(`Total: ${Date.now() - totalStart}ms`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // PUT /jobs/:id
 
 export const updateJobApp = async (req, res) => {
@@ -235,6 +289,7 @@ const createResume = async (req, res) => {
         title,
         summary,
         experience,
+        personalDetail: JSON.stringify(personalDetail),
         education: JSON.stringify(education),
         skills: JSON.stringify(skills),
         certifications: JSON.stringify(certifications),
@@ -257,4 +312,4 @@ const createResume = async (req, res) => {
 };
 
 //
-export { createApp, getJobs, deleteJob, createResume };
+export { createApp, generateCv, getJobs, deleteJob, createResume };

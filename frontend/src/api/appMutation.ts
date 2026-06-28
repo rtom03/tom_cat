@@ -1,11 +1,27 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteJobs, generateApp, updateJobApp } from "../services/appServices";
+import {
+  deleteJobs,
+  generateApp,
+  generateCv,
+  updateJobApp,
+} from "../services/appServices";
 
 export const useGenerateApp = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: generateApp,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobs"] }); // refreshes the jobs list
+    },
+  });
+};
+
+export const useGenerateCv = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: generateCv,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["jobs"] }); // refreshes the jobs list
     },

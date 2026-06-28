@@ -18,3 +18,23 @@ export const formatCVFileName = (fullName?: string): string => {
     .replace(/\s+/g, "-"); // spaces → hyphens
   return `${slug}.pdf`;
 };
+
+export const parseJson = <T>(value: unknown, fallback: T): T => {
+  if (value == null) return fallback;
+
+  // Already parsed
+  if (Array.isArray(value) || typeof value === "object") {
+    return value as T;
+  }
+
+  // Parse only strings
+  if (typeof value === "string") {
+    try {
+      return JSON.parse(value) as T;
+    } catch {
+      return fallback;
+    }
+  }
+
+  return fallback;
+};

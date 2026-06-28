@@ -1,10 +1,6 @@
-export const BASE_URL = "/api";
-// export const BASE_URL = "http://localhost:8000/api";
-
-// "http://localhost:8000/api";
-
-//  "/api";
-// ("http://localhost:8000/api");
+export const BASE_URL = import.meta.env.DEV
+  ? "http://localhost:8000/api"
+  : "https://tom-cat.onrender.com/api";
 
 export interface InterviewRequest {
   jobId: number;
@@ -150,6 +146,20 @@ const generateApp = async (job_desc: string) => {
   return await response.json();
 };
 
+const generateCv = async (job_desc: string) => {
+  // console.log(`${BASE_URL}/apps/create-app`);
+  const response = await fetch(`${BASE_URL}/apps/generate-cv`, {
+    method: "POST",
+    credentials: "include", // ✅ sends cookies with request
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ job_desc }),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to create note");
+  }
+  return await response.json();
+};
+
 const getJobs = async () => {
   const response = await fetch(`${BASE_URL}/apps/get-apps`, {
     method: "GET",
@@ -203,6 +213,7 @@ const uploadJsonResume = async (json: ResumeJson) => {
 export {
   loginUser,
   generateApp,
+  generateCv,
   getJobs,
   deleteJob,
   registerUser,

@@ -216,7 +216,7 @@ type Education = {
   description?: string;
 };
 
-type Resume = {
+export type Resume = {
   name: string;
   title?: string; // e.g. "Senior SharePoint-Power Apps Developer"
   phone?: string;

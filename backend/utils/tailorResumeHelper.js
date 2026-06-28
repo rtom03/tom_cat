@@ -9,6 +9,7 @@ const openai = new OpenAI({
 
 export const tailorResume = async (userId, jobDesc) => {
   // 1️⃣ Fetch resume with user name
+  console.log("GPT HIT");
   const resume = await prisma.resume.findFirst({
     where: { userId },
     include: {
@@ -39,37 +40,78 @@ export const tailorResume = async (userId, jobDesc) => {
     professionalExperiences: resume.professionalExperiences,
   };
 
+  const resumeDataToOptimize = {
+    summary: resume.summary,
+    skills: resume.skills,
+    professionalExperiences: resume.professionalExperiences.map((exp) => ({
+      companyName: exp.companyName,
+      title: exp.title,
+      responsibilities: exp.responsibilities,
+    })),
+  };
+
   // 3️⃣ AI Prompt
   const prompt = `
-You are an expert resume writer.
+You are an expert technical resume writer.
 
-A job description and a candidate's resume are provided.
+You will receive:
 
-Your task:
-- Analyze the job description
-- Tailor the candidate's resume to better match the job
-- Adjust wording of experience, summary, and skills to align with the job
-- Do NOT fabricate fake companies or experiences
-- Keep all information truthful but optimize it for the job
+1. A job description.
+2. A candidate's resume.
 
-Guidelines:
+Your task is ONLY to optimize the resume.
 
-- Rewrite the summary to match the job
-- Highlight the most relevant skills
-- Adjust skills to match all the prefered programming language mention in the job desc
-- Adjust past responsibilities to resemble the job with references to the prefered programming languages
-- Maintain the same JSON structure
-- the user has ${resumeData.experience}
-- Do not make any changes to changes to this ----> ${resume.title} leave it as it is
-- each past job responsibilities bullet point must be 8 as minimum and can be more than 8 with more words(recommended) 
+Rules:
 
-Return ONLY valid JSON.
+- Rewrite ONLY:
+  • summary
+  • skills
+  • professionalExperiences[].responsibilities
 
+- Do NOT change:
+  • company names
+  • job titles
+  • dates
+  • number of jobs
+  
+Responsibilities:
+
+Rewrite each bullet to match the job description.
+
+- 18–30 words
+- ATS-friendly
+- Strong action verbs
+- Minimum 8 bullets per job
+
+Skills:
+
+- Reorder skills by relevance.
+- Remove irrelevant skills.
+- Prioritize skills mentioned in the job description.
+- invent a skill the candidate doesn't already possess.
+
+Summary:
+
+- Rewrite the summary to target the role.
+- Mention the most relevant technologies from the job description.
+- Keep it between 70 and 120 words.
+
+Return ONLY valid JSON having exactly this structure:
+
+{
+  "summary": "...",
+  "skills": [...],
+  "professionalExperiences": [
+    {
+      "responsibilities": [...]
+    }
+  ]
+}
 JOB DESCRIPTION:
 ${jobDesc}
 
 CANDIDATE RESUME:
-${JSON.stringify(resumeData)}
+${JSON.stringify(resumeDataToOptimize)}
 `;
 
   // 4️⃣ Call AI
@@ -98,17 +140,28 @@ ${JSON.stringify(resumeData)}
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
-
-    const jsonStart = cleaned.indexOf("{");
-    const jsonEnd = cleaned.lastIndexOf("}");
-
-    const jsonString = cleaned.slice(jsonStart, jsonEnd + 1);
-
-    tailoredResume = JSON.parse(jsonString);
-  } catch (error) {
-    console.error("AI RAW RESPONSE:", aiResponse);
+    tailoredResume = JSON.parse(cleaned);
+  } catch (err) {
+    console.error(aiResponse);
     throw new Error("AI returned invalid JSON");
   }
 
-  return tailoredResume;
+  const mergedResume = {
+    ...resumeData,
+
+    summary: tailoredResume.summary,
+
+    skills: tailoredResume.skills,
+
+    professionalExperiences: resumeData.professionalExperiences.map(
+      (experience, index) => ({
+        ...experience,
+        responsibilities:
+          tailoredResume.professionalExperiences[index]?.responsibilities ??
+          experience.responsibilities,
+      }),
+    ),
+  };
+
+  return mergedResume;
 };

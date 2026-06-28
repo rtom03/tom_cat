@@ -3,6 +3,7 @@ import {
   createApp,
   createResume,
   deleteJob,
+  generateCv,
   generateInterviewResponse,
   getJobs,
   updateJobApp,
@@ -12,6 +13,7 @@ import { protectRoute } from "../middleware/authMiddleware.js";
 const isResumeRoute = express.Router();
 
 isResumeRoute.post("/create-app", protectRoute, createApp);
+isResumeRoute.post("/generate-cv", protectRoute, generateCv);
 isResumeRoute.get("/get-apps", protectRoute, getJobs);
 isResumeRoute.post("/job-ques", protectRoute, generateInterviewResponse);
 isResumeRoute.post("/create-resume", protectRoute, createResume);
