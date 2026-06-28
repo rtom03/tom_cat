@@ -65,7 +65,7 @@ const generateCv = async (req, res) => {
     // const company = extractCompany(job_desc);
     // let title = extractTitle(job_desc);
     console.time("3. Extract Job Info");
-    let job_info = await extractJobInfo(job_desc);
+    let job_info = await extractJobInfoAi(job_desc);
     console.timeEnd("3. Extract Job Info");
 
     console.time("4. GPT tailoring");

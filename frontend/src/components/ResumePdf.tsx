@@ -7,14 +7,27 @@ import {
   Font,
 } from "@react-pdf/renderer";
 
+import OutfitRegular from "../assets/fonts/Outfit-Regular.ttf";
+import OutfitSemiBold from "../assets/fonts/Outfit-SemiBold.ttf";
+import OutfitBold from "../assets/fonts/Outfit-Bold.ttf";
+
 Font.register({
   family: "Outfit",
   fonts: [
-    { src: "/fonts/Outfit-Regular.ttf", fontWeight: 400 },
-    { src: "/fonts/Outfit-SemiBold.ttf", fontWeight: 600 },
-    { src: "/fonts/Outfit-Bold.ttf", fontWeight: 700 },
+    { src: OutfitRegular, fontWeight: 400 },
+    { src: OutfitSemiBold, fontWeight: 600 },
+    { src: OutfitBold, fontWeight: 700 },
   ],
 });
+
+// Font.register({
+//   family: "Outfit",
+//   fonts: [
+//     { src: "/fonts/Outfit-Regular.ttf", fontWeight: 400 },
+//     { src: "/fonts/Outfit-SemiBold.ttf", fontWeight: 600 },
+//     { src: "/fonts/Outfit-Bold.ttf", fontWeight: 700 },
+//   ],
+// });
 
 // ── THEME ────────────────────────────────────────────────────────────────────
 const GREEN = "#526b3c";
