@@ -265,16 +265,14 @@ const ResumePDF = ({ resume }: { resume: Resume }) => {
                 }}
               >
                 <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
-                  {detail.address.length && (
-                    <Text>Address: {detail.address} ||</Text>
-                  )}
+                  {detail.address.length && <Text>{detail.address} ||</Text>}
 
-                  <Text>Email: {detail.email}</Text>
+                  <Text> {detail.email}</Text>
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", gap: 5 }}>
-                  <Text>Phone: {detail.contact}</Text>
+                  <Text>{detail.contact}</Text>
                   <Text>||</Text>
-                  <Text>Linkedin: {detail.linkedin}</Text>
+                  <Text>{detail.linkedin}</Text>
                 </View>
               </View>
             );
