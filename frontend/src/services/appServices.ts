@@ -1,7 +1,7 @@
-export const BASE_URL = import.meta.env.DEV
-  ? "http://localhost:8000/api"
-  : "https://tom-cat.onrender.com/api";
-
+// export const BASE_URL = import.meta.env.DEV
+//   ? "http://localhost:8000/api"
+//   : "https://tom-cat.onrender.com/api";
+export const BASE_URL="/api"
 export interface InterviewRequest {
   jobId: number;
   question: string;
