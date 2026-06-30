@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { loginUser } from "../services/appServices";
 import { Loader } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -10,6 +11,7 @@ const Login = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,8 +22,7 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("token", data.token); // if you're returning a token
       console.log("Login success:", data);
-      window.location.href = "/"; // ✅ forces full reload, app picks up localStorage
-
+      navigate("/");
       // do whatever you want after login e.g. redirect, save user to state
     } catch (err) {
       console.log(err);

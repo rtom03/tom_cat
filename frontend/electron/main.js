@@ -10,6 +10,8 @@ initialize();
 
 app.whenReady().then(() => {
   // ← only registered once, inside whenReady
+  let pinned = true;
+
   ipcMain.handle("save-file", async (_event, buffer, companyName, fileName) => {
     const folderName = (companyName || "Unknown Company")
       .replace(/[<>:"/\\|?*]/g, "_")
@@ -33,6 +35,15 @@ app.whenReady().then(() => {
   });
 
   enable(win.webContents);
+
+  win.setAlwaysOnTop(pinned);
+
+  ipcMain.handle("toggle-pin", () => {
+    pinned = !pinned;
+    win.setAlwaysOnTop(pinned);
+    return pinned;
+  });
+
   const isDev = !app.isPackaged;
 
   if (isDev) {
