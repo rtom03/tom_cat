@@ -75,7 +75,6 @@ Rules:
   • dates
   • number of jobs
   
-Responsibilities:
 
 Rewrite each bullet to match the job description.
 
@@ -94,6 +93,11 @@ Skills:
 Title
 
 - make the latest title in the resume matches the job's title
+
+Professional Experience Title:
+-- make the latest title in the professionalExperience to matches the job's title
+-- the job experience that follows the latest should also be modify to align with the job's title but not identical
+
 
 Summary:
 
