@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+.title-bar {
+  width: 300px;
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e1e1e;
+  color: white;
+}
+
+.drag-region {
+  flex: 1;
+  padding-left: 12px;
+
+  -webkit-app-region: drag;
+}
+
+.title-bar button {
+  width: 40px;
+  height: 36px;
+
+  border: none;
+  background: transparent;
+
+  color: white;
+
+  cursor: pointer;
+
+  -webkit-app-region: no-drag;
+}

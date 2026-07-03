@@ -1,0 +1,451 @@
+<!--
+  EXHIBITION + HAPPY CUSTOMERS SECTION
+  Two stacked cards, same design system throughout:
+  - Card: #fff bg, 1px #e5e7eb border, 16px radius, soft shadow, Arial
+  - Badge: pill, #f3f4f6 bg, #374151 text, uppercase, 12px
+
+  Card 1 (unchanged): Exhibition photo, displayed inline with view/download buttons.
+  Card 2 (new): Happy Customers testimonial carousel, auto-advancing with arrows + dots.
+
+  ⚠️ Carousel quotes are still placeholder copy — swap in real customer
+  testimonials via the data-quote attributes on each .gs-slide when ready.
+-->
+
+<div
+  style="
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    font-family: Arial, sans-serif;
+  "
+>
+  <!-- ============ CARD 1: EXHIBITION (unchanged) ============ -->
+  <div
+    style="
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 720px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      color: #111827;
+    "
+  >
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div
+        style="
+          display: inline-block;
+          width: fit-content;
+          background: #f3f4f6;
+          color: #374151;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          padding: 6px 10px;
+          border-radius: 999px;
+        "
+      >
+        Event Gallery
+      </div>
+
+      <h3 style="margin: 0; font-size: 22px; line-height: 1.3; color: #111827">
+        Golden Stone Investment Ltd at the JCN Consulting Highway Exhibition
+      </h3>
+
+      <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4b5563">
+        Highlights from our exhibition stand featuring the MICKING product
+        range, alongside moments from our recognition and awards ceremony with
+        JCN Consulting and road safety officials.
+      </p>
+
+      <div
+        style="
+          margin-top: 8px;
+          border-radius: 12px;
+          overflow: hidden;
+          border: 1px solid #e5e7eb;
+          line-height: 0;
+        "
+      >
+        <img
+          src="https://cdn.shopify.com/s/files/1/0709/3927/9536/files/Exhibition.png?v=1782914060"
+          alt="Golden Stone Investment Ltd exhibition stand and award ceremony at the JCN Consulting Highway event"
+          style="display: block; width: 100%; height: auto"
+        />
+      </div>
+
+      <div style="margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap">
+        <a
+          href="https://cdn.shopify.com/s/files/1/0709/3927/9536/files/Exhibition.png?v=1782914060"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="
+            display: inline-block;
+            background: #111827;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+          "
+        >
+          View Full Size
+        </a>
+
+        <a
+          href="https://cdn.shopify.com/s/files/1/0709/3927/9536/files/Exhibition.png?v=1782914060"
+          download
+          style="
+            display: inline-block;
+            background: #ffffff;
+            color: #111827;
+            text-decoration: none;
+            padding: 12px 18px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+          "
+        >
+          Download Image
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CARD 2: HAPPY CUSTOMERS CAROUSEL (new) ============ -->
+  <div
+    style="
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 720px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      color: #111827;
+    "
+  >
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div
+        style="
+          display: inline-block;
+          width: fit-content;
+          background: #f3f4f6;
+          color: #374151;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          padding: 6px 10px;
+          border-radius: 999px;
+        "
+      >
+        Customer Spotlight
+      </div>
+
+      <h3 style="margin: 0; font-size: 22px; line-height: 1.3; color: #111827">
+        Happy Customers, Trusted Results
+      </h3>
+
+      <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #4b5563">
+        Real customers, real MICKING oil purchases. Here's a look at a few of
+        the people we've served — swipe through to see more.
+      </p>
+
+      <!-- Carousel -->
+      <div style="margin-top: 8px; position: relative">
+        <div
+          id="gs-carousel-track"
+          style="
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            position: relative;
+            aspect-ratio: 4 / 5;
+            background: #f9fafb;
+          "
+        >
+          <!-- Slides -->
+          <div
+            class="gs-slide"
+            data-quote='"I always trust MICKING for my car — quality I can count on every time."'
+            data-name="Verified Customer"
+            style="
+              position: absolute;
+              inset: 0;
+              opacity: 1;
+              transition: opacity 0.5s ease;
+            "
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0709/3927/9536/files/Happy_customer_1.png?v=1783068899"
+              alt="Happy customer with MICKING Gold Super+ engine oil"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+              "
+            />
+          </div>
+          <div
+            class="gs-slide"
+            data-quote='"Great service and a product that keeps my engine running smoothly."'
+            data-name="Verified Customer"
+            style="
+              position: absolute;
+              inset: 0;
+              opacity: 0;
+              transition: opacity 0.5s ease;
+            "
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0709/3927/9536/files/Happy_Customer_2?v=1783068899"
+              alt="Happy customer with MICKING Gold Top engine oil"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+              "
+            />
+          </div>
+          <div
+            class="gs-slide"
+            data-quote='"Convenient, reliable, and exactly the quality I was looking for."'
+            data-name="Verified Customer"
+            style="
+              position: absolute;
+              inset: 0;
+              opacity: 0;
+              transition: opacity 0.5s ease;
+            "
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0709/3927/9536/files/happy_customer_3.png?v=1783068901"
+              alt="Happy customer with MICKING Gold Prime A engine oil"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+              "
+            />
+          </div>
+          <div
+            class="gs-slide"
+            data-quote='"Golden Stone Investment made it easy to get genuine, high-quality oil."'
+            data-name="Verified Customer"
+            style="
+              position: absolute;
+              inset: 0;
+              opacity: 0;
+              transition: opacity 0.5s ease;
+            "
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0709/3927/9536/files/Happy_customer_4.png?v=1783068899"
+              alt="Happy customer with MICKING Gold Prime 4 engine oil"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+              "
+            />
+          </div>
+          <div
+            class="gs-slide"
+            data-quote='"Excellent product and a smooth buying experience from start to finish."'
+            data-name="Verified Customer"
+            style="
+              position: absolute;
+              inset: 0;
+              opacity: 0;
+              transition: opacity 0.5s ease;
+            "
+          >
+            <img
+              src="https://cdn.shopify.com/s/files/1/0709/3927/9536/files/Happy_customer_5.png?v=1783068902"
+              alt="Happy customer with MICKING engine oil"
+              style="
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+              "
+            />
+          </div>
+
+          <!-- Quote overlay -->
+          <div
+            style="
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              padding: 20px 16px 16px;
+              background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.72),
+                rgba(0, 0, 0, 0)
+              );
+            "
+          >
+            <p
+              id="gs-quote-text"
+              style="
+                margin: 0 0 4px;
+                color: #ffffff;
+                font-size: 15px;
+                line-height: 1.5;
+                font-style: italic;
+              "
+            >
+              "I always trust MICKING for my car — quality I can count on every
+              time."
+            </p>
+            <p
+              id="gs-quote-name"
+              style="
+                margin: 0;
+                color: #e5e7eb;
+                font-size: 12px;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+              "
+            >
+              Verified Customer
+            </p>
+          </div>
+
+          <!-- Prev / Next arrows -->
+          <button
+            id="gs-prev"
+            aria-label="Previous"
+            style="
+              position: absolute;
+              top: 50%;
+              left: 10px;
+              transform: translateY(-50%);
+              width: 34px;
+              height: 34px;
+              border-radius: 999px;
+              border: none;
+              background: rgba(255, 255, 255, 0.9);
+              color: #111827;
+              font-size: 16px;
+              font-weight: 700;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            &#8249;
+          </button>
+          <button
+            id="gs-next"
+            aria-label="Next"
+            style="
+              position: absolute;
+              top: 50%;
+              right: 10px;
+              transform: translateY(-50%);
+              width: 34px;
+              height: 34px;
+              border-radius: 999px;
+              border: none;
+              background: rgba(255, 255, 255, 0.9);
+              color: #111827;
+              font-size: 16px;
+              font-weight: 700;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            &#8250;
+          </button>
+        </div>
+
+        <!-- Dots -->
+        <div
+          id="gs-dots"
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+          "
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var track = document.getElementById("gs-carousel-track");
+    var slides = track.querySelectorAll(".gs-slide");
+    var dotsWrap = document.getElementById("gs-dots");
+    var quoteText = document.getElementById("gs-quote-text");
+    var quoteName = document.getElementById("gs-quote-name");
+    var current = 0;
+    var timer = null;
+
+    slides.forEach(function (_, i) {
+      var dot = document.createElement("button");
+      dot.setAttribute("aria-label", "Go to slide " + (i + 1));
+      dot.style.cssText =
+        "width:8px; height:8px; border-radius:999px; border:none; padding:0; cursor:pointer; background:" +
+        (i === 0 ? "#111827" : "#d1d5db") +
+        ";";
+      dot.addEventListener("click", function () {
+        goTo(i);
+        resetTimer();
+      });
+      dotsWrap.appendChild(dot);
+    });
+
+    function render() {
+      slides.forEach(function (slide, i) {
+        slide.style.opacity = i === current ? "1" : "0";
+      });
+      Array.prototype.forEach.call(dotsWrap.children, function (dot, i) {
+        dot.style.background = i === current ? "#111827" : "#d1d5db";
+      });
+      quoteText.textContent = slides[current]
+        .getAttribute("data-quote")
+        .replace(/&quot;/g, '"');
+      quoteName.textContent = slides[current].getAttribute("data-name");
+    }
+
+    function goTo(i) {
+      current = (i + slides.length) % slides.length;
+      render();
+    }
+
+    function resetTimer() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(function () {
+        goTo(current + 1);
+      }, 5000);
+    }
+
+    document.getElementById("gs-prev").addEventListener("click", function () {
+      goTo(current - 1);
+      resetTimer();
+    });
+    document.getElementById("gs-next").addEventListener("click", function () {
+      goTo(current + 1);
+      resetTimer();
+    });
+
+    render();
+    resetTimer();
+  })();
+</script>

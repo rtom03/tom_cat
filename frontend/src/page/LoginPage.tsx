@@ -35,6 +35,8 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#E6F4EC]">
       <div className="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
+        {/* <TitleBar /> */}
+
         <h1 className="text-3xl font-bold text-[#0F5E2D] text-center">
           tom_cat
         </h1>

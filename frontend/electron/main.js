@@ -1,32 +1,83 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, screen } from "electron";
 import { initialize, enable } from "@electron/remote/main/index.js";
 import { fileURLToPath } from "url";
 import path from "path";
-import fs from "fs"; // ← was missing
+import fs from "fs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 initialize();
 
-app.whenReady().then(() => {
-  // ← only registered once, inside whenReady
-  let pinned = true;
+let win;
 
-  ipcMain.handle("save-file", async (_event, buffer, companyName, fileName) => {
-    const folderName = (companyName || "Unknown Company")
-      .replace(/[<>:"/\\|?*]/g, "_")
-      .trim();
+// Current window mode
+// "sMin" = 350x70
+// "compact" = 350x320
+let windowMode = "compact";
+function moveToBottomRight() {
+  const { workArea } = screen.getPrimaryDisplay();
 
-    const downloadsPath = app.getPath("downloads");
-    const companyFolder = path.join(downloadsPath, folderName);
-    fs.mkdirSync(companyFolder, { recursive: true });
-    fs.writeFileSync(path.join(companyFolder, fileName), Buffer.from(buffer));
-  });
+  const [width, height] = win.getSize();
 
-  // ← createWindow called inside the same .then()
-  const win = new BrowserWindow({
-    width: 1200,
-    height: 800,
+  win.setPosition(
+    workArea.x + workArea.width - width,
+    workArea.y + workArea.height - height,
+    true,
+  );
+}
+
+function ensureRestored() {
+  if (win.isMinimized()) win.restore();
+  if (win.isMaximized()) win.restore();
+}
+
+function applyWindowState() {
+  ensureRestored();
+
+  switch (windowMode) {
+    case "sMin":
+      win.setMinimumSize(350, 70);
+      win.setSize(350, 70);
+      break;
+
+    case "compact":
+      win.setMinimumSize(350, 320);
+      win.setSize(350, 320);
+      break;
+  }
+
+  win.setAlwaysOnTop(true);
+  moveToBottomRight();
+}
+
+function createWindow() {
+  // win = new BrowserWindow({
+  //   width: 350,
+  //   height: 300,
+
+  //   minWidth: 350,
+  //   minHeight: 300,
+
+  //   autoHideMenuBar: true,
+  //   resizable: true,
+  //   // maximizable: false,
+
+  //   webPreferences: {
+  //     nodeIntegration: false,
+  //     contextIsolation: true,
+  //     preload: path.join(__dirname, "preload.cjs"),
+  //   },
+  // });
+  win = new BrowserWindow({
+    width: 350,
+    height: 300,
+
+    frame: false,
+    titleBarStyle: "hidden",
+
+    resizable: true,
+    autoHideMenuBar: true,
+
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -36,23 +87,66 @@ app.whenReady().then(() => {
 
   enable(win.webContents);
 
-  win.setAlwaysOnTop(pinned);
+  applyWindowState();
 
-  ipcMain.handle("toggle-pin", () => {
-    pinned = !pinned;
-    win.setAlwaysOnTop(pinned);
-    return pinned;
+  if (app.isPackaged) {
+    win.loadFile(path.join(__dirname, "../dist/index.html"));
+  } else {
+    win.loadURL("http://localhost:5173");
+  }
+}
+
+app.whenReady().then(() => {
+  createWindow();
+
+  // ---------------- SAVE PDF ----------------
+
+  ipcMain.handle("save-file", async (_, buffer, companyName, fileName) => {
+    const folder = path.join(
+      app.getPath("downloads"),
+      (companyName || "Unknown Company").replace(/[<>:"/\\|?*]/g, "_").trim(),
+    );
+
+    fs.mkdirSync(folder, { recursive: true });
+
+    fs.writeFileSync(path.join(folder, fileName), Buffer.from(buffer));
   });
 
-  const isDev = !app.isPackaged;
+  // ---------------- SMALL STRIP ----------------
 
-  if (isDev) {
-    win.loadURL("http://localhost:5173");
-  } else {
-    win.loadFile(path.join(__dirname, "../dist/index.html"));
-  }
+  ipcMain.handle("toggle-sMin", () => {
+    windowMode = "sMin";
+    applyWindowState();
+    return true;
+  });
+
+  // ---------------- COMPACT ----------------
+
+  ipcMain.handle("toggle-compact", () => {
+    windowMode = "compact";
+    applyWindowState();
+    return true;
+  });
+
+  ipcMain.handle("minimize-window", () => {
+    win.minimize();
+  });
+
+  ipcMain.handle("maximize-window", () => {
+    if (win.isMaximized()) {
+      win.restore();
+    } else {
+      win.maximize();
+    }
+  });
+
+  ipcMain.handle("close-window", () => {
+    win.close();
+  });
 });
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
 });

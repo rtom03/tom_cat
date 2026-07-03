@@ -43,6 +43,7 @@ export const tailorResume = async (userId, jobDesc) => {
   const resumeDataToOptimize = {
     summary: resume.summary,
     skills: resume.skills,
+    title: resume.title,
     professionalExperiences: resume.professionalExperiences.map((exp) => ({
       companyName: exp.companyName,
       title: exp.title,
@@ -90,6 +91,10 @@ Skills:
 - Prioritize skills mentioned in the job description.
 - invent a skill the candidate doesn't already possess.
 
+Title
+
+- make the latest title in the resume matches the job's title
+
 Summary:
 
 - Rewrite the summary to target the role.
@@ -101,6 +106,7 @@ Return ONLY valid JSON having exactly this structure:
 {
   "summary": "...",
   "skills": [...],
+  "title":"...",
   "professionalExperiences": [
     {
       "responsibilities": [...]
@@ -152,6 +158,8 @@ ${JSON.stringify(resumeDataToOptimize)}
     summary: tailoredResume.summary,
 
     skills: tailoredResume.skills,
+
+    title: tailoredResume.title,
 
     professionalExperiences: resumeData.professionalExperiences.map(
       (experience, index) => ({

@@ -4,6 +4,7 @@ import ResumeGenerateTab from "../tabs/ResumeGen";
 // import BlockedCompaniesTab from "../tabs/BlockedTab";
 import { useNavigate } from "react-router-dom";
 import ApplicationsTab from "../tabs/ApplicationTab";
+import TitleBar from "../components/TitleBar";
 
 type TabKey = "Applications" | "Resume generate";
 
@@ -37,18 +38,36 @@ export default function Dashboard() {
           </h1>
           <div className="text-[13px] text-gray-400 mt-0.5">
             <span className="font-bold text-white"></span>{" "}
-            <span className="text-gray-500">(bidder)</span>
           </div>
-          <div className="text-[11px] text-gray-500 mt-0.5 uppercase tracking-wide">
-            Bidder in 3_HIGH
-          </div>
+          <button
+            className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold ml-2.5 px-5 py-2 rounded text-sm transition-colors mt-1"
+            onClick={Logout}
+          >
+            Logout
+          </button>
         </div>
-        <button
-          className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold px-5 py-2 rounded text-sm transition-colors mt-1"
-          onClick={Logout}
+
+        <TitleBar />
+
+        {/* <button
+          className="bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-semibold px-5 py-2 rounded text-sm transition-colors mt-1"
+          onClick={() => window.electronAPI.togglePin()}
         >
-          Logout
+          Pin
         </button>
+
+        <button
+          className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold px-5 py-2 rounded text-sm transition-colors mt-1"
+          onClick={() => window.electronAPI.toggleCompact()}
+        >
+          Compact
+        </button> */}
+
+        {/* <button onClick={() => window.electronAPI.minimize()}>Minimize</button>
+
+        <button onClick={() => window.electronAPI.maximize()}>Maximize</button>
+
+        <button onClick={() => window.electronAPI.close()}>Close</button> */}
       </div>
 
       {/* ── Body ── */}
