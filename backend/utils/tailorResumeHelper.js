@@ -1,5 +1,3 @@
-// // helpers/tailorResume.ts
-
 // import OpenAI from "openai";
 // import { prisma } from "./db.js";
 
@@ -43,7 +41,6 @@
 //   const resumeDataToOptimize = {
 //     summary: resume.summary,
 //     skills: resume.skills,
-//     title: resume.title,
 //     professionalExperiences: resume.professionalExperiences.map((exp) => ({
 //       companyName: exp.companyName,
 //       title: exp.title,
@@ -67,11 +64,12 @@
 // - Rewrite ONLY:
 //   • summary
 //   • skills
+//   • professionalExperiences[].title (latest role only, see below)
 //   • professionalExperiences[].responsibilities
 
 // - Do NOT change:
+//   • the candidate's overall professional title/header (this is not part of the optimization — never include or infer it)
 //   • company names
-//   • job titles
 //   • dates
 //   • number of jobs
 
@@ -85,22 +83,18 @@
 // Skills:
 
 // - Reorder skills by relevance.
-// - Remove irrelevant skills.
-// - Prioritize skills mentioned in the job description.
-// - invent a skill the candidate doesn't already possess.
-
-// Title
-
-// - make the latest title in the resume matches the job's title
+// - Remove irrelevant skills that don't overlap with the candidate's actual background.
+// - Prioritize skills mentioned in the job description that the candidate already has evidence of (from their experience/skills).
 
 // Professional Experience Title:
-// -- make the latest title in the professionalExperience to matches the job's title
-// -- the job experience that follows the latest should also be modify to align with the job's title but not identical
+// - The FIRST item in professionalExperiences (index 0, the most recent role) should have its title updated to closely match the job's title, as long as it stays truthful to the seniority/scope of that role — do not inflate seniority.
+// - The role immediately after that (index 1, if it exists) should have its title lightly aligned in language toward the job's title/domain, but must remain clearly distinct, not identical.
+// - All other experience titles are left unchanged.
 
 // Summary:
 
 // - Rewrite the summary to target the role.
-// - Mention the most relevant technologies from the job description.
+// - Mention the most relevant technologies from the job description that the candidate genuinely has experience with.
 // - Keep it between 70 and 120 words.
 
 // Return ONLY valid JSON having exactly this structure:
@@ -108,9 +102,9 @@
 // {
 //   "summary": "...",
 //   "skills": [...],
-//   "title":"...",
 //   "professionalExperiences": [
 //     {
+//       "title": "...",
 //       "responsibilities": [...]
 //     }
 //   ]
@@ -157,19 +151,23 @@
 //   const mergedResume = {
 //     ...resumeData,
 
+//     // NOTE: resumeData.title (the candidate's header/professional title) is
+//     // intentionally untouched here. It is never overwritten with AI output.
+
 //     summary: tailoredResume.summary,
 
 //     skills: tailoredResume.skills,
 
-//     title: tailoredResume.title,
-
 //     professionalExperiences: resumeData.professionalExperiences.map(
-//       (experience, index) => ({
-//         ...experience,
-//         responsibilities:
-//           tailoredResume.professionalExperiences[index]?.responsibilities ??
-//           experience.responsibilities,
-//       }),
+//       (experience, index) => {
+//         const tailored = tailoredResume.professionalExperiences?.[index];
+//         return {
+//           ...experience,
+//           title: tailored?.title ?? experience.title,
+//           responsibilities:
+//             tailored?.responsibilities ?? experience.responsibilities,
+//         };
+//       },
 //     ),
 //   };
 
@@ -267,8 +265,8 @@ Skills:
 - Do NOT add any skill the candidate does not already have evidence of possessing. Never fabricate qualifications.
 
 Professional Experience Title:
-- The FIRST item in professionalExperiences (index 0, the most recent role) should have its title updated to closely match the job's title, as long as it stays truthful to the seniority/scope of that role — do not inflate seniority.
-- The role immediately after that (index 1, if it exists) should have its title lightly aligned in language toward the job's title/domain, but must remain clearly distinct, not identical.
+- The FIRST item in professionalExperiences (index 0, the most recent role) should have its title updated to closely and confidently mirror the job's title — this is the strongest title match in the whole resume. Stay truthful to the seniority/scope of that role — do not inflate seniority (e.g. don't turn a mid-level role into "Senior X" or "X Lead" if nothing else in that role supports it).
+- The role immediately after that (index 1, if it exists) should have its title updated to be clearly in the same domain/discipline as the job title, using related language (shared keywords, adjacent focus area) — but it must be a genuinely different title from both the original job title AND from the new index 0 title. Never reuse the exact same title string twice in a row. Think "adjacent role on the way up to this," not "same job, different year."
 - All other experience titles are left unchanged.
 
 Summary:
