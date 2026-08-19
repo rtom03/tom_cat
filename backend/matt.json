@@ -1,13 +1,13 @@
 {
-  "title": "Senior Software Developer | AI Agents, Full-Stack Systems & Cloud Engineering",
-  "summary": "Senior Software Developer with 12 years of experience delivering AI-enabled applications, cloud-native services, secure enterprise integrations, and responsive web platforms. Strong hands-on background in Python, Node.js, Java, React, and Angular, with recent focus on LLM agents, MCP servers, RAG, tool calling, human-in-the-loop approvals, OAuth 2.0 integrations, auditability, and self-hosted deployments. Experienced in solution design, client discovery, CI/CD ownership, production support, technical mentoring, and translating complex business requirements into reliable software.",
-  "experience": "12 years",
+  "title": "Senior Software Engineer",
+  "summary": "10 years delivering production software across SaaS, ecommerce, education, identity, and customer-facing enterprise platforms, with emphasis on scalable architectures and scalable and resilient systems. Technical ownership spans UI applications, backend services, APIs, data workflows, system integrations, and high-availability production engineering with measurable business impact. Autonomous execution and accountable delivery across collaborative engineering environments, from technical design through implementation, testing, deployment, and operational support. Strong command of SDLC and Software Development Life Cycle practices, Git-based version control, engineering standards, code quality standards, automated testing, and industry-standard practices. Builds data-rich interfaces and visualization workflows using SQL, .NET Core, D3.js, Grafana, and API-driven architectures while integrating AI capabilities and agent-oriented workflows where appropriate. Drives continuous improvement through performance tuning, observability, incident analysis, maintainable architecture, and reliable delivery across customer-facing systems and internal platforms.",
+  "experience": "10 years",
   "personalDetail": [
     {
       "contact": "(512) 360 (0907)",
-      "email": "Preston.lam91@outlook.com",
-      "address": "40971 GAUCHO WAY",
-      "linkedin": "https://www.linkedin.com/in/preston-lam-software-engineer/"
+      "email": "RobertJHill94@outlook.com",
+      "address": "Round Rock, TX ",
+      "linkedin": " linkedin.com/in/roberthilltexas/"
     }
   ],
   "education": [
@@ -89,9 +89,9 @@
   "projects": [],
   "professionalExperiences": [
     {
-      "companyName": "Auctane",
+      "companyName": "SailPoint",
       "title": "Senior Software Engineer - AI Platform",
-      "startDate": "01/2023",
+      "startDate": "01/2024",
       "endDate": "Present",
       "location": "Remote",
       "responsibilities": [
@@ -119,10 +119,10 @@
       ]
     },
     {
-      "companyName": "Q2 Holdings | Austin, TX",
+      "companyName": "BigCommerce | Austin, TX",
       "title": "Senior Software Engineer",
-      "startDate": "03/2020",
-      "endDate": "12/2022",
+      "startDate": "04/2021",
+      "endDate": "12/2023",
       "location": "Remote",
       "responsibilities": [
         "Developed high-volume digital banking services with Node.js, NestJS, React, PostgreSQL, and event-driven messaging, supporting secure customer and operations workflows across multiple financial institutions.",
@@ -148,10 +148,10 @@
       ]
     },
     {
-      "companyName": "PROS | Houston, TX",
+      "companyName": "PagerDuty | Remote",
       "title": "Software Engineer III - Pricing Intelligence",
-      "startDate": "06/2017",
-      "endDate": "02/2020",
+      "startDate": "07/2019",
+      "endDate": "03/2021",
       "location": "Remote",
       "responsibilities": [
         "Built Python services and Angular applications for pricing optimization, forecasting, workflow configuration, and analyst review across data-intensive B2B commerce use cases.",
@@ -176,9 +176,37 @@
       ]
     },
     {
-      "companyName": "Alkami Technology | Plano, TX",
+      "companyName": " Instructure | Remote",
       "title": "Full-Stack Software Engineer",
-      "startDate": "08/2015",
+      "startDate": "06/2017",
+      "endDate": "06/2019",
+      "location": "Remote",
+      "responsibilities": [
+        "Worked mostly on the recommendation pipeline, the team’s key product, which significantly improved the company’s revenue from ads. Added new recommendation types, migrated to a new way of estimating revenue uplifts, simplified and optimized parts of it.",
+        "Deployed and scaled applications on AWS, leveraging services like EC2, RDS, and Lambda to create a robust, secure, and scalable infrastructure.",
+        "Spearheaded the development of an internal management system, enhancing operational efficiency and streamlining workflows across departments.",
+        "Utilized React for building dynamic user interfaces, ensuring responsive and user-friendly web applications.",
+        "Developed backend functionalities using Python and Django, enabling robust data processing and business logic implementation.",
+        "Employed GitHub for version control and collaboration, enhancing code quality through effective team workflows.",
+        "Designed and maintained responsive web layouts using HTML, CSS, and Material UI, ensuring a consistent look and feel across all platforms."
+      ],
+      "technologies": [
+        "Node.js",
+        "Express.js",
+        "Angular",
+        "JavaScript",
+        "TypeScript",
+        "PostgreSQL",
+        "MongoDB",
+        "Redis",
+        "REST APIs",
+        "AWS"
+      ]
+    },
+    {
+      "companyName": " Instructure | Remote",
+      "title": "Junior Software Engineer",
+      "startDate": "06/2016",
       "endDate": "05/2017",
       "location": "Remote",
       "responsibilities": [

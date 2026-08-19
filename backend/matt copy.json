@@ -1,22 +1,22 @@
 {
-  "title": "Senior Software Developer",
-  "summary": "Software Developer with 6+ years of experience building production SaaS applications, backend services, data pipelines, and cloud-based platforms. Strong background in TypeScript, Node.js, Python, React, PostgreSQL, MongoDB, AWS, CI/CD, API design, and system reliability. Recent work includes AI-assisted analytics, automated insight generation, scoring workflows, observability improvements, and cross-functional delivery with product and data teams.",
+  "title": "Senior Software Developer | AI, Full-Stack & Cloud Engineering",
+  "summary": "Senior Software Developer specializing in AI-enabled full-stack platforms, secure API integrations, and cloud-native delivery.Experienced across Python, Node.js, Java, React, and Angular ecosystems, with hands-on strength in LLM agents, MCP-based tool integration, REST/OAuth 2.0 services, self-hosted deployments, CI/CD, containerization, observability, and production support.Effective in client-facing discovery, solution architecture, technical training, and cross-functional execution from project planningthrough deployment and ongoing support",
   "experience": "6+ years",
   "personalDetail": [
     {
       "contact": "(512) 360-0907",
-      "email": "austin.vincent06@outlook.com",
+      "email": "vishalapatel93@outlook.com",
       "address": "Austin, Texas",
-      "linkedin": "https://www.linkedin.com/in/austin-vincent/"
+      "linkedin": " https://www.linkedin.com/in/vishal-patel-developer/"
     }
   ],
   "education": [
     {
-      "school": "University of Texas",
+      "school": "University of Houston",
       "degree": "Bachelor of Science",
       "field": "Computer Science",
-      "startYear": 2015,
-      "endYear": 2019,
+      "startYear": 2011,
+      "endYear": 2015,
       "location": "Austin, Texas"
     }
   ],
@@ -82,9 +82,9 @@
   "projects": [],
   "professionalExperiences": [
     {
-      "companyName": "ActivTrak | AI & Analytics Platform",
-      "title": "Backend Engineer",
-      "startDate": "08/2023",
+      "companyName": "AlertMedia",
+      "title": "Senior AI / Full-Stack Software Developer",
+      "startDate": "01/2025",
       "location": "Austin, TX | Remote",
       "responsibilities": [
         "Coordinated multi-brand onboarding by integrating menus, pricing, and branding requirements into the mobile delivery platform.",
@@ -106,11 +106,11 @@
       ]
     },
     {
-      "companyName": "Everlywell | Healthcare Data Platform",
+      "companyName": "Charles Schwab",
       "title": "Full Stack Developer",
-      "startDate": "05/2021",
-      "endDate": "07/2023",
-      "location": "Austin, TX | Remote",
+      "startDate": "04/2022",
+      "endDate": "12/2024",
+      "location": "Westlake, TX | Remote",
       "responsibilities": [
         "Assisted in the development and implementation of ERP systems to streamline healthcare operations, including patient records, billing, and inventory management.",
         "Collaborated with clinical, administrative, and IT teams to gather requirements and ensure the ERP system aligned with healthcare workflows and regulatory standards.",
@@ -130,11 +130,57 @@
       ]
     },
     {
-      "companyName": "Bloomfire | SaaS Search & Knowledge Platform",
+      "companyName": "Toyota Motor North America",
       "title": "Software Developer",
-      "startDate": "06/2019",
-      "endDate": "04/2021",
-      "location": "Texas",
+      "startDate": "03/2019",
+      "endDate": "06/2022",
+      "location": "Plano, Texas",
+      "responsibilities": [
+        "Collaborated with clinical, administrative, and IT teams to gather requirements and ensure the ERP system aligned with healthcare workflows and regulatory standards.",
+        "Supported system testing, debugging, and deployment to ensure the ERP platform functioned accurately and efficiently across departments.",
+        "Analyzed operational data within the ERP system to improve decision-making, resource allocation, and overall service delivery.",
+        "Provided user training and technical support to healthcare staff to ensure effective adoption and utilization of the ERP system.",
+        "Maintained system documentation and ensured compliance with healthcare regulations, data privacy standards, and security protocols."
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "Python",
+        "Django",
+        "PostgreSQL",
+        "Jest",
+        "Cypress"
+      ]
+    },
+    {
+      "companyName": "H-E-B Digita",
+      "title": "Software Developer",
+      "startDate": "02/2017",
+      "endDate": "06/2019",
+      "location": "Plano, Texas",
+      "responsibilities": [
+        "Collaborated with clinical, administrative, and IT teams to gather requirements and ensure the ERP system aligned with healthcare workflows and regulatory standards.",
+        "Supported system testing, debugging, and deployment to ensure the ERP platform functioned accurately and efficiently across departments.",
+        "Analyzed operational data within the ERP system to improve decision-making, resource allocation, and overall service delivery.",
+        "Provided user training and technical support to healthcare staff to ensure effective adoption and utilization of the ERP system.",
+        "Maintained system documentation and ensured compliance with healthcare regulations, data privacy standards, and security protocols."
+      ],
+      "technologies": [
+        "React",
+        "TypeScript",
+        "Python",
+        "Django",
+        "PostgreSQL",
+        "Jest",
+        "Cypress"
+      ]
+    },
+    {
+      "companyName": "Texas Instruments",
+      "title": "Software Developer",
+      "startDate": "06/2015",
+      "endDate": "01/2017",
+      "location": "Dallas, Texas",
       "responsibilities": [
         "Collaborated with clinical, administrative, and IT teams to gather requirements and ensure the ERP system aligned with healthcare workflows and regulatory standards.",
         "Supported system testing, debugging, and deployment to ensure the ERP platform functioned accurately and efficiently across departments.",
