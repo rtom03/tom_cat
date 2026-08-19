@@ -9,57 +9,55 @@ generator client {
   // output   = "../generated/prisma"
 }
 
-
 datasource db {
-   provider  = "postgresql"
+  provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  username  String    @unique
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
   name      String
   password  String
   resume    String?
-  createdAt DateTime  @default(now())
+  createdAt DateTime   @default(now())
   resumes   Resume?
   jobs      Job_Apps[]
 }
 
 model Job_Apps {
-  id        Int      @id @default(autoincrement())
-  job_desc  String
-  company   String
-  title     String
-  remote    Boolean
-  createdAt DateTime @default(now())
-  createdBy  User @relation(fields: [createdById], references: [id])
+  id          Int      @id @default(autoincrement())
+  job_desc    String
+  company     String
+  title       String
+  remote      Boolean
+  createdAt   DateTime @default(now())
+  createdBy   User     @relation(fields: [createdById], references: [id])
   createdById Int
 }
 
-
 model Resume {
-  id              String @id @default(cuid())
-  userId          Int      @unique   // 👈 VERY IMPORTANT
-  user            User     @relation(fields: [userId], references: [id])
-  title           String?
-  summary         String
-  experience      String
-  personalDetail  String?
-  education       String?
-  skills          String?
-  certifications  String?
-  projects        String?
+  id                      Int                      @id @default(autoincrement())
+  userId                  Int                      @unique // 👈 VERY IMPORTANT
+  user                    User                     @relation(fields: [userId], references: [id])
+  title                   String?
+  summary                 String
+  experience              String
+  personalDetail          String?
+  education               String?
+  skills                  String?
+  certifications          String?
+  projects                String?
   professionalExperiences ProfessionalExperience[]
-  createdAt       DateTime               @default(now())
-  updatedAt       DateTime               @updatedAt
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
 }
 
 model ProfessionalExperience {
   id               Int      @id @default(autoincrement())
-  resume           Resume   @relation(fields: [resumeId], references: [id])
   resumeId         Int
+  resume           Resume   @relation(fields: [resumeId], references: [id])
   companyName      String
   title            String
   startDate        String
