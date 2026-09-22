@@ -29,6 +29,7 @@ model User {
 model Job_Apps {
   id          Int      @id @default(autoincrement())
   job_desc    String
+  generatedCv String?
   company     String
   title       String
   remote      Boolean

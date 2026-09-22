@@ -9,6 +9,7 @@ export interface Job {
   createdAt: string;
   remote: boolean;
   job_desc: string;
+  generateCv?: string;
   createdBy: {
     username: string;
     name: string;
@@ -131,9 +132,8 @@ export default function ApplicationsTab() {
           value={forValue}
           onChange={(e) => setForValue(e.target.value)}
         >
-          <option>Steven Zhang (high5-steven)</option>
-          <option>John Doe (high2-john)</option>
-          <option>Jane Smith (high3-jane)</option>
+          <option>....</option>
+          <option>....</option>
         </select>
         <span className="text-sm text-gray-400 w-5 shrink-0">By</span>
         <select

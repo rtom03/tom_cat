@@ -81,6 +81,7 @@ const generateCv = async (req, res) => {
         company: job_info.company,
         title: job_info.title,
         remote,
+        generatedCv: tailoredResume,
         createdBy: {
           connect: { id: userId }, // ✅ correct way to link a relation
         },

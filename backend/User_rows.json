@@ -1,34 +1,188 @@
-[
-  {
-    "id": "1",
-    "username": "tyner",
-    "name": "Thomas Tyner",
-    "password": "$2a$10$BZMuig6jhUFwmFhyvIi2r.XZcIZAzvx6Nn/zN9Ylsyq04xmMaWB2q",
-    "resume": "",
-    "createdAt": "2026-03-23 16:21:39.789"
-  },
-  {
-    "id": "2",
-    "username": "rtom",
-    "name": "Tomiwa Raheem",
-    "password": "$2a$10$K2jPENBLRePuKD8B2Jzm0u21wcRQq8xZjbKD/QuQzmEYoa32xMPQ.",
-    "resume": "",
-    "createdAt": "2026-03-26 06:34:14.196"
-  },
-  {
-    "id": "4",
-    "username": "marcos",
-    "name": "Marcos Gomez",
-    "password": "$2a$10$1VZlExPMbZZ01Uvi3WS3oOPXVHnTu8sElvHnCsT5cVURzRR5k/GCu",
-    "resume": "",
-    "createdAt": "2026-03-27 16:10:14.933"
-  },
-  {
-    "id": "5",
-    "username": "mattdell",
-    "name": "Matthew Delano",
-    "password": "$2a$10$M5AehZSPpaeWAyMQWTCgT.ejJaYrH2uDGuJ7/.qzmO7LRwL0OsNK.",
-    "resume": "",
-    "createdAt": "2026-03-27 16:15:56.629"
-  }
-]
+{
+  "title": "Senior Software Engineer",
+  "summary": "7 years delivering production software across SaaS, ecommerce, education, identity, and customer-facing enterprise platforms, with emphasis on scalable architectures and scalable and resilient systems. Technical ownership spans UI applications, backend services, APIs, data workflows, system integrations, and high-availability production engineering with measurable business impact. Autonomous execution and accountable delivery across collaborative engineering environments, from technical design through implementation, testing, deployment, and operational support. Strong command of SDLC and Software Development Life Cycle practices, Git-based version control, engineering standards, code quality standards, automated testing, and industry-standard practices. Builds data-rich interfaces and visualization workflows using SQL, .NET Core, D3.js, Grafana, and API-driven architectures while integrating AI capabilities and agent-oriented workflows where appropriate. Drives continuous improvement through performance tuning, observability, incident analysis, maintainable architecture, and reliable delivery across customer-facing systems and internal platforms.",
+  "experience": "10 years",
+  "personalDetail": [
+    {
+      "contact": "9016672162",
+      "email": "03rtom@gmail.com.com",
+      "address": "Lagos, island",
+      "linkedin": "linkedin.com/in/tomiwa-raheem-98b19a398/?skipRedirect=true"
+    }
+  ],
+  "education": [
+    {
+      "school": "University Of Lagos",
+      "degree": "Bachelor of Science",
+      "field": "Computer Science",
+      "startYear": 2014,
+      "endYear": 2018,
+      "location": "Akoka, Yaba, Lagos"
+    }
+  ],
+  "skills": [
+    "JavaScript",
+    "TypeScript",
+    "Python",
+    "Java",
+    "SQL",
+    "HTML5",
+    "CSS3",
+    "React",
+    "Next.js",
+    "Angular",
+    "Vue",
+    "Nuxt.js",
+    "Svelte",
+    "TailwindCSS",
+    "Bootstrap",
+    "Material UI",
+    "Redux",
+    "Node.js",
+    "Express.js",
+    "NestJS",
+    "Django",
+    "Flask",
+    "FastAPI",
+    "Spring Boot",
+    "Laravel",
+    "REST APIs",
+    "GraphQL",
+    "WebSockets",
+    "AWS",
+    "Azure",
+    "Google Cloud",
+    "Docker",
+    "Kubernetes",
+    "Terraform",
+    "AWS CloudFormation",
+    "Jenkins",
+    "GitHub Actions",
+    "GitLab CI/CD",
+    "CI/CD",
+    "PostgreSQL",
+    "MySQL",
+    "MongoDB",
+    "Redis",
+    "DynamoDB",
+    "Firebase",
+    "Jest",
+    "Mocha",
+    "Chai",
+    "Cypress",
+    "Selenium",
+    "Git",
+    "GitHub",
+    "GitLab",
+    "Agile",
+    "Microservices Architecture",
+    "Serverless Architecture",
+    "LLM Agents",
+    "Claude Agent SDK",
+    "OpenClaw",
+    "Model Context Protocol (MCP)",
+    "Agentic Workflows",
+    "RAG, Tool Calling",
+    "Prompt Engineering"
+  ],
+  "certifications": [],
+  "projects": [],
+  "professionalExperiences": [
+    {
+      "companyName": "QFA",
+      "title": "Senior Software Engineer",
+      "startDate": "01/2023",
+      "endDate": "Present",
+      "location": "Remote",
+      "responsibilities": [
+        "Technology:Python, FastAPI, React, TypeScript, PostgreSQL, AWS, Azure, Docker, Kubernetes, Terraform, MCP, LLM APIs",
+        "Designed and delivered enterprise AI-agent workspaces that combined Python orchestration services, React administration tools, MCP-based skills, and self-hosted deployment options for security-conscious customers.",
+        "Built a policy-enforcement hook layer with strict tool scopes, identity-aware authorization, human approval gates, secrets isolation, and tamper-evident audit events before agents could execute sensitive actions.",
+        "Implemented secure REST and OAuth 2.0 integrations for Microsoft Graph, HubSpot, ticketing platforms, and internal APIs, including token rotation, rate-limit handling, retry controls, and connector health monitoring.",
+        "Owned containerized delivery into AWS and Azure environments using Terraform, Kubernetes, and GitHub Actions, reducing environment setup time and standardizing promotion, rollback, and observability practices.",
+        "Led client discovery, architecture workshops, onboarding, training, and post-launch support while translating operational needs into scoped agent skills, acceptance criteria, and phased delivery plans.",
+        "Used Cursor, Claude Code, and automated test generation to accelerate prototyping, documentation, refactoring, and code review while preserving human validation and production engineering standards."
+      ],
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "React",
+        "Typescript",
+        "PostgreSQL",
+        "Docker",
+        "AWS",
+        "CI/CD",
+        "Azure",
+        "Kubernetes",
+        "Terraform",
+        "LLM APIS"
+      ]
+    },
+    {
+      "companyName": "HCI Healthcare ",
+      "title": "Senior Software Engineer",
+      "startDate": "04/2021",
+      "endDate": "12/2023",
+      "location": "Remote",
+      "responsibilities": [
+        "Developed high-volume digital banking services with Node.js, NestJS, React, PostgreSQL, and event-driven messaging, supporting secure customer and operations workflows across multiple financial institutions.",
+        "Created AI-assisted service and knowledge workflows using retrieval-augmented generation, structured tool calling, vector search, and grounded responses over approved product, policy, and support content.",
+        "Designed API integrations and webhook pipelines with idempotency, encryption, OAuth 2.0, circuit breakers, retries, and end-to-end audit trails for regulated financial data exchanges.",
+        "Established prompt, tool, latency, token, and response-quality telemetry; introduced offline evaluations and failure reviews that improved the reliability of early AI-enabled features.",
+        "Automated build, test, security-scan, and deployment pipelines for Docker and Kubernetes workloads on AWS, improving release frequency while maintaining change-control and rollback requirements.",
+        "Partnered with product, security, implementation, and customer-support teams to prioritize releases, resolve incidents, and mentor engineers through architecture and code reviews."
+      ],
+      "technologies": [
+        "Node.js",
+        "NestJS",
+        "React",
+        "TypeScript",
+        "PostgreSQL",
+        "Redis",
+        "Kafka",
+        "AWS",
+        "Docker",
+        "Kubernetes",
+        "RAG",
+        "LLM Agents"
+      ]
+    },
+    {
+      "companyName": "FiberTrain",
+      "title": "IT Specialist",
+      "startDate": "07/2019",
+      "endDate": "03/2021",
+      "location": "Remote",
+      "responsibilities": [
+        "Installed, configured, and maintained computers, laptops, printers, and other IT devices to ensure functionality and reliability.",
+
+        "Diagnosed and resolved hardware and software faults, providing timely technical assistance to minimize disruption.",
+
+        "Managed IT equipment and asset records, ensuring accurate tracking and maintenance of resources.",
+
+        "Performed routine maintenance and preventive checks on IT equipment, enhancing operational efficiency.",
+
+        "Supported network infrastructure including routers, switches, and Wi-Fi connectivity, troubleshooting issues as they arose.",
+
+        "Implemented basic cybersecurity measures, monitoring antivirus and system updates to protect company devices.",
+
+        "Trained employees on proper use of technology and systems, improving user competency and reducing support requests.",
+
+        "Maintained records of IT issues, repairs, and resolutions to support continuous improvement and operational transparency."
+      ],
+      "technologies": [
+        "Python",
+        "Django",
+        "FastAPI",
+        "Angular",
+        "RxJS",
+        "PostgreSQL",
+        "Redis",
+        "Azure",
+        "GCP",
+        "Machine Learning",
+        "REST APIs"
+      ]
+    }
+  ]
+}

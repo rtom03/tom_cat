@@ -11,6 +11,8 @@ interface Job {
   createdAt: string;
   remote: boolean;
   job_desc: string;
+  generateCv?: string;
+
   createdBy: {
     username: string;
     name: string;
@@ -155,27 +157,29 @@ const JobModal = ({
 
         {/* Job Description */}
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-white font-semibold text-sm flex items-center gap-2">
-              {answer ? "📄 AI Response" : "📄 Job Desc"}
-            </h3>
-            <button
-              className="text-gray-500 hover:text-white transition-colors"
-              onClick={() => handleCopy(answer ? answer : job.job_desc)}
-              title={answer ? "copy answer" : "copy job_desc"}
-            >
-              📋
-            </button>
+          <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
+            {job?.generateCv}
+          </div>
+          <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
+            {job.job_desc}
           </div>
 
-          {answer ? (
-            <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
-              <p>{answer}</p>
-            </div>
-          ) : (
+          {answer && (
             <>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-white font-semibold text-sm flex items-center gap-2">
+                  {answer ? "📄 AI Response" : "📄 Job Desc"}
+                </h3>
+                <button
+                  className="text-gray-500 hover:text-white transition-colors"
+                  onClick={() => handleCopy(answer ? answer : job.job_desc)}
+                  title={answer ? "copy answer" : "copy job_desc"}
+                >
+                  📋
+                </button>
+              </div>
               <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
-                {job.job_desc}
+                <p>{answer}</p>
               </div>
             </>
           )}
