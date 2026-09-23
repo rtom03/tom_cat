@@ -11,7 +11,7 @@ interface Job {
   createdAt: string;
   remote: boolean;
   job_desc: string;
-  generateCv?: string;
+  generatedCv?: string;
 
   createdBy: {
     username: string;
@@ -158,7 +158,7 @@ const JobModal = ({
         {/* Job Description */}
         <div>
           <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
-            {job?.generateCv}
+            {job?.generatedCv}
           </div>
           <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
             {job.job_desc}
