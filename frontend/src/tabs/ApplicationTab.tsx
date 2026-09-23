@@ -1,6 +1,6 @@
 import { useState } from "react";
-import AppsTable from "../components/AppsTable";
 import { useGetJobs } from "../api/queryApps";
+import JobsTable from "../components/AppsTable";
 
 export interface Job {
   id: number;
@@ -9,7 +9,7 @@ export interface Job {
   createdAt: string;
   remote: boolean;
   job_desc: string;
-  generateCv?: string;
+  generatedCv?: object;
   createdBy: {
     username: string;
     name: string;
@@ -25,7 +25,7 @@ export default function ApplicationsTab() {
   const [byValue, setByValue] = useState("All Bidders");
 
   const { data, isLoading, isError, isRefetching, refetch } = useGetJobs();
-  // console.log(data);
+  console.log(data);
   const jobs = data ?? [];
 
   // ── Search/filter function — always returns an array ──────────────────────
@@ -154,7 +154,7 @@ export default function ApplicationsTab() {
       </button>
 
       {/* ✅ Always receives a Job[] array */}
-      <AppsTable jobs={filteredJobs} loading={isLoading} error={isError} />
+      <JobsTable jobs={filteredJobs} loading={isLoading} error={isError} />
     </div>
   );
 }

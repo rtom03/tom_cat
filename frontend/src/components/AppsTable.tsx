@@ -3,6 +3,7 @@ import { useInterviewAI } from "../hooks/useInterviewAi";
 import { useDeleteJob, useUpdateJobApp } from "../api/appMutation";
 import { toast } from "react-toastify";
 import Loader from "./Loader";
+import GeneratedCvPreview from "./GeneratedCvPrev";
 
 interface Job {
   id: number;
@@ -11,8 +12,7 @@ interface Job {
   createdAt: string;
   remote: boolean;
   job_desc: string;
-  generatedCv?: string;
-
+  generatedCv?: object;
   createdBy: {
     username: string;
     name: string;
@@ -31,6 +31,7 @@ const JobModal = ({
   const [question, setQuestion] = useState("");
   const handleCopy = (text: string) => navigator.clipboard.writeText(text);
   const { askQuestion, loading, answer } = useInterviewAI();
+  // console.log(job.generatedCv);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -154,35 +155,44 @@ const JobModal = ({
         </div>
 
         <hr className="border-[#333] mb-4" />
+        {answer && (
+          <>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-white font-semibold text-sm flex items-center gap-2">
+                {answer ? "📄 AI Response" : "📄 Job Desc"}
+              </h3>
+              <button
+                className="text-gray-500 hover:text-white transition-colors"
+                onClick={() => handleCopy(answer ? answer : job.job_desc)}
+                title={answer ? "copy answer" : "copy job_desc"}
+              >
+                📋
+              </button>
+            </div>
+            <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
+              <p>{answer}</p>
+            </div>
+          </>
+        )}
+        <hr className="border-[#333] mb-4" />
 
         {/* Job Description */}
         <div>
-          <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
-            {job?.generatedCv}
-          </div>
+          <label className="text-sm text-gray-400 block mb-2 p-2.5">
+            GENERATED RESUME JSON
+          </label>
+          {/* <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono"> */}
+          {/* {job?.generatedCv
+              ? JSON.stringify(job.generatedCv, null, 2)
+              : "Not Yet"} */}
+          <GeneratedCvPreview cv={job?.generatedCv} />
+          {/* </div> */}
+          <label className="text-sm text-gray-400 block mb-2 p-3">
+            JOB DESCRIPTION
+          </label>
           <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
             {job.job_desc}
           </div>
-
-          {answer && (
-            <>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-white font-semibold text-sm flex items-center gap-2">
-                  {answer ? "📄 AI Response" : "📄 Job Desc"}
-                </h3>
-                <button
-                  className="text-gray-500 hover:text-white transition-colors"
-                  onClick={() => handleCopy(answer ? answer : job.job_desc)}
-                  title={answer ? "copy answer" : "copy job_desc"}
-                >
-                  📋
-                </button>
-              </div>
-              <div className="bg-[#111] border border-[#333] rounded-lg p-3 text-sm text-gray-400 whitespace-pre-wrap max-h-60 overflow-y-auto font-mono">
-                <p>{answer}</p>
-              </div>
-            </>
-          )}
         </div>
       </div>
     </div>

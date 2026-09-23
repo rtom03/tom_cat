@@ -185,7 +185,7 @@ export const generateInterviewResponse = async (req, res) => {
       jobDesc: job.job_desc,
       company: job.company,
       title: job.title,
-      userResume: user.resumes,
+      userResume: job.generatedCv,
       question,
     });
 
